@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    dynamic:
+      datasource:
+        master:
+          username: root
+          password: 123456
+          url: jdbc:mysql://39.108.158.138:3306/seata_account?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          schema: db/schema.sql
+        slave_1:
+          username: root
+          password: 123456
+          url: jdbc:mysql://39.108.158.138:3306/seata_account?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+          driver-class-name: com.mysql.cj.jdbc.Driver
