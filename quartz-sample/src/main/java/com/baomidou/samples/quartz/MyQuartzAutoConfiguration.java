@@ -1,8 +1,10 @@
 package com.baomidou.samples.quartz;
 
+import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration;
 import com.baomidou.samples.quartz.job.HelloworldJob;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.autoconfigure.quartz.SchedulerFactoryBeanCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -14,12 +16,13 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
+@AutoConfigureAfter(DynamicDataSourceAutoConfiguration.class)
 public class MyQuartzAutoConfiguration {
 
     @Autowired
     private DataSourceProperties dataSourceProperties;
 
-    @Order(Ordered.HIGHEST_PRECEDENCE)
+    @Order(1)
     @Bean
     public SchedulerFactoryBeanCustomizer schedulerFactoryBeanCustomizer() {
         DataSource dataSource = dataSourceProperties.initializeDataSourceBuilder().build();
