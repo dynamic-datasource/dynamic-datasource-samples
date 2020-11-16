@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @Slf4j
 @SpringBootApplication
-public class AndRemoveDsApplication {
+public class AddRemoveDsApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AndRemoveDsApplication.class, args);
+        SpringApplication.run(AddRemoveDsApplication.class, args);
         log.info("open http://localhost:8080/doc.html");
     }
 }
