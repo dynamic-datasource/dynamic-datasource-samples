@@ -28,6 +28,7 @@
         <module>jdbc-template-sample</module>
         <module>load-datasource-from-jdbc-sample</module>
         <module>mybatis-sample</module>
+        <module>mybatisplugin-sample</module>
         <module>mybatisplus2-sample</module>
         <module>mybatisplus3-sample</module>
         <module>nest-sample</module>
