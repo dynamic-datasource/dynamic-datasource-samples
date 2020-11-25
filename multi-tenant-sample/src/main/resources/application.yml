@@ -1,0 +1,9 @@
+#取配置文件中主库配置,再读取其他数据源
+master:
+  url:  jdbc:mysql://localhost:3306/test?serverTimezone=Asia/Shanghai&&allowMultiQueries=true
+  username: root
+  password: root
+
+logging:
+  level:
+    com.baomidou: debug
