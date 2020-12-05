@@ -3,7 +3,6 @@ package com.baomidou.samples.jdbc.controller;
 
 import com.baomidou.samples.jdbc.entity.User;
 import com.baomidou.samples.jdbc.service.UserService;
-import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

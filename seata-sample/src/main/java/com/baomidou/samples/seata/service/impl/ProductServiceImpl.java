@@ -32,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
 
         // 检查库存
         Product product = productMapper.selectById(productId);
-        Assert.notNull(product,"商品不存在");
+        Assert.notNull(product, "商品不存在");
         Integer stock = product.getStock();
         log.info("商品编号为 {} 的库存为{},订单商品数量为{}", productId, stock, amount);
 

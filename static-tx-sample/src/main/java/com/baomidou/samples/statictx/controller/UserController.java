@@ -3,7 +3,6 @@ package com.baomidou.samples.statictx.controller;
 
 import com.baomidou.samples.statictx.entity.User;
 import com.baomidou.samples.statictx.service.UserService;
-import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +12,6 @@ import java.util.Random;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/users")
-
 public class UserController {
 
     private static final Random RANDOM = new Random();

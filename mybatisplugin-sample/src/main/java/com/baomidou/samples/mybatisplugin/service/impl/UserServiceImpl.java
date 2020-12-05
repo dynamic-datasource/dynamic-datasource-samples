@@ -1,8 +1,5 @@
 package com.baomidou.samples.mybatisplugin.service.impl;
 
-
-import com.baomidou.dynamic.datasource.annotation.DS;
-import com.baomidou.dynamic.datasource.annotation.Slave;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.samples.mybatisplugin.entity.User;
 import com.baomidou.samples.mybatisplugin.mapper.UserMapper;

@@ -3,7 +3,6 @@ package com.baomidou.samples.sharding.controller;
 
 import com.baomidou.samples.sharding.entity.User;
 import com.baomidou.samples.sharding.service.UserService;
-import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +12,6 @@ import java.util.Random;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/users")
-
 public class UserController {
 
     private static final Random RANDOM = new Random();

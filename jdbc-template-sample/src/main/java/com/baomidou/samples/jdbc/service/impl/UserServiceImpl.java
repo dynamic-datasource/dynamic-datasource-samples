@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
         user.setAge(rs.getInt("age"));
         return user;
     };
-    
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
