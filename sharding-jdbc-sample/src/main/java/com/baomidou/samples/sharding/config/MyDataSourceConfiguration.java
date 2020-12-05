@@ -6,7 +6,6 @@ import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
-import org.apache.shardingsphere.shardingjdbc.spring.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +17,7 @@ import javax.sql.DataSource;
 import java.util.Map;
 
 @Configuration
-@AutoConfigureBefore({DynamicDataSourceAutoConfiguration.class, SpringBootConfiguration.class})
+@AutoConfigureBefore(DynamicDataSourceAutoConfiguration.class)
 public class MyDataSourceConfiguration {
     @Resource
     private DynamicDataSourceProperties properties;
