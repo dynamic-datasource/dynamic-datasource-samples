@@ -1,4 +1,4 @@
-package com.baomidou.samples.statictx.config;
+package com.baomidou.samples.localtx.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +18,7 @@ public class SwaggerAutoConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(ApiInfo.DEFAULT)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.baomidou.samples.statictx.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.baomidou.samples.localtx.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }

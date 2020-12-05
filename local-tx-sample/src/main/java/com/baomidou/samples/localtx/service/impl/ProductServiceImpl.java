@@ -1,14 +1,13 @@
-package com.baomidou.samples.seata.service.impl;
+package com.baomidou.samples.localtx.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.baomidou.samples.seata.entity.Product;
-import com.baomidou.samples.seata.mapper.ProductMapper;
-import com.baomidou.samples.seata.service.ProductService;
-import io.seata.core.context.RootContext;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
+import com.baomidou.dynamic.datasource.tx.TransactionContext;
+import com.baomidou.samples.localtx.entity.Product;
+import com.baomidou.samples.localtx.mapper.ProductMapper;
+import com.baomidou.samples.localtx.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
@@ -24,11 +23,11 @@ public class ProductServiceImpl implements ProductService {
      * 事务传播特性设置为 REQUIRES_NEW 开启新的事务
      */
     @DS("product")
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @DSTransactional
     @Override
     public Double reduceStock(Long productId, Integer amount) {
         log.info("=============PRODUCT START=================");
-        log.info("当前 XID: {}", RootContext.getXID());
+        log.info("当前 XID: {}", TransactionContext.getXID());
 
         // 检查库存
         Product product = productMapper.selectById(productId);

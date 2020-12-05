@@ -1,14 +1,13 @@
-package com.baomidou.samples.seata.service.impl;
+package com.baomidou.samples.localtx.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.baomidou.samples.seata.entity.Account;
-import com.baomidou.samples.seata.mapper.AccountMapper;
-import com.baomidou.samples.seata.service.AccountService;
-import io.seata.core.context.RootContext;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
+import com.baomidou.dynamic.datasource.tx.TransactionContext;
+import com.baomidou.samples.localtx.entity.Account;
+import com.baomidou.samples.localtx.mapper.AccountMapper;
+import com.baomidou.samples.localtx.service.AccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
@@ -25,10 +24,10 @@ public class AccountServiceImpl implements AccountService {
      */
     @DS("account")
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @DSTransactional
     public void reduceBalance(Long userId, Double price) {
         log.info("=============ACCOUNT START=================");
-        log.info("当前 XID: {}", RootContext.getXID());
+        log.info("当前 XID: {}", TransactionContext.getXID());
 
         Account account = accountMapper.selectById(userId);
         Assert.notNull(account, "用户不存在");

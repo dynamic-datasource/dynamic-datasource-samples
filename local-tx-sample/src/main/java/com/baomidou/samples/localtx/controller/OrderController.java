@@ -1,7 +1,7 @@
-package com.baomidou.samples.seata.controller;
+package com.baomidou.samples.localtx.controller;
 
-import com.baomidou.samples.seata.dto.PlaceOrderRequest;
-import com.baomidou.samples.seata.service.OrderService;
+import com.baomidou.samples.localtx.dto.PlaceOrderRequest;
+import com.baomidou.samples.localtx.service.OrderService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -18,6 +18,7 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/placeOrder")
+    @ApiOperation("自由下单")
     public String placeOrder(@Validated @RequestBody PlaceOrderRequest request) {
         orderService.placeOrder(request);
         return "下单成功";
