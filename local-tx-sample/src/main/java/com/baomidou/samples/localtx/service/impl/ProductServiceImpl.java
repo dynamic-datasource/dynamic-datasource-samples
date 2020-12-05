@@ -19,9 +19,6 @@ public class ProductServiceImpl implements ProductService {
     @Resource
     private ProductMapper productMapper;
 
-    /**
-     * 事务传播特性设置为 REQUIRES_NEW 开启新的事务
-     */
     @DS("product")
     @DSTransactional
     @Override

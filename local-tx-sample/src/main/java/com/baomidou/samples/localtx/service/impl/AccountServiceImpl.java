@@ -19,9 +19,6 @@ public class AccountServiceImpl implements AccountService {
     @Resource
     private AccountMapper accountMapper;
 
-    /**
-     * 事务传播特性设置为 REQUIRES_NEW 开启新的事务
-     */
     @DS("account")
     @Override
     @DSTransactional
