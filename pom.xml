@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.7.RELEASE</version>
+        <version>2.4.2</version>
         <relativePath/>
     </parent>
 
@@ -50,7 +50,7 @@
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-spring-boot-starter</artifactId>
-                <version>2.0.8</version>
+                <version>3.0.2</version>
             </dependency>
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
@@ -102,8 +102,13 @@
         </repository>
         <repository>
             <id>spring</id>
-            <name>spring maven</name>
             <url>https://maven.aliyun.com/repository/spring</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
 

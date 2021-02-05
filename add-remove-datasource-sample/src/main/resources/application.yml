@@ -22,6 +22,8 @@ spring:
           password: ""
           url: jdbc:h2:mem:test3
           driver-class-name: org.h2.Driver
+      druid:
+        validation-query: "select 1"
 
 logging:
   level:
