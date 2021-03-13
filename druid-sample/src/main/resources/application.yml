@@ -5,6 +5,7 @@ spring:
         enabled: true
     dynamic:
       p6spy: true
+      lazy: true
       # 配置全局druid参数，请按需配置
       druid:
         initial-size: 5
@@ -66,6 +67,7 @@ spring:
           password: "123456"
           url: jdbc:h2:mem:test
           driver-class-name: org.h2.Driver
+
 management:
   endpoints:
     web:

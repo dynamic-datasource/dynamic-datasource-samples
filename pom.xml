@@ -45,7 +45,7 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-                <version>3.3.1</version>
+                <version>3.3.2</version>
             </dependency>
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
