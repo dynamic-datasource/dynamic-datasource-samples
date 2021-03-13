@@ -21,7 +21,7 @@ import java.util.Set;
 public class DataSourceController {
 
     private final DataSource dataSource;
-    private final DataSourceCreator dataSourceCreator;
+    private final DefaultDataSourceCreator dataSourceCreator;
     private final BasicDataSourceCreator basicDataSourceCreator;
     private final JndiDataSourceCreator jndiDataSourceCreator;
     private final DruidDataSourceCreator druidDataSourceCreator;
