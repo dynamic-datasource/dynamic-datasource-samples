@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.3</version>
+        <version>2.4.5</version>
         <relativePath/>
     </parent>
 
@@ -20,6 +20,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+
+        <ds.version>3.3.2</ds.version>
+        <knife4j.version>3.0.2</knife4j.version>
+        <mybatis.version>2.1.4</mybatis.version>
+        <druid.version>1.2.6</druid.version>
+        <p6spy.version>3.9.1</p6spy.version>
+        <h2.version>1.4.200</h2.version>
     </properties>
 
     <modules>
@@ -45,37 +52,37 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-                <version>3.3.2</version>
+                <version>${ds.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-spring-boot-starter</artifactId>
-                <version>3.0.2</version>
+                <version>${knife4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>2.1.4</version>
+                <version>${mybatis.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
-                <version>1.2.5</version>
+                <version>${druid.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
-                <version>1.2.5</version>
+                <version>${druid.version}</version>
             </dependency>
             <dependency>
                 <groupId>p6spy</groupId>
                 <artifactId>p6spy</artifactId>
-                <version>3.9.1</version>
+                <version>${p6spy.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
-                <version>1.4.200</version>
+                <version>${h2.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -97,11 +104,10 @@
     <repositories>
         <repository>
             <id>aliyun</id>
-            <name>aliyun maven</name>
             <url>https://maven.aliyun.com/repository/public</url>
         </repository>
         <repository>
-            <id>spring</id>
+            <id>aliyun-spring</id>
             <url>https://maven.aliyun.com/repository/spring</url>
             <releases>
                 <enabled>true</enabled>
@@ -115,8 +121,11 @@
     <pluginRepositories>
         <pluginRepository>
             <id>aliyun</id>
-            <name>aliyun maven</name>
             <url>https://maven.aliyun.com/repository/public</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>aliyun-spring-plugin</id>
+            <url>https://maven.aliyun.com/repository/spring-plugin</url>
         </pluginRepository>
     </pluginRepositories>
 </project>
