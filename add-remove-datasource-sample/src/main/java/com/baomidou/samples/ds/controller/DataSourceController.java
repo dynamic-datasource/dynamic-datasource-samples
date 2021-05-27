@@ -106,7 +106,7 @@ public class DataSourceController {
     public Set<String> addHikariCP(@Validated @RequestBody DataSourceDTO dto) {
         DataSourceProperty dataSourceProperty = new DataSourceProperty();
         BeanUtils.copyProperties(dto, dataSourceProperty);
-        dataSourceProperty.setLazy(true);//3.4.0版本如果有此属性，需手动设置，不然会空指针。
+        dataSourceProperty.setLazy(true);//3.4.0版本以下如果有此属性，需手动设置，不然会空指针。
         DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
         DataSource dataSource = hikariDataSourceCreator.createDataSource(dataSourceProperty);
         ds.addDataSource(dto.getPollName(), dataSource);
@@ -118,7 +118,7 @@ public class DataSourceController {
     public Set<String> addBeeCp(@Validated @RequestBody DataSourceDTO dto) {
         DataSourceProperty dataSourceProperty = new DataSourceProperty();
         BeanUtils.copyProperties(dto, dataSourceProperty);
-        dataSourceProperty.setLazy(true);//3.4.0版本如果有此属性，需手动设置，不然会空指针。
+        dataSourceProperty.setLazy(true);//3.4.0版本以下如果有此属性，需手动设置，不然会空指针。
         DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
         DataSource dataSource = beeCpDataSourceCreator.createDataSource(dataSourceProperty);
         ds.addDataSource(dto.getPollName(), dataSource);
@@ -130,7 +130,7 @@ public class DataSourceController {
     public Set<String> addDbcp(@Validated @RequestBody DataSourceDTO dto) {
         DataSourceProperty dataSourceProperty = new DataSourceProperty();
         BeanUtils.copyProperties(dto, dataSourceProperty);
-        dataSourceProperty.setLazy(true);//3.4.0版本如果有此属性，需手动设置，不然会空指针。
+        dataSourceProperty.setLazy(true);//3.4.0版本以下如果有此属性，需手动设置，不然会空指针。
         DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
         DataSource dataSource = dbcp2DataSourceCreator.createDataSource(dataSourceProperty);
         ds.addDataSource(dto.getPollName(), dataSource);
