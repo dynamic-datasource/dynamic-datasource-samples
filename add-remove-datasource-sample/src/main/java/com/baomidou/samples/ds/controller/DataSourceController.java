@@ -21,8 +21,8 @@ import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourcePrope
 import com.baomidou.samples.ds.dto.DataSourceDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,17 +30,26 @@ import javax.sql.DataSource;
 import java.util.Set;
 
 @RestController
-@AllArgsConstructor
 @RequestMapping("/datasources")
 @Api(tags = "添加删除数据源")
 public class DataSourceController {
 
-    private final DataSource dataSource;
-    private final DefaultDataSourceCreator dataSourceCreator;
-    private final BasicDataSourceCreator basicDataSourceCreator;
-    private final JndiDataSourceCreator jndiDataSourceCreator;
-    private final DruidDataSourceCreator druidDataSourceCreator;
-    private final HikariDataSourceCreator hikariDataSourceCreator;
+    @Autowired
+    private DataSource dataSource;
+    @Autowired
+    private DefaultDataSourceCreator dataSourceCreator;
+    @Autowired
+    private BasicDataSourceCreator basicDataSourceCreator;
+    @Autowired
+    private JndiDataSourceCreator jndiDataSourceCreator;
+    @Autowired
+    private DruidDataSourceCreator druidDataSourceCreator;
+    @Autowired
+    private HikariDataSourceCreator hikariDataSourceCreator;
+    @Autowired
+    private BeeCpDataSourceCreator beeCpDataSourceCreator;
+    @Autowired
+    private Dbcp2DataSourceCreator dbcp2DataSourceCreator;
 
     @GetMapping
     @ApiOperation("获取当前所有数据源")
@@ -60,7 +69,7 @@ public class DataSourceController {
         return ds.getCurrentDataSources().keySet();
     }
 
-    @PostMapping("/addBasic")
+    @PostMapping("/addBasic(强烈不推荐，除了用了马上移除)")
     @ApiOperation(value = "添加基础数据源", notes = "调用Springboot内置方法创建数据源，兼容1,2")
     public Set<String> addBasic(@Validated @RequestBody DataSourceDTO dto) {
         DataSourceProperty dataSourceProperty = new DataSourceProperty();
@@ -85,6 +94,7 @@ public class DataSourceController {
     public Set<String> addDruid(@Validated @RequestBody DataSourceDTO dto) {
         DataSourceProperty dataSourceProperty = new DataSourceProperty();
         BeanUtils.copyProperties(dto, dataSourceProperty);
+        dataSourceProperty.setLazy(true);
         DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
         DataSource dataSource = druidDataSourceCreator.createDataSource(dataSourceProperty);
         ds.addDataSource(dto.getPollName(), dataSource);
@@ -96,8 +106,33 @@ public class DataSourceController {
     public Set<String> addHikariCP(@Validated @RequestBody DataSourceDTO dto) {
         DataSourceProperty dataSourceProperty = new DataSourceProperty();
         BeanUtils.copyProperties(dto, dataSourceProperty);
+        dataSourceProperty.setLazy(true);//3.4.0版本如果有此属性，需手动设置，不然会空指针。
         DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
         DataSource dataSource = hikariDataSourceCreator.createDataSource(dataSourceProperty);
+        ds.addDataSource(dto.getPollName(), dataSource);
+        return ds.getCurrentDataSources().keySet();
+    }
+
+    @PostMapping("/addBeeCp")
+    @ApiOperation("基础BeeCp数据源")
+    public Set<String> addBeeCp(@Validated @RequestBody DataSourceDTO dto) {
+        DataSourceProperty dataSourceProperty = new DataSourceProperty();
+        BeanUtils.copyProperties(dto, dataSourceProperty);
+        dataSourceProperty.setLazy(true);//3.4.0版本如果有此属性，需手动设置，不然会空指针。
+        DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
+        DataSource dataSource = beeCpDataSourceCreator.createDataSource(dataSourceProperty);
+        ds.addDataSource(dto.getPollName(), dataSource);
+        return ds.getCurrentDataSources().keySet();
+    }
+
+    @PostMapping("/addDbcp")
+    @ApiOperation("基础Dbcp数据源")
+    public Set<String> addDbcp(@Validated @RequestBody DataSourceDTO dto) {
+        DataSourceProperty dataSourceProperty = new DataSourceProperty();
+        BeanUtils.copyProperties(dto, dataSourceProperty);
+        dataSourceProperty.setLazy(true);//3.4.0版本如果有此属性，需手动设置，不然会空指针。
+        DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
+        DataSource dataSource = dbcp2DataSourceCreator.createDataSource(dataSourceProperty);
         ds.addDataSource(dto.getPollName(), dataSource);
         return ds.getCurrentDataSources().keySet();
     }
