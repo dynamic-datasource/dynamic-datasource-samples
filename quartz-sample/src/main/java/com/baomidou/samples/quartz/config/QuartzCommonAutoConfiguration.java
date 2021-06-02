@@ -13,41 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.baomidou.samples.quartz;
+package com.baomidou.samples.quartz.config;
 
-import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration;
 import com.baomidou.samples.quartz.job.HelloworldJob;
 import org.quartz.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.springframework.boot.autoconfigure.quartz.SchedulerFactoryBeanCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-
-import javax.sql.DataSource;
 
 @Configuration
-@AutoConfigureAfter(DynamicDataSourceAutoConfiguration.class)
-public class MyQuartzAutoConfiguration {
-
-    @Autowired
-    private DataSourceProperties dataSourceProperties;
-
-    @Order(1)
-    @Bean
-    public SchedulerFactoryBeanCustomizer schedulerFactoryBeanCustomizer() {
-        DataSource dataSource = dataSourceProperties.initializeDataSourceBuilder().build();
-        return schedulerFactoryBean -> {
-            schedulerFactoryBean.setDataSource(dataSource);
-            schedulerFactoryBean.setTransactionManager(new DataSourceTransactionManager(dataSource));
-        };
-    }
+public class QuartzCommonAutoConfiguration {
 
     @Bean
-    public JobDetail myJobDetail() {
+    public JobDetail job() {
         return JobBuilder.newJob(HelloworldJob.class)
                 .withIdentity("myJob1", "myJobGroup1")
                 //JobDataMap可以给任务execute传递参数
@@ -57,13 +34,12 @@ public class MyQuartzAutoConfiguration {
     }
 
     @Bean
-    public Trigger myTrigger() {
+    public Trigger myTrigger(JobDetail jobDetail) {
         return TriggerBuilder.newTrigger()
-                .forJob(myJobDetail())
+                .forJob(jobDetail)
                 .withIdentity("myTrigger1", "myTriggerGroup1")
                 .usingJobData("job_trigger_param", "job_trigger_param1")
                 .startNow()
-                //.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(5).repeatForever())
                 .withSchedule(CronScheduleBuilder.cronSchedule("0/1 * * * * ? *"))
                 .build();
     }
