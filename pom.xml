@@ -23,7 +23,7 @@
 
         <ds.version>3.3.6</ds.version>
         <knife4j.version>3.0.2</knife4j.version>
-        <mybatis.version>2.1.4</mybatis.version>
+        <mybatis.version>2.2.0</mybatis.version>
         <druid.version>1.2.6</druid.version>
         <p6spy.version>3.9.1</p6spy.version>
         <h2.version>1.4.200</h2.version>
