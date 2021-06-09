@@ -42,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ProductService productService;
 
-    @DS("order")
+//    @DS("order")  一般建议
     @Override
     @DSTransactional
     public void placeOrder(PlaceOrderRequest request) {

@@ -29,6 +29,7 @@ import org.springframework.context.annotation.Primary;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -67,12 +68,12 @@ public class MyDataSourceConfiguration {
      */
     @Primary
     @Bean
-    public DataSource dataSource(DynamicDataSourceProvider dynamicDataSourceProvider) {
+    public DataSource dataSource(List<DynamicDataSourceProvider> providers) {
         DynamicRoutingDataSource dataSource = new DynamicRoutingDataSource();
         dataSource.setPrimary(properties.getPrimary());
         dataSource.setStrict(properties.getStrict());
         dataSource.setStrategy(properties.getStrategy());
-        dataSource.setProvider(dynamicDataSourceProvider);
+        dataSource.setProviders(providers);
         dataSource.setP6spy(properties.getP6spy());
         dataSource.setSeata(properties.getSeata());
         return dataSource;

@@ -51,13 +51,11 @@ public class LoadDsApplication {
                         + "    `driver`   VARCHAR(30) NULL DEFAULT NULL\n"
                         + ")");
                 statement.executeUpdate(
-                        "insert into DB values ('master','sa','','jdbc:h2:mem:test1','org.h2.Driver')");
+                        "insert into DB values ('db1','sa','','jdbc:h2:mem:test2','org.h2.Driver')");
                 statement.executeUpdate(
-                        "insert into DB values ('slave_1','sa','','jdbc:h2:mem:test2','org.h2.Driver')");
+                        "insert into DB values ('db2','sa','','jdbc:h2:mem:test3','org.h2.Driver')");
                 statement.executeUpdate(
-                        "insert into DB values ('slave_2','sa','','jdbc:h2:mem:test3','org.h2.Driver')");
-                statement.executeUpdate(
-                        "insert into DB values ('slave_3','sa','','jdbc:h2:mem:test4','org.h2.Driver')");
+                        "insert into DB values ('db3','sa','','jdbc:h2:mem:test4','org.h2.Driver')");
                 Map<String, DataSourceProperty> map = new HashMap<>();
                 //*************** ↑↑↑↑↑↑↑ END  ***************
 

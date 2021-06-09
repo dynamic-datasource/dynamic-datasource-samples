@@ -12,6 +12,7 @@
 - mybatis-sample 集成原生mybatis的使用示例
 - mybatisplus2-sample 集成mybatisPlus2的使用示例
 - mybatisplus3-sample 集成mybatisPlus3的使用示例
+- name-pattern-sample 自定义切面的使用示例
 - nest-sample 嵌套切换数据源使用示例
 - quartz-sample 多数据源集成quartz示例
 - sharding-jdbc-sample 集成sharding-jdbc使用示例
