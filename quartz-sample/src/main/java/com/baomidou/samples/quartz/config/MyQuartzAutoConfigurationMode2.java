@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.autoconfigure.quartz.QuartzDataSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
@@ -38,12 +39,11 @@ public class MyQuartzAutoConfigurationMode2 {
 
     @Primary
     @Bean
-    public DataSource dataSource(List<DynamicDataSourceProvider> providers) {
+    public DataSource dataSource() {
         DynamicRoutingDataSource dataSource = new DynamicRoutingDataSource();
         dataSource.setPrimary(properties.getPrimary());
         dataSource.setStrict(properties.getStrict());
         dataSource.setStrategy(properties.getStrategy());
-        dataSource.setProviders(providers);
         dataSource.setP6spy(properties.getP6spy());
         dataSource.setSeata(properties.getSeata());
         return dataSource;
