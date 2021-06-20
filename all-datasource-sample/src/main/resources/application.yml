@@ -1,9 +1,15 @@
 spring:
   datasource:
+    druid:
+      stat-view-servlet:
+        enabled: true
     dynamic:
       hikari:
         min-idle: 5
         max-pool-size: 8
+        data-source-properties:
+          a: 1
+          b: 2
       druid:
         min-idle: 5
         max-active: 8
@@ -46,7 +52,6 @@ spring:
           type: org.apache.commons.dbcp2.BasicDataSource
           dbcp2:
             min-idle: 6
-
 logging:
   level:
     com.baomidou: debug

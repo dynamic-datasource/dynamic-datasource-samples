@@ -15,16 +15,20 @@
  */
 package com.baomidou.samples.ds;
 
+import cn.beecp.boot.EnableDataSourceMonitor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @Slf4j
 @SpringBootApplication
+@EnableDataSourceMonitor
 public class AllDataSourceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AllDataSourceApplication.class, args);
         log.info("open http://localhost:8080/doc.html");
+        log.info("open http://localhost:8080/druid/index.html");
+        log.info("open http://localhost:8080/BeeCPMonitor.html");
     }
 }
