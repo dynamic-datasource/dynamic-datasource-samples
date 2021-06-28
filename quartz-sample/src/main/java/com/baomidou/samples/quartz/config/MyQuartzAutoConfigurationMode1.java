@@ -15,7 +15,6 @@
  */
 package com.baomidou.samples.quartz.config;
 
-import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.autoconfigure.quartz.SchedulerFactoryBeanCustomizer;
@@ -31,8 +30,6 @@ public class MyQuartzAutoConfigurationMode1 {
 
     @Autowired
     private DataSourceProperties dataSourceProperties;
-    @Autowired
-    private DynamicDataSourceProperties properties;
 
     @Order(1)
     @Bean
