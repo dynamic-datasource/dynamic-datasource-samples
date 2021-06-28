@@ -24,25 +24,24 @@ import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSour
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
-import java.util.List;
 import java.util.Map;
 
 @Configuration
 @AutoConfigureBefore(DynamicDataSourceAutoConfiguration.class)
 public class MyDataSourceConfiguration {
+
     @Resource
     private DynamicDataSourceProperties properties;
 
     /**
      * 未使用分片, 脱敏的名称(默认): shardingDataSource
-     * shardingjdbc使用了主从: masterSlaveDataSource
+     * 使用了主从: masterSlaveDataSource
+     * 根据自己场景修改注入
      */
-    @Lazy
     @Resource(name = "masterSlaveDataSource")
     private DataSource masterSlaveDataSource;
 
@@ -50,12 +49,13 @@ public class MyDataSourceConfiguration {
     public DynamicDataSourceProvider dynamicDataSourceProvider() {
         Map<String, DataSourceProperty> datasourceMap = properties.getDatasource();
         return new AbstractDataSourceProvider() {
+
             @Override
             public Map<String, DataSource> loadDataSources() {
                 Map<String, DataSource> dataSourceMap = createDataSourceMap(datasourceMap);
                 dataSourceMap.put("sharding", masterSlaveDataSource);
                 //打开下面的代码可以把 shardingjdbc 管理的数据源也交给动态数据源管理 (根据自己需要选择开启)
-                //dataSourceMap.putAll(((MasterSlaveDataSource) masterSlaveDataSource).getDataSourceMap());
+//                dataSourceMap.putAll(((MasterSlaveDataSource) masterSlaveDataSource).getDataSourceMap());
                 return dataSourceMap;
             }
         };

@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    order:
+      username: sa
+      password: ""
+      jdbc-url: jdbc:h2:mem:order
+      driver-class-name: org.h2.Driver
+    product:
+      username: sa
+      password: ""
+      jdbc-url: jdbc:h2:mem:product
+      driver-class-name: org.h2.Driver
+logging:
+  level:
+    com.baomidou: debug
