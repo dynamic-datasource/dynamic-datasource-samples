@@ -26,6 +26,7 @@ spring:
           url: jdbc:h2:mem:test
           driver-class-name: org.h2.Driver
           type: com.zaxxer.hikari.HikariDataSource
+          schema: db/schema.sql
           hikari:
             min-idle: 6
         db1:
@@ -36,6 +37,8 @@ spring:
           type: com.alibaba.druid.pool.DruidDataSource
           druid:
             min-idle: 6
+          schema: db/schema.sql
+          data: db/db1.sql
         db2:
           username: sa
           password: ""
@@ -44,6 +47,8 @@ spring:
           type: cn.beecp.BeeDataSource
           beecp:
             initial-size: 6
+          schema: db/schema.sql
+          data: db/db2.sql
         db3:
           username: sa
           password: ""
@@ -52,6 +57,7 @@ spring:
           type: org.apache.commons.dbcp2.BasicDataSource
           dbcp2:
             min-idle: 6
+          schema: db/schema.sql
 logging:
   level:
     com.baomidou: debug

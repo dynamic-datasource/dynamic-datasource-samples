@@ -17,12 +17,16 @@ package com.baomidou.samples.ds;
 
 import cn.beecp.boot.EnableDataSourceMonitor;
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 
 @Slf4j
 @SpringBootApplication
+@ServletComponentScan
 @EnableDataSourceMonitor
+@MapperScan("com.baomidou.samples.ds.mapper")
 public class AllDataSourceApplication {
 
     public static void main(String[] args) {
