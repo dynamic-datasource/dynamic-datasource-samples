@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    consul:
+      host: ali
+      config:
+        prefix: dynamic-datasource
+        enabled: true
+        format: YAML

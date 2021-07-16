@@ -1,0 +1,7 @@
+#spring:
+#  cloud:
+#    consul:
+#      host: 39.108.158.138
+#      config:
+#        format: yaml
+#        name: dynamic-datasource
