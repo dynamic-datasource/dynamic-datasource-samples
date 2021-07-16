@@ -21,6 +21,7 @@ import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 
 import javax.annotation.Resource;
@@ -40,6 +41,7 @@ public class MyDataSourceConfiguration {
      * 根据自己场景修改注入
      */
     @Resource(name = "masterSlaveDataSource")
+    @Lazy
     private DataSource masterSlaveDataSource;
 
     @Bean
