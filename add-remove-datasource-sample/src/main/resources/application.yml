@@ -30,3 +30,5 @@ logging:
     com.baomidou: debug
 swagger:
   base-package: com.baomidou.samples.ds.controller
+server:
+  port: 8081
