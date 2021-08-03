@@ -30,28 +30,14 @@
     </properties>
 
     <modules>
-        <module>add-remove-datasource-sample</module>
-        <module>beetlsql-sample</module>
-        <module>druid-sample</module>
-        <module>jdbc-template-sample</module>
-        <module>load-datasource-from-jdbc-sample</module>
-        <module>mybatis-sample</module>
-        <module>mybatisplugin-sample</module>
-        <module>mybatisplus2-sample</module>
-        <module>mybatisplus3-sample</module>
-        <module>name-pattern-sample</module>
-        <module>nest-sample</module>
-        <module>quartz-sample</module>
-        <module>sharding-jdbc-sample</module>
-        <module>spel-sample</module>
-        <module>tx-local-sample</module>
-        <module>tx-atomikos-sample</module>
-        <module>tx-seata-sample</module>
-        <module>shiro-sample</module>
-        <module>all-datasource-sample</module>
-        <module>static-multi-datasource-sample</module>
-        <module>config-nacos-sample</module>
-        <module>config-consul-sample</module>
+        <module>orm-samples</module>
+        <module>tx-samples</module>
+        <module>config-samples</module>
+        <module>datasource-samples</module>
+        <module>no-ds-samples</module>
+        <module>third-part-samples</module>
+        <module>features-samples</module>
+        <module>other-samples</module>
     </modules>
 
     <dependencyManagement>
