@@ -11,19 +11,19 @@ spring:
         order:
           username: root
           password: 123456
-          url: jdbc:mysql://39.108.158.138:3306/seata_order?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+          url: jdbc:mysql://110.40.253.205:3306/seata_order?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
           driver-class-name: com.mysql.jdbc.Driver
           schema: classpath:db/schema-order.sql
         account:
           username: root
           password: 123456
-          url: jdbc:mysql://39.108.158.138:3306/seata_account?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+          url: jdbc:mysql://110.40.253.205:3306/seata_account?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
           driver-class-name: com.mysql.jdbc.Driver
           schema: classpath:db/schema-account.sql
         product:
           username: root
           password: 123456
-          url: jdbc:mysql://39.108.158.138:3306/seata_product?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+          url: jdbc:mysql://110.40.253.205:3306/seata_product?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
           driver-class-name: com.mysql.jdbc.Driver
           schema: classpath:db/schema-product.sql
         test:
@@ -44,7 +44,7 @@ seata:
       my_test_tx_group: default
     grouplist:
       #seata-server地址仅file注册中心需要
-      default: 39.108.158.138:8091
+      default: 110.40.253.205:8091
   config:
     type: file
   registry:

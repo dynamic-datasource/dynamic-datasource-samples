@@ -1,3 +1,3 @@
 nacos:
   config:
-    server-addr: 39.108.158.138:8848
+    server-addr: 110.40.253.205:8848

@@ -3,6 +3,7 @@ spring:
     druid:
       stat-view-servlet:
         enabled: true
+      async-init: false
     dynamic:
       p6spy: true
       lazy: true

@@ -38,6 +38,6 @@ public class DataSourceController {
     @ApiOperation("获取当前所有数据源")
     public Set<String> now() {
         DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
-        return ds.getCurrentDataSources().keySet();
+        return ds.getDataSources().keySet();
     }
 }

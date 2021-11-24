@@ -2,7 +2,7 @@ spring:
   datasource: #独立quartz配置
     username: root
     password: 123456
-    url: jdbc:mysql://39.108.158.138:3306/quartz
+    url: jdbc:mysql://110.40.253.205:3306/quartz
     driver-class-name: com.mysql.cj.jdbc.Driver
     dynamic:
       datasource:
@@ -14,7 +14,7 @@ spring:
         quartz: #把quartz数据源也作为动态数据源的一个数据源
           username: root
           password: 123456
-          url: jdbc:mysql://39.108.158.138:3306/quartz
+          url: jdbc:mysql://110.40.253.205:3306/quartz
           driver-class-name: com.mysql.cj.jdbc.Driver
   quartz:
     job-store-type: jdbc

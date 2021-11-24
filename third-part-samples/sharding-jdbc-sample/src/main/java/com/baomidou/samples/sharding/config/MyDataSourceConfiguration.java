@@ -19,6 +19,7 @@ import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.baomidou.dynamic.datasource.provider.AbstractDataSourceProvider;
 import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
+import org.apache.shardingsphere.shardingjdbc.jdbc.core.datasource.MasterSlaveDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -26,6 +27,7 @@ import org.springframework.context.annotation.Primary;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,9 +42,10 @@ public class MyDataSourceConfiguration {
      * 使用了主从: masterSlaveDataSource
      * 根据自己场景修改注入
      */
-    @Resource(name = "masterSlaveDataSource")
+//    @Resource(name = "masterSlaveDataSource")
     @Lazy
-    private DataSource masterSlaveDataSource;
+    @Resource
+    private MasterSlaveDataSource masterSlaveDataSource;
 
     @Bean
     public DynamicDataSourceProvider dynamicDataSourceProvider() {
@@ -52,6 +55,8 @@ public class MyDataSourceConfiguration {
             public Map<String, DataSource> loadDataSources() {
                 Map<String, DataSource> dataSourceMap = new HashMap<>();
                 dataSourceMap.put("sharding", masterSlaveDataSource);
+                Map<String, DataSource> dataSourceMap1 = masterSlaveDataSource.getDataSourceMap();
+                Connection connection = masterSlaveDataSource.getConnection();
                 //打开下面的代码可以把 shardingJdbc 内部管理的子数据源也同时添加到动态数据源里 (根据自己需要选择开启)
 //                dataSourceMap.putAll(((MasterSlaveDataSource) masterSlaveDataSource).getDataSourceMap());
                 return dataSourceMap;

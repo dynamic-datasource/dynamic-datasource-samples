@@ -14,6 +14,5 @@
 
     <modules>
         <module>druid-sample</module>
-        <module>all-datasource-sample</module>
     </modules>
 </project>
