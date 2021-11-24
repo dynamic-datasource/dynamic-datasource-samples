@@ -37,7 +37,6 @@
         <module>no-ds-samples</module>
         <module>third-part-samples</module>
         <module>features-samples</module>
-        <module>other-samples</module>
     </modules>
 
     <dependencyManagement>
