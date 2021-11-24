@@ -16,8 +16,6 @@
 - nest-sample 嵌套切换数据源使用示例
 - quartz-sample 多数据源集成quartz示例
 - sharding-jdbc-sample 集成sharding-jdbc使用示例
-- shiro-sample 集成shiro的使用示例（进行中，不可用）
 - spel-sample 动态从外部参数spel来切换数据源的使用示例
-- tx-atomikos-sample 静态手动构建多数据源并适用jta事物示例，进行中
 - tx-local-sample 本地事务示例项目★★★★★★必看★★★★★★
 - tx-seata-sample 基于seata的分布式事务集成使用示例
