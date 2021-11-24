@@ -27,7 +27,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class NacosApplication {
 
     public static void main(String[] args) {
+        log.info("nacos暂不支持最新版springboot 测试自行降级到2.3.12.RELEASE");
         SpringApplication.run(NacosApplication.class, args);
-        log.info("open http://localhost:8080/doc.html");
+        log.info("open http://localhost:8080/swagger-ui.html");
     }
 }

@@ -16,8 +16,6 @@
 package com.baomidou.samples.consul.controller;
 
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,14 +26,15 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/datasources")
-@Api(tags = "数据源")
 public class DataSourceController {
 
     @Autowired
     private DataSource dataSource;
 
+    /**
+     * 获取当前所有数据源
+     */
     @GetMapping
-    @ApiOperation("获取当前所有数据源")
     public Set<String> now() {
         DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
         return ds.getDataSources().keySet();

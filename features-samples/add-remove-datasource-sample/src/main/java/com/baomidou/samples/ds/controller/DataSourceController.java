@@ -19,8 +19,6 @@ import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 import com.baomidou.samples.ds.dto.DataSourceDTO;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -31,7 +29,6 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/datasources")
-@Api(tags = "添加删除数据源")
 public class DataSourceController {
 
     @Autowired
@@ -39,15 +36,19 @@ public class DataSourceController {
     @Autowired
     private DefaultDataSourceCreator dataSourceCreator;
 
+    /**
+     * 获取当前所有数据源
+     */
     @GetMapping
-    @ApiOperation("获取当前所有数据源")
     public Set<String> now() {
         DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
         return ds.getDataSources().keySet();
     }
 
+    /**
+     * 添加数据源
+     */
     @PostMapping("/add")
-    @ApiOperation("添加数据源")
     public Set<String> add(@Validated @RequestBody DataSourceDTO dto) {
         DataSourceProperty dataSourceProperty = new DataSourceProperty();
         BeanUtils.copyProperties(dto, dataSourceProperty);
@@ -57,8 +58,10 @@ public class DataSourceController {
         return ds.getDataSources().keySet();
     }
 
+    /**
+     * 删除数据源
+     */
     @DeleteMapping
-    @ApiOperation("删除数据源")
     public String remove(String name) {
         DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
         ds.removeDataSource(name);

@@ -27,7 +27,7 @@ public class DruidApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(DruidApplication.class, args);
-        log.info("open http://localhost:8080/doc.html \n" +
+        log.info("open http://localhost:8080/swagger-ui.html \n" +
                 "http://localhost:8080/druid/index.html");
     }
 }

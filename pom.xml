@@ -47,9 +47,9 @@
                 <version>${ds.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-spring-boot-starter</artifactId>
-                <version>${knife4j.version}</version>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>1.5.12</version>
             </dependency>
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>

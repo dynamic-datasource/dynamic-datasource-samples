@@ -15,7 +15,6 @@
  */
 package com.baomidou.samples.ds.dto;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -23,22 +22,33 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class DataSourceDTO {
 
+    /**
+     * 连接池名称
+     */
     @NotBlank
-    @ApiModelProperty(value = "连接池名称", example = "test")
     private String poolName;
 
+    /**
+     * JDBC driver org.h2.Driver
+     */
     @NotBlank
-    @ApiModelProperty(value = "JDBC driver", example = "org.h2.Driver")
     private String driverClassName;
 
+    /**
+     * JDBC url 地址
+     */
     @NotBlank
-    @ApiModelProperty(value = "JDBC url 地址", example = "jdbc:h2:mem:test10")
     private String url;
 
+    /**
+     * JDBC 用户名
+     */
     @NotBlank
-    @ApiModelProperty(value = "JDBC 用户名", example = "sa")
     private String username;
 
-    @ApiModelProperty(value = "JDBC 密码")
+    /**
+     * JDBC 密码
+     */
+    @NotBlank
     private String password;
 }

@@ -27,6 +27,6 @@ public class PatternApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(PatternApplication.class, args);
-        log.info("open http://localhost:8080/doc.html");
+        log.info("open http://localhost:8080/swagger-ui.html");
     }
 }
