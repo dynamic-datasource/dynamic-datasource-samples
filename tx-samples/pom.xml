@@ -14,7 +14,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>tx-atomikos-sample</module>
         <module>tx-local-sample</module>
         <module>tx-seata-sample</module>
     </modules>
