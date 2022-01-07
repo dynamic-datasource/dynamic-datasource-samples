@@ -25,7 +25,7 @@
         <mybatis.version>2.2.0</mybatis.version>
         <druid.version>1.2.8</druid.version>
         <p6spy.version>3.9.1</p6spy.version>
-        <h2.version>1.4.200</h2.version>
+        <h2.version>2.0.206</h2.version>
     </properties>
 
     <modules>
