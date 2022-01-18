@@ -6,19 +6,19 @@ spring:
       shardingmaster:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: org.h2.Driver
-        jdbc-url: jdbc:h2:mem:test
+        jdbc-url: jdbc:h2:mem:master
         username: sa
         password: ""
       shardingslave0:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: org.h2.Driver
-        jdbc-url: jdbc:h2:mem:test
+        jdbc-url: jdbc:h2:mem:slave1
         username: sa
         password: ""
       shardingslave1:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: org.h2.Driver
-        jdbc-url: jdbc:h2:mem:test
+        jdbc-url: jdbc:h2:mem:slave2
         username: sa
         password: ""
     masterslave:
@@ -58,7 +58,5 @@ spring:
 logging:
   level:
     com.baomidou: debug
-    org:
-      apache:
-        shardingsphere: debug
+    org.apache.shardingsphere: debug
 #debug: true

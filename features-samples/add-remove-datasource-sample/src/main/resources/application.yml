@@ -17,18 +17,9 @@ spring:
           password: ""
           url: jdbc:h2:mem:test2
           driver-class-name: org.h2.Driver
-        slave_3:
-          username: sa
-          password: ""
-          url: jdbc:h2:mem:test3
-          driver-class-name: org.h2.Driver
       druid:
         validation-query: "select 1"
 
 logging:
   level:
     com.baomidou: debug
-swagger:
-  base-package: com.baomidou.samples.ds.controller
-server:
-  port: 8081
