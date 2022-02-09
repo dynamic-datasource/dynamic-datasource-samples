@@ -5,13 +5,13 @@ spring:
       shardingmaster:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: org.h2.Driver
-        jdbc-url: jdbc:h2:mem:master;MODE=MYSQL;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
+        jdbc-url: jdbc:h2:mem:master;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
         username: sa
         password: ""
       shardingslave0:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: org.h2.Driver
-        jdbc-url: jdbc:h2:mem:slave1;MODE=MYSQL;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
+        jdbc-url: jdbc:h2:mem:slave1;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
         username: sa
         password: ""
       shardingslave1:
@@ -60,12 +60,12 @@ spring:
         master:
           username: sa
           password: ""
-          url: jdbc:h2:mem:master;MODE=MYSQL;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
+          url: jdbc:h2:mem:master;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
           driver-class-name: org.h2.Driver
         test:
           username: sa
           password: ""
-          url: jdbc:h2:mem:test;MODE=MYSQL;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
+          url: jdbc:h2:mem:test;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
           driver-class-name: org.h2.Driver
 logging:
   level:
