@@ -21,8 +21,6 @@ import com.baomidou.samples.shardingSphere.entity.User;
 import java.util.List;
 
 public interface UserService {
-
-
     List<User> selectUsersFromMaster();
 
     List<User> selectUsersFromShardingSlave();

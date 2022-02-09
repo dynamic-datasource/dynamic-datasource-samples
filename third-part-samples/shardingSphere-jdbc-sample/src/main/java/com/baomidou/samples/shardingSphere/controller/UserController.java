@@ -27,7 +27,6 @@ import java.util.Random;
 @AllArgsConstructor
 @RequestMapping("/users")
 public class UserController {
-
     private static final Random RANDOM = new Random();
     private final UserService userService;
 

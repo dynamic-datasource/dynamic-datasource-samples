@@ -31,7 +31,6 @@ import java.util.Map;
 
 @Configuration
 public class MyDataSourceConfiguration {
-
     @Resource
     private DynamicDataSourceProperties properties;
 
