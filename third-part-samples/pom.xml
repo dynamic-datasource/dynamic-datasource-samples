@@ -16,5 +16,6 @@
     <modules>
         <module>quartz-sample</module>
         <module>sharding-jdbc-sample</module>
+        <module>shardingSphere-jdbc-sample</module>
     </modules>
 </project>
