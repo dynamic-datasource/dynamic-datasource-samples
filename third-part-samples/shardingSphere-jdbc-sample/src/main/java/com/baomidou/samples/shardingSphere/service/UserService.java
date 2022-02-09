@@ -15,7 +15,6 @@
  */
 package com.baomidou.samples.shardingSphere.service;
 
-
 import com.baomidou.samples.shardingSphere.entity.User;
 
 import java.util.List;

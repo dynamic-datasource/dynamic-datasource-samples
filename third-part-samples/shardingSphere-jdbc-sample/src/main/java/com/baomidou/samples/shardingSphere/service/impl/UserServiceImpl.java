@@ -15,7 +15,6 @@
  */
 package com.baomidou.samples.shardingSphere.service.impl;
 
-
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.samples.shardingSphere.entity.User;
 import com.baomidou.samples.shardingSphere.mapper.UserMapper;
