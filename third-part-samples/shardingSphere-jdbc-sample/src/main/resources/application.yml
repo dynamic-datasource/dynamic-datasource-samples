@@ -49,7 +49,9 @@ spring:
         data-sources:
           baomidou-readwrite-data-sources:
             write-data-source-name: shardingmaster
-            read-data-source-names: shardingslave0,shardingslave1
+            read-data-source-names:
+              - shardingslave0
+              - shardingslave1
             load-balancer-name: baomidou-load-balance-algorithm
         load-balancers:
           baomidou-load-balance-algorithm:
