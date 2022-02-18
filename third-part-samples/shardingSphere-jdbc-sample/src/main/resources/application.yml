@@ -44,7 +44,6 @@ spring:
           baomidou-snowflake:
             type: SNOWFLAKE
             props:
-              worker-id: 0
               max-vibration-offset: 1
               max-tolerate-time-difference-milliseconds: 10
       readwrite-splitting:
