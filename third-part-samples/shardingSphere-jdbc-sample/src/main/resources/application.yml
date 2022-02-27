@@ -1,5 +1,7 @@
 spring:
   shardingsphere:
+    mode:
+      type: Memory
     datasource:
       names: shardingmaster,shardingslave0,shardingslave1
       shardingmaster:
@@ -24,7 +26,7 @@ spring:
       sharding:
         tables:
           t_order:
-            actualDataNodes: shardingmaster.t_order${0..1}
+            actualDataNodes: shardingmaster.t_order$->{0..1}
             tableStrategy:
               standard:
                 shardingColumn: order_id
@@ -37,21 +39,20 @@ spring:
             type: INLINE
             props:
               algorithm-expression: t_order$->{order_id % 2}
-              allow-range-query-with-inline-sharding: false
+              allow-range-query-with-inline-sharding: true
         key-generators:
           baomidou-snowflake:
             type: SNOWFLAKE
             props:
-              worker-id: 0
               max-vibration-offset: 1
               max-tolerate-time-difference-milliseconds: 10
       readwrite-splitting:
         data-sources:
           baomidou-readwrite-data-sources:
-            write-data-source-name: shardingmaster
-            read-data-source-names:
-              - shardingslave0
-              - shardingslave1
+            type: Static
+            props:
+              write-data-source-name: shardingmaster
+              read-data-source-names: shardingslave0,shardingslave1
             load-balancer-name: baomidou-load-balance-algorithm
         load-balancers:
           baomidou-load-balance-algorithm:
