@@ -30,7 +30,7 @@
         <dependency>
             <groupId>io.seata</groupId>
             <artifactId>seata-spring-boot-starter</artifactId>
-            <version>1.4.2</version>
+            <version>1.5.0</version>
             <!--            <exclusions>-->
             <!--                <exclusion>-->
             <!--                    <artifactId>guava</artifactId>-->
@@ -50,7 +50,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.49</version>
+<!--            <version>5.1.49</version>-->
             <scope>runtime</scope>
         </dependency>
         <dependency>
