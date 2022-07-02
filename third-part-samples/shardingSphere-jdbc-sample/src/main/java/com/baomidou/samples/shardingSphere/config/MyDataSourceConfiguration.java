@@ -32,8 +32,14 @@ import java.util.Map;
 public class MyDataSourceConfiguration {
     @Resource
     private DynamicDataSourceProperties properties;
-
-    //建议springboot2.5.0 以下版本或者发现不加@Lazy值是null的情况都打开@Lazy
+    
+    /**
+     * 1. 建议springboot2.5.0 以下版本或者发现不加@Lazy值是null的情况都打开@Lazy
+     * 2. Compared with using SpringBoot Starter, if you encounter such problems, 
+     * you should directly use ShardingSphere's JDBC Driver to configure it as a JDBC data source, that is, 
+     * use `org.apache.shardingsphere:shardingsphere-jdbc-core:5.1.2` instead of `org.apache.shardingsphere:shardingsphere-jdbc-core-spring-boot-starter:5.1.2`. 
+     * For more information see <a href="https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-jdbc/jdbc-driver/">JDBC Driver</a>
+     */
 //    @Lazy
     @Resource
     private DataSource shardingSphereDataSource;

@@ -1,5 +1,7 @@
 spring:
   shardingsphere:
+    database:
+      name: logic_db
     mode:
       type: Memory
     datasource:

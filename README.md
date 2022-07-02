@@ -16,7 +16,7 @@
 - nest-sample 嵌套切换数据源使用示例
 - quartz-sample 多数据源集成quartz示例
 - sharding-jdbc-sample 集成 ShardingSphere JDBC 4.1.1 使用示例
-- shardingSphere-jdbc-sample 集成 ShardingSphere JDBC 5.1.1 使用示例
+- shardingSphere-jdbc-sample 集成 ShardingSphere JDBC 5.1.2 使用示例
 - spel-sample 动态从外部参数spel来切换数据源的使用示例
 - tx-local-sample 本地事务示例项目★★★★★★必看★★★★★★
 - tx-seata-sample 基于seata的分布式事务集成使用示例
