@@ -1,0 +1,56 @@
+dataSources:
+  shardingmaster:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: org.h2.Driver
+    jdbcUrl: jdbc:h2:mem:master;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
+    username: sa
+    password: ""
+  shardingslave0:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: org.h2.Driver
+    jdbcUrl: jdbc:h2:mem:slave1;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
+    username: sa
+    password: ""
+  shardingslave1:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: org.h2.Driver
+    jdbcUrl: jdbc:h2:mem:slave2;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
+    username: sa
+    password: ""
+    
+rules:
+  - !SHARDING
+    tables:
+      t_order:
+        actualDataNodes: shardingmaster.t_order$->{0..1}
+        tableStrategy:
+          standard:
+            shardingColumn: order_id
+            shardingAlgorithmName: baomidou-inline
+        keyGenerateStrategy:
+          column: order_id
+          keyGeneratorName: baomidou-snowflake
+    shardingAlgorithms:
+      baomidou-inline:
+        type: INLINE
+        props:
+          algorithm-expression: t_order$->{order_id % 2}
+          allow-range-query-with-inline-sharding: true
+    keyGenerators:
+      baomidou-snowflake:
+        type: SNOWFLAKE
+        props:
+          max-vibration-offset: 1
+          max-tolerate-time-difference-milliseconds: 10
+          
+  - !READWRITE_SPLITTING
+    dataSources:
+      baomidou-readwrite-data-sources:
+        type: Static
+        props:
+          write-data-source-name: shardingmaster
+          read-data-source-names: shardingslave0,shardingslave1
+        loadBalancerName: baomidou-load-balance-algorithm
+    loadBalancers:
+      baomidou-load-balance-algorithm:
+        type: ROUND_ROBIN
