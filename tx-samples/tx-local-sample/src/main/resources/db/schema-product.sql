@@ -10,5 +10,5 @@ CREATE TABLE product
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
 
-INSERT INTO product (id, price, stock)
+insert into product (id, price, stock)
 VALUES (1, 10, 20);

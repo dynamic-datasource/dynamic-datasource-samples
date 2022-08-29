@@ -16,8 +16,10 @@
 package com.baomidou.samples.beetl.entity;
 
 import lombok.Data;
+import org.beetl.sql.annotation.entity.Table;
 
 @Data
+@Table(name = "t_user")
 public class User {
 
     private Integer id;

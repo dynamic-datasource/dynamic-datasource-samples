@@ -5,23 +5,26 @@ spring:
         master:
           username: sa
           password: ""
-          url: jdbc:h2:mem:test
+          url: jdbc:h2:mem:test;MODE=MySQL
           driver-class-name: org.h2.Driver
           init:
             schema: db/schema.sql
         slave_1:
           username: sa
           password: ""
-          url: jdbc:h2:mem:test
+          url: jdbc:h2:mem:test;MODE=MySQL
           driver-class-name: org.h2.Driver
         slave_2:
           username: sa
           password: ""
-          url: jdbc:h2:mem:test
+          url: jdbc:h2:mem:test;MODE=MySQL
           driver-class-name: org.h2.Driver
 logging:
   level:
     com.baomidou: debug
 beetlsql:
-  dbStyle: org.beetl.sql.core.db.H2Style
-  basePackage: com.baomidou.samples.beetl.dao
+  sqlManagers: sqlManager
+  sqlManager:
+    ds: dataSource
+    basePackage: com.baomidou.samples.beetl
+    daoSuffix: Dao

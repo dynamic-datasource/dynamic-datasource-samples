@@ -8,5 +8,5 @@ CREATE TABLE account
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
-INSERT INTO account (id, balance)
+insert into account (id, balance)
 VALUES (1, 50);

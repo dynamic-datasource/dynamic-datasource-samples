@@ -16,10 +16,12 @@
 package com.baomidou.samples.mybatisplus2.entity;
 
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
 import lombok.Data;
 
 @Data
+@TableName("t_user")
 public class User {
 
     @TableId(type = IdType.AUTO)

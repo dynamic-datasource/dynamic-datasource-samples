@@ -24,7 +24,7 @@ import java.util.List;
 
 public interface StudentMapper {
 
-    @Insert("INSERT INTO student (name,age) values (#{name},#{age})")
+    @Insert("insert into student (name,age) values (#{name},#{age})")
     boolean addStudent(@Param("name") String name, @Param("age") Integer age);
 
     @Select("SELECT * FROM student")

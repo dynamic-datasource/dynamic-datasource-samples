@@ -16,7 +16,7 @@
 package com.baomidou.samples.beetl.dao;
 
 import com.baomidou.samples.beetl.entity.User;
-import org.beetl.sql.core.mapper.BaseMapper;
+import org.beetl.sql.mapper.BaseMapper;
 
 public interface UserDao extends BaseMapper<User> {
 

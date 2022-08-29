@@ -37,7 +37,7 @@ public class LoadDsApplication {
 
     @Bean
     public DynamicDataSourceProvider dynamicDataSourceProvider() {
-        return new AbstractJdbcDataSourceProvider("org.h2.Driver", "jdbc:h2:mem:test", "sa", "") {
+        return new AbstractJdbcDataSourceProvider("org.h2.Driver", "jdbc:h2:mem:test;MODE=MySQL", "sa", "") {
             @Override
             protected Map<String, DataSourceProperty> executeStmt(Statement statement)
                     throws SQLException {

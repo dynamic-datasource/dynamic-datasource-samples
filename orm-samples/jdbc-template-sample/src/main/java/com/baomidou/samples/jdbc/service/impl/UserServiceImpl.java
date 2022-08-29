@@ -42,23 +42,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> selectMasterUsers() {
-        return jdbcTemplate.query("SELECT * FROM user", ROW_MAPPER);
+        return jdbcTemplate.query("select * from t_user", ROW_MAPPER);
     }
 
     @DS("slave")
     @Override
     public List<User> selectSlaveUsers() {
-        return jdbcTemplate.query("SELECT * FROM user", ROW_MAPPER);
+        return jdbcTemplate.query("select * from t_user", ROW_MAPPER);
     }
 
     @Override
     public void addUser(User user) {
-        jdbcTemplate.update("INSERT INTO user (name,age) VALUES(?, ?)",
+        jdbcTemplate.update("insert into t_user (name,age) VALUES(?, ?)",
                 new Object[]{user.getName(), user.getAge()});
     }
 
     @Override
     public void deleteUserById(Long id) {
-        jdbcTemplate.update("DELETE FROM user where  id =" + id);
+        jdbcTemplate.update("delete from t_user where  id =" + id);
     }
 }

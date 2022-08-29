@@ -22,6 +22,6 @@ import java.util.List;
 
 public interface UserMapper {
 
-    @Select("SELECT * FROM user")
+    @Select("select * from t_user")
     List<User> selectUsers();
 }

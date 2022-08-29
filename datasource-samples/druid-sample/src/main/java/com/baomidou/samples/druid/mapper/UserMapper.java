@@ -25,12 +25,12 @@ import java.util.List;
 
 public interface UserMapper {
 
-    @Select("SELECT * FROM user where age > #{age}")
+    @Select("select * from t_user where age > #{age}")
     List<User> selectUsers(@Param("age") Integer age);
 
-    @Insert("INSERT INTO user (name,age) values (#{name},#{age})")
+    @Insert("insert into t_user (name,age) values (#{name},#{age})")
     boolean addUser(String name, Integer age);
 
-    @Delete("DELETE from user where id = #{id}")
+    @Delete("delete from t_user where id = #{id}")
     void deleteUserById(Long id);
 }

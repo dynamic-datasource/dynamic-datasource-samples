@@ -22,22 +22,22 @@ import java.util.List;
 
 public interface UserMapper {
 
-    @Select("SELECT * FROM user where id =#{id}")
+    @Select("select * from t_user where id =#{id}")
     User selectById(Integer id);
 
-    @Select("SELECT * FROM user")
+    @Select("select * from t_user")
     List<User> selectUsers();
 
-    @Insert("INSERT INTO user (name,age) values (#{name},#{age})")
+    @Insert("insert into t_user (name,age) values (#{name},#{age})")
     boolean addUser(@Param("name") String name, @Param("age") Integer age);
 
-    @Update("update user set name =#{name} where id =#{id}")
+    @Update("update t_user set name =#{name} where id =#{id}")
     void updateUser(User user);
 
-    @Delete("DELETE from user where id = #{id}")
+    @Delete("delete from t_user where id = #{id}")
     void deleteUserById(Long id);
 
-    @Delete("DELETE from user")
+    @Delete("delete from t_user")
     void deleteAll();
 
 }
