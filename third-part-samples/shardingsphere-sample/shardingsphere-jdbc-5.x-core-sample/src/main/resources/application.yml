@@ -10,7 +10,7 @@ spring:
         test:
           username: sa
           password: ""
-          url: jdbc:h2:mem:test;MODE=MySQL;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
+          url: jdbc:h2:mem:test;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
           driver-class-name: org.h2.Driver
         shardingSphere:
           url: jdbc:shardingsphere:classpath:config.yaml
