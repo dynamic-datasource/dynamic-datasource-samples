@@ -5,7 +5,7 @@ CREATE TABLE account
     balance          DOUBLE   DEFAULT NULL,
     last_update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
-) ENGINE = InnoDB
+)
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
 insert into account (id, balance)
