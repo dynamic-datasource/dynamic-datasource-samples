@@ -47,8 +47,7 @@ spring:
       readwrite-splitting:
         data-sources:
           baomidou-readwrite-data-sources:
-            type: Static
-            props:
+            static-strategy:
               write-data-source-name: shardingmaster
               read-data-source-names: shardingslave0,shardingslave1
             load-balancer-name: baomidou-load-balance-algorithm

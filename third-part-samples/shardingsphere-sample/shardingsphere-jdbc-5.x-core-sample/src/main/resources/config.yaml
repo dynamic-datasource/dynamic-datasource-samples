@@ -46,10 +46,11 @@ rules:
   - !READWRITE_SPLITTING
     dataSources:
       baomidou-readwrite-data-sources:
-        type: Static
-        props:
-          write-data-source-name: shardingmaster
-          read-data-source-names: shardingslave0,shardingslave1
+        staticStrategy:
+          writeDataSourceName: shardingmaster
+          readDataSourceNames:
+            - shardingslave0
+            - shardingslave1
         loadBalancerName: baomidou-load-balance-algorithm
     loadBalancers:
       baomidou-load-balance-algorithm:

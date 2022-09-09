@@ -12,8 +12,7 @@
     <artifactId>shardingsphere-jdbc-5.x-core-sample</artifactId>
 
     <properties>
-        <shardingsphere.version>5.1.2</shardingsphere.version>
-        <h2.version>1.4.200</h2.version>
+        <shardingsphere.version>5.2.0</shardingsphere.version>
     </properties>
 
     <dependencies>
@@ -42,7 +41,6 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
-            <version>${h2.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
