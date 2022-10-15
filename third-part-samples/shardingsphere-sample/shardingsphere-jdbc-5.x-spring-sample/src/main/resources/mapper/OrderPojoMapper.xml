@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.baomidou.samples.shardingsphere.jdbc.v5.spring.mapper.OrderPojoMapper">
+
+    <insert id="insertOrderPojo" keyColumn="order_id" keyProperty="orderId">
+        insert into t_order(order_id,name,user_id)
+        values (#{orderId},#{name},#{userId})
+    </insert>
+
+
+    <select id="orderPojoList" resultType="com.baomidou.samples.shardingsphere.jdbc.v5.spring.entity.OrderPojo">
+        select * from t_order
+    </select>
+</mapper>

@@ -71,3 +71,16 @@ logging:
   level:
     com.baomidou: debug
     org.apache.shardingsphere: debug
+
+#mybatis
+mybatis:
+  # 实体扫描，多个package用逗号或者分号分隔
+  type-aliases-package: com.**.entity
+  # 启动时是否检查 MyBatis XML 文件的存在，默认不检查
+  check-config-location: false
+  # 对应的 XML 文件位置
+  mapper-locations: classpath*:mapper/**/*.xml
+  configuration:
+    default-statement-timeout: 30
+    # 自动驼峰命名规则（camel case）映射
+    map-underscore-to-camel-case: true
