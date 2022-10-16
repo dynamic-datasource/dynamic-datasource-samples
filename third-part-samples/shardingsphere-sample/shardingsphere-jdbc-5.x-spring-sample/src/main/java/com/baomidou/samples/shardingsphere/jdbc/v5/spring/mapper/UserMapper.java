@@ -29,7 +29,7 @@ public interface UserMapper {
     @Select("select * from t_user")
     List<User> selectUsers();
 
-    @Insert("insert into t_user (name,age) values (#{name},#{age})")
+    @Insert("insert into t_user (`name`,age) values (#{name},#{age})")
     boolean addUser(@Param("name") String name, @Param("age") Integer age);
 
     @Delete("delete from t_user where id = #{id}")

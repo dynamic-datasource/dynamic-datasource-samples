@@ -19,7 +19,6 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.samples.shardingsphere.jdbc.v5.core.entity.TOrder;
 import com.baomidou.samples.shardingsphere.jdbc.v5.core.mapper.TOrderMapper;
 import com.baomidou.samples.shardingsphere.jdbc.v5.core.service.TOrderService;
-import com.baomidou.samples.shardingsphere.jdbc.v5.core.util.SnowFlakeUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +46,7 @@ public class TOrderServiceImpl implements TOrderService {
     @DS("shardingSphere")
     public List<TOrder> addAll() {
         IntStream.range(0, 5)
-                .forEach(i -> tOrderMapper.addAll(SnowFlakeUtil.createId(), "测试" + i, (long) i));
+                .forEach(i -> tOrderMapper.addAll(i + 114514L, "测试" + i, (long) i));
         return tOrderMapper.findAll();
     }
 }
