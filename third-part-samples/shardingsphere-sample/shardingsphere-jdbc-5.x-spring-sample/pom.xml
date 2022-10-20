@@ -12,7 +12,7 @@
     <artifactId>shardingsphere-jdbc-5.x-spring-sample</artifactId>
 
     <properties>
-        <shardingsphere.version>5.2.0</shardingsphere.version>
+        <shardingsphere.version>5.2.1</shardingsphere.version>
     </properties>
 
     <dependencies>
@@ -51,6 +51,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.33</version>
         </dependency>
     </dependencies>
 

@@ -6,9 +6,9 @@ import com.baomidou.samples.shardingsphere.jdbc.v5.spring.mapper.TOrderMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.UncategorizedSQLException;
 
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class MapperLayerTests {
     void whenRequestToAddByNameAndUserIdByMultipleDataNodes() {
         List<TOrder> emptyState = tOrderMapper.findAll();
         assertEquals(emptyState.size(), 0);
-        assertThrows(MyBatisSystemException.class, () -> {
+        assertThrows(UncategorizedSQLException.class, () -> {
             tOrderMapper.addByNameAndUserId("Bright", 114514L);
             tOrderMapper.addByNameAndUserId("Jordan", 114515L);
         });
