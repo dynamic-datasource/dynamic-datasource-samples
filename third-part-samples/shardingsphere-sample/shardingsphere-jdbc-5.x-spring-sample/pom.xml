@@ -12,8 +12,7 @@
     <artifactId>shardingsphere-jdbc-5.x-spring-sample</artifactId>
 
     <properties>
-        <shardingsphere.version>5.1.2</shardingsphere.version>
-        <h2.version>1.4.200</h2.version>
+        <shardingsphere.version>5.2.1</shardingsphere.version>
     </properties>
 
     <dependencies>
@@ -41,7 +40,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>${h2.version}</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -52,6 +51,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.33</version>
         </dependency>
     </dependencies>
 

@@ -1,1 +1,1 @@
-需要注意 seata>1.4.0的版本 mysql需要使用老版本，不然会报localdatetime的json异常。 简单来说是驱动不兼容，等待后续seata处理。
+docker run --name mysql -v /etc/localtime:/etc/localtime -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -d mysql:8.0.30

@@ -6,7 +6,7 @@ CREATE TABLE product
     stock            INT(11) DEFAULT NULL,
     last_update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
-) ENGINE = InnoDB
+)
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
 
@@ -23,7 +23,7 @@ CREATE TABLE undo_log
     log_modified  DATETIME     NOT NULL,
     PRIMARY KEY (id),
     UNIQUE KEY ux_undo_log (xid, branch_id)
-) ENGINE = InnoDB
+)
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
 

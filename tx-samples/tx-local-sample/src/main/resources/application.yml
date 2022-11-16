@@ -6,19 +6,19 @@ spring:
         order:
           username: root
           password: 123456
-          url: jdbc:mysql://110.40.253.205:3306/local_order?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+          url: jdbc:mysql://110.40.253.205:3306/local_order
           init:
             schema: classpath:db/schema-order.sql
         account:
           username: root
           password: 123456
-          url: jdbc:mysql://110.40.253.205:3306/local_account?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+          url: jdbc:mysql://110.40.253.205:3306/local_account
           init:
             schema: classpath:db/schema-account.sql
         product:
           username: root
           password: 123456
-          url: jdbc:mysql://110.40.253.205:3306/local_product?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+          url: jdbc:mysql://110.40.253.205:3306/local_product
           init:
             schema: classpath:db/schema-product.sql
 logging:
