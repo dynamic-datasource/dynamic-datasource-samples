@@ -19,15 +19,15 @@ package com.baomidou.samples.pattern.service.impl;
 import com.baomidou.samples.pattern.entity.User;
 import com.baomidou.samples.pattern.mapper.UserMapper;
 import com.baomidou.samples.pattern.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Resource
+    @Autowired
     private UserMapper userMapper;
 
     @Override

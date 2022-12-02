@@ -15,9 +15,8 @@
  */
 package com.baomidou.samples.ds.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
 
 @Data
 public class DataSourceDTO {

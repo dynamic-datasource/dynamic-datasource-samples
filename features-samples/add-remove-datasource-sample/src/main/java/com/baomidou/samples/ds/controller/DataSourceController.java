@@ -48,7 +48,7 @@ public class DataSourceController {
     /**
      * 添加数据源
      */
-    @PostMapping("/add")
+    @PostMapping
     public Set<String> add(@Validated @RequestBody DataSourceDTO dto) {
         DataSourceProperty dataSourceProperty = new DataSourceProperty();
         BeanUtils.copyProperties(dto, dataSourceProperty);

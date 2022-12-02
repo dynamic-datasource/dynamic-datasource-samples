@@ -20,11 +20,11 @@ import com.baomidou.dynamic.datasource.provider.AbstractDataSourceProvider;
 import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
 import org.apache.shardingsphere.shardingjdbc.jdbc.core.datasource.MasterSlaveDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +32,7 @@ import java.util.Map;
 @Configuration
 public class MyDataSourceConfiguration {
 
-    @Resource
+    @Autowired
     private DynamicDataSourceProperties properties;
 
     /**
@@ -41,10 +41,10 @@ public class MyDataSourceConfiguration {
      * 根据自己场景修改注入
      */
 //    @Lazy 某些springBoot版本不加会报错（暂不清楚原理0 0）
-    @Resource
+    @Autowired
     private MasterSlaveDataSource masterSlaveDataSource;
     //    @Lazy
-//    @Resource
+//    @Autowired
 //    private ShardingDataSource shardingDataSource;
 
     @Bean

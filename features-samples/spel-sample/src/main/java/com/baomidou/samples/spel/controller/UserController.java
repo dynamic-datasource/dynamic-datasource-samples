@@ -17,12 +17,12 @@ package com.baomidou.samples.spel.controller;
 
 import com.baomidou.samples.spel.entity.User;
 import com.baomidou.samples.spel.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RequestMapping("/users")

@@ -2,7 +2,7 @@ spring:
   datasource:
     druid:
       stat-view-servlet:
-        enabled: true
+        enabled: false #druid还没适配springboot3
         login-username: admin
         login-password: 123456
     dynamic:

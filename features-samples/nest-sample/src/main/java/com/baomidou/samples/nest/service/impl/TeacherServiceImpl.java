@@ -24,14 +24,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 @DS("teacher")
 public class TeacherServiceImpl implements TeacherService {
 
-    @Resource
+    @Autowired
     private TeacherMapper teacherMapper;
     @Autowired
     private StudentService studentService;

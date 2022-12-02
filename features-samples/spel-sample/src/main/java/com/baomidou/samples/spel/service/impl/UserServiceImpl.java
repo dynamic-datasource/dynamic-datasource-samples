@@ -20,16 +20,16 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.samples.spel.entity.User;
 import com.baomidou.samples.spel.mapper.UserMapper;
 import com.baomidou.samples.spel.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 @DS("slave")
 public class UserServiceImpl implements UserService {
 
-    @Resource
+    @Autowired
     private UserMapper userMapper;
 
     @Override

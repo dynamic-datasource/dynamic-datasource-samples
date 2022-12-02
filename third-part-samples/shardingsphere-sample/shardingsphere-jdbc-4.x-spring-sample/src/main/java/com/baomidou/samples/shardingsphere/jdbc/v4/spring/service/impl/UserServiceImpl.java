@@ -20,15 +20,15 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.samples.shardingsphere.jdbc.v4.spring.entity.User;
 import com.baomidou.samples.shardingsphere.jdbc.v4.spring.mapper.UserMapper;
 import com.baomidou.samples.shardingsphere.jdbc.v4.spring.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Resource
+    @Autowired
     private UserMapper userMapper;
 
     @Override
