@@ -22,7 +22,5 @@ import java.util.List;
 public interface TOrderService {
     List<TOrder> findAll();
 
-    List<TOrder> findAllSlave();
-
     List<TOrder> addAll();
 }

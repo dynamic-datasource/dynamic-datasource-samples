@@ -19,26 +19,22 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.samples.shardingsphere.jdbc.v5.spring.entity.TOrder;
 import com.baomidou.samples.shardingsphere.jdbc.v5.spring.mapper.TOrderMapper;
 import com.baomidou.samples.shardingsphere.jdbc.v5.spring.service.TOrderService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.IntStream;
 
 @Service
-@RequiredArgsConstructor
 public class TOrderServiceImpl implements TOrderService {
     private final TOrderMapper tOrderMapper;
 
-    @Override
-    @DS("shardingSphere")
-    public List<TOrder> findAll() {
-        return tOrderMapper.findAll();
+    public TOrderServiceImpl(TOrderMapper tOrderMapper) {
+        this.tOrderMapper = tOrderMapper;
     }
 
     @Override
     @DS("shardingSphere")
-    public List<TOrder> findAllSlave() {
+    public List<TOrder> findAll() {
         return tOrderMapper.findAll();
     }
 

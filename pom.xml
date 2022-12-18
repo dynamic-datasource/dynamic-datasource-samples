@@ -19,7 +19,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
 
         <ds.version>3.6.0</ds.version>
         <mybatis-spring-boot-starter.version>3.0.0</mybatis-spring-boot-starter.version>

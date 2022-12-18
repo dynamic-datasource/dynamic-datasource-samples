@@ -43,9 +43,7 @@ public class ControllerLayerTests {
 
     @BeforeEach
     void setup(WebApplicationContext webApplicationContext) {
-        this.mockMvc = webAppContextSetup(webApplicationContext)
-                .defaultResponseCharacterEncoding(StandardCharsets.UTF_8)
-                .build();
+        this.mockMvc = webAppContextSetup(webApplicationContext).defaultResponseCharacterEncoding(StandardCharsets.UTF_8).build();
     }
 
     @AfterEach
@@ -69,17 +67,6 @@ public class ControllerLayerTests {
     @Test
     void whenPostRequestToAddAll() throws Exception {
         mockMvc.perform(post("/t_order/addAll")
-                        .characterEncoding(StandardCharsets.UTF_8))
-                .andDo(print())
-                .andExpectAll(
-                        status().isOk(),
-                        content().encoding(StandardCharsets.UTF_8)
-                );
-    }
-
-    @Test
-    void whenGetRequestToFindAllSlave() throws Exception {
-        mockMvc.perform(get("/t_order/findAllSlave")
                         .characterEncoding(StandardCharsets.UTF_8))
                 .andDo(print())
                 .andExpectAll(

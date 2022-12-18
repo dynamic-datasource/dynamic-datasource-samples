@@ -40,9 +40,4 @@ public class TOrderController {
     public List<TOrder> addAll() {
         return tOrderService.addAll();
     }
-
-    @GetMapping("/findAllSlave")
-    public List<TOrder> findAllSlave() {
-        return tOrderService.findAllSlave();
-    }
 }
