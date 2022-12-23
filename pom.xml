@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.1</version>
         <relativePath/>
     </parent>
 
@@ -21,7 +21,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
 
-        <ds.version>3.6.0</ds.version>
+        <ds.version>3.6.1</ds.version>
         <mybatis-spring-boot-starter.version>3.0.0</mybatis-spring-boot-starter.version>
         <druid.version>1.2.15</druid.version>
         <p6spy.version>3.9.1</p6spy.version>

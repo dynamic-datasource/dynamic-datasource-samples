@@ -19,7 +19,6 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.samples.shardingsphere.jdbc.v5.core.entity.User;
 import com.baomidou.samples.shardingsphere.jdbc.v5.core.mapper.UserMapper;
 import com.baomidou.samples.shardingsphere.jdbc.v5.core.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
