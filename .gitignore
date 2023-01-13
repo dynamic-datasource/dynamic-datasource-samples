@@ -1,5 +1,4 @@
 */target/
-!.mvn/wrapper/maven-wrapper.jar
 target
 
 ### STS ###
@@ -24,3 +23,6 @@ target
 /dist/
 /nbdist/
 /.nb-gradle/
+
+### We don't want to check in any binaries in Git ###
+**/.mvn/wrapper/maven-wrapper.jar
