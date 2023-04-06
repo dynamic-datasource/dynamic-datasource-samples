@@ -16,7 +16,7 @@
 - nest-sample 嵌套切换数据源使用示例
 - quartz-sample 多数据源集成quartz示例
 - shardingsphere-jdbc-4.x-spring-sample 集成 ShardingSphere JDBC Spring Boot Starter 4.1.1 使用示例, 不再维护, 参考 https://github.com/apache/shardingsphere/releases/tag/5.0.0-alpha
-- shardingsphere-jdbc-5.x-core-sample 集成 ShardingSphere JDBC Driver 5.3.1 使用示例
+- shardingsphere-jdbc-5.x-core-sample 集成 ShardingSphere JDBC Driver 5.3.2 使用示例
 - shardingsphere-jdbc-5.x-spring-sample 集成 ShardingSphere JDBC Spring Boot Starter 5.2.1 使用示例, 不再维护, 参考 https://github.com/apache/shardingsphere/issues/22469
 - spel-sample 动态从外部参数spel来切换数据源的使用示例
 - tx-local-sample 本地事务示例项目★★★★★★必看★★★★★★

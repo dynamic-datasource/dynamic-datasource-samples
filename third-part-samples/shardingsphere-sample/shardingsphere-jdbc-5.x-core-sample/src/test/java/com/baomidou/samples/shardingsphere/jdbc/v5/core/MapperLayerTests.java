@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.UncategorizedSQLException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class MapperLayerTests {
     void whenRequestToAddByNameAndUserIdByMultipleDataNodes() {
         List<TOrder> emptyState = tOrderMapper.findAll();
         assertEquals(emptyState.size(), 0);
-        assertThrows(UncategorizedSQLException.class, () -> {
+        assertThrows(DataIntegrityViolationException.class, () -> {
             tOrderMapper.addByNameAndUserId("Bright", 114514L);
             tOrderMapper.addByNameAndUserId("Jordan", 114515L);
         });
