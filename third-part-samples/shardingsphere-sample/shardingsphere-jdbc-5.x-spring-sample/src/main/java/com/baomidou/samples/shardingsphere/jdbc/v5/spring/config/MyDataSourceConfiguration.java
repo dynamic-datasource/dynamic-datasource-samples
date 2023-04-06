@@ -38,7 +38,7 @@ public class MyDataSourceConfiguration {
      * 2. Compared with using SpringBoot Starter, if you encounter such problems,
      * you should directly use ShardingSphere's JDBC Driver to configure it as a JDBC data source, that is,
      * use `org.apache.shardingsphere:shardingsphere-jdbc-core:5.2.1` instead of `org.apache.shardingsphere:shardingsphere-jdbc-core-spring-boot-starter:5.2.1`.
-     * For more information see <a href="https://shardingsphere.apache.org/document/5.3.1/en/user-manual/shardingsphere-jdbc/yaml-config/jdbc-driver/">JDBC Driver</a>
+     * For more information see <a href="https://shardingsphere.apache.org/document/5.2.1/en/user-manual/shardingsphere-jdbc/yaml-config/jdbc_driver/">JDBC Driver</a>
      */
 //    @Lazy
     @Autowired
