@@ -15,7 +15,6 @@
  */
 package com.baomidou.samples.ds.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
@@ -24,30 +23,25 @@ public class DataSourceDTO {
     /**
      * 连接池名称
      */
-    @NotBlank
     private String poolName;
 
     /**
      * JDBC driver org.h2.Driver
      */
-    @NotBlank
     private String driverClassName;
 
     /**
      * JDBC url 地址
      */
-    @NotBlank
     private String url;
 
     /**
      * JDBC 用户名
      */
-    @NotBlank
     private String username;
 
     /**
      * JDBC 密码
      */
-    @NotBlank
     private String password;
 }
