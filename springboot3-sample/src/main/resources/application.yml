@@ -21,4 +21,4 @@ spring:
           driver-class-name: org.h2.Driver
 logging:
   level:
-    root: info
+    com.baomidou: debug
