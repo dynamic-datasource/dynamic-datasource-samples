@@ -4,13 +4,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.11</version>
-        <relativePath/>
-    </parent>
-
     <groupId>com.baomidou</groupId>
     <artifactId>dynamic-datasource-samples</artifactId>
     <version>1.0.0</version>
@@ -21,12 +14,13 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <ds.version>4.0.0</ds.version>
+        <ds.version>4.0.0-B2</ds.version>
         <mybatis-spring-boot-starter.version>3.0.0</mybatis-spring-boot-starter.version>
-        <druid.version>1.2.17</druid.version>
+        <druid.version>1.2.18</druid.version>
         <p6spy.version>3.9.1</p6spy.version>
         <h2.version>2.1.214</h2.version>
         <springdoc.version>2.0.4</springdoc.version>
+        <spring-boot-dependencies.version>2.7.12</spring-boot-dependencies.version>
     </properties>
 
     <modules>
@@ -37,6 +31,7 @@
         <module>no-ds-samples</module>
         <module>third-part-samples</module>
         <module>features-samples</module>
+        <module>springboot3-sample</module>
     </modules>
 
     <dependencyManagement>
@@ -45,6 +40,18 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
                 <version>${ds.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot3-starter</artifactId>
+                <version>${ds.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.springdoc</groupId>
@@ -100,7 +107,7 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>4.0.rc2</version>
+                <version>4.2</version>
                 <configuration>
                     <header>${user.dir}/license.txt</header>
                     <includes>
