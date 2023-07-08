@@ -18,7 +18,7 @@
         <mybatis-spring-boot-starter.version>3.0.0</mybatis-spring-boot-starter.version>
         <druid.version>1.2.18</druid.version>
         <p6spy.version>3.9.1</p6spy.version>
-        <h2.version>2.1.214</h2.version>
+        <h2.version>2.2.220</h2.version>
         <spring-boot-dependencies.version>2.7.13</spring-boot-dependencies.version>
     </properties>
 
