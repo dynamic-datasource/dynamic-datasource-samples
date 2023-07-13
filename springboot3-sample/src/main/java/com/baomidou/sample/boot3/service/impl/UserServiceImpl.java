@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectUsers();
     }
 
-    @DS("slave")
+    @DS("#header.ds")
     @Override
     public List<User> selectSlaveUsers() {
         return userMapper.selectUsers();
