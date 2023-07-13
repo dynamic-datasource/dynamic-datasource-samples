@@ -20,16 +20,19 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public interface UserMapper {
 
     @Select("select * from t_user where age > #{age}")
     List<User> selectUsers(@Param("age") Integer age);
 
+    @SuppressWarnings("UnusedReturnValue")
     @Insert("insert into t_user (name,age) values (#{name},#{age})")
-    boolean addUser(String name, Integer age);
+    boolean addUser(@Param("name") String name, @Param("age") Integer age);
 
     @Delete("delete from t_user where id = #{id}")
     void deleteUserById(Long id);

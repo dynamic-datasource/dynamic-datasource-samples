@@ -16,7 +16,6 @@
     <modules>
         <module>add-remove-datasource-sample</module>
         <module>load-datasource-from-jdbc-sample</module>
-        <module>nest-sample</module>
         <module>spel-sample</module>
     </modules>
 </project>

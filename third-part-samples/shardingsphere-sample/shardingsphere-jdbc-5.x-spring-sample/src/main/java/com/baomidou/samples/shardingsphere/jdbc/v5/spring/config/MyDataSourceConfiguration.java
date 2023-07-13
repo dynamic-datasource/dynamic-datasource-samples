@@ -16,10 +16,10 @@
 package com.baomidou.samples.shardingsphere.jdbc.v5.spring.config;
 
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
+import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
 import com.baomidou.dynamic.datasource.provider.AbstractDataSourceProvider;
 import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -30,8 +30,8 @@ import java.util.Map;
 
 @Configuration
 public class MyDataSourceConfiguration {
-    @Autowired
-    private DynamicDataSourceProperties properties;
+    private final DynamicDataSourceProperties properties;
+    private final DefaultDataSourceCreator dataSourceCreator;
 
     /**
      * 1. 建议 springboot2.5.0 以下版本或者发现不加 @Lazy 值是 null 的情况都打开 @Lazy
@@ -41,12 +41,17 @@ public class MyDataSourceConfiguration {
      * For more information see <a href="https://shardingsphere.apache.org/document/5.2.1/en/user-manual/shardingsphere-jdbc/yaml-config/jdbc_driver/">JDBC Driver</a>
      */
 //    @Lazy
-    @Autowired
     private DataSource shardingSphereDataSource;
+
+    public MyDataSourceConfiguration(DynamicDataSourceProperties properties, DefaultDataSourceCreator dataSourceCreator, DataSource shardingSphereDataSource) {
+        this.properties = properties;
+        this.dataSourceCreator = dataSourceCreator;
+        this.shardingSphereDataSource = shardingSphereDataSource;
+    }
 
     @Bean
     public DynamicDataSourceProvider dynamicDataSourceProvider() {
-        return new AbstractDataSourceProvider() {
+        return new AbstractDataSourceProvider(dataSourceCreator) {
             @Override
             public Map<String, DataSource> loadDataSources() {
                 Map<String, DataSource> dataSourceMap = new HashMap<>();

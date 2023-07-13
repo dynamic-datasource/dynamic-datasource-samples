@@ -19,14 +19,11 @@ import com.baomidou.samples.druid.DruidApplication;
 import com.baomidou.samples.druid.entity.User;
 import com.baomidou.samples.druid.service.UserService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Random;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = DruidApplication.class)
 public class DruidApplicationTest {
 

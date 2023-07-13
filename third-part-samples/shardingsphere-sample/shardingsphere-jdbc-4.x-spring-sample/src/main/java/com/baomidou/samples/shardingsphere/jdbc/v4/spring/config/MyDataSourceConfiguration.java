@@ -16,6 +16,7 @@
 package com.baomidou.samples.shardingsphere.jdbc.v4.spring.config;
 
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
+import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
 import com.baomidou.dynamic.datasource.provider.AbstractDataSourceProvider;
 import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
@@ -32,8 +33,9 @@ import java.util.Map;
 @Configuration
 public class MyDataSourceConfiguration {
 
-    @Autowired
-    private DynamicDataSourceProperties properties;
+    private final DynamicDataSourceProperties properties;
+
+    private final DefaultDataSourceCreator dataSourceCreator;
 
     /**
      * 分片: shardingDataSource
@@ -41,15 +43,20 @@ public class MyDataSourceConfiguration {
      * 根据自己场景修改注入
      */
 //    @Lazy 某些springBoot版本不加会报错（暂不清楚原理0 0）
-    @Autowired
-    private MasterSlaveDataSource masterSlaveDataSource;
+    private final MasterSlaveDataSource masterSlaveDataSource;
+
+    public MyDataSourceConfiguration(DynamicDataSourceProperties properties, DefaultDataSourceCreator dataSourceCreator, MasterSlaveDataSource masterSlaveDataSource) {
+        this.properties = properties;
+        this.dataSourceCreator = dataSourceCreator;
+        this.masterSlaveDataSource = masterSlaveDataSource;
+    }
     //    @Lazy
 //    @Autowired
 //    private ShardingDataSource shardingDataSource;
 
     @Bean
     public DynamicDataSourceProvider dynamicDataSourceProvider() {
-        return new AbstractDataSourceProvider() {
+        return new AbstractDataSourceProvider(dataSourceCreator) {
 
             @Override
             public Map<String, DataSource> loadDataSources() {
