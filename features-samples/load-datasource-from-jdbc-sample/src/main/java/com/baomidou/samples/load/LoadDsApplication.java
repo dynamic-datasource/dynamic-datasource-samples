@@ -15,9 +15,11 @@
  */
 package com.baomidou.samples.load;
 
+import com.baomidou.dynamic.datasource.creator.DataSourceProperty;
+import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
 import com.baomidou.dynamic.datasource.provider.AbstractJdbcDataSourceProvider;
 import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;
-import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -31,13 +33,16 @@ import java.util.Map;
 @SpringBootApplication
 public class LoadDsApplication {
 
+    @Autowired
+    private DefaultDataSourceCreator dataSourceCreator;
+
     public static void main(String[] args) {
         SpringApplication.run(LoadDsApplication.class, args);
     }
 
     @Bean
     public DynamicDataSourceProvider dynamicDataSourceProvider() {
-        return new AbstractJdbcDataSourceProvider("org.h2.Driver", "jdbc:h2:mem:test;MODE=MySQL", "sa", "") {
+        return new AbstractJdbcDataSourceProvider(dataSourceCreator, "org.h2.Driver", "jdbc:h2:mem:test;MODE=MySQL", "sa", "") {
             @Override
             protected Map<String, DataSourceProperty> executeStmt(Statement statement)
                     throws SQLException {

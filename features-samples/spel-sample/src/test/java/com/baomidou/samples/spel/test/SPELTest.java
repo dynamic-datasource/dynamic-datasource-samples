@@ -16,8 +16,8 @@
 package com.baomidou.samples.spel.test;
 
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
+import com.baomidou.dynamic.datasource.creator.DataSourceProperty;
 import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
-import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 import com.baomidou.samples.spel.SpelApplication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,22 +53,36 @@ public class SPELTest {
 
     @Test
     void testSPEL() {
-        DataSourceProperty masterDataSourceProperty = new DataSourceProperty()
-                .setPoolName("master").setDriverClassName("org.h2.Driver")
-                .setUrl("jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'classpath:db/spring-expression-language.sql'")
-                .setUsername("sa").setPassword("");
-        DataSourceProperty tenant1_1DataSourceProperty = new DataSourceProperty()
-                .setPoolName("tenant1_1").setDriverClassName("org.h2.Driver").setUrl("jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE")
-                .setUsername("sa").setPassword("");
-        DataSourceProperty tenant1_2DataSourceProperty = new DataSourceProperty()
-                .setPoolName("tenant1_2").setDriverClassName("org.h2.Driver").setUrl("jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE")
-                .setUsername("sa").setPassword("");
-        DataSourceProperty tenant2_1DataSourceProperty = new DataSourceProperty()
-                .setPoolName("tenant2_1").setDriverClassName("org.h2.Driver").setUrl("jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE")
-                .setUsername("sa").setPassword("");
-        DataSourceProperty tenant2_2DataSourceProperty = new DataSourceProperty()
-                .setPoolName("tenant2_2").setDriverClassName("org.h2.Driver").setUrl("jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE")
-                .setUsername("sa").setPassword("");
+        DataSourceProperty masterDataSourceProperty = new DataSourceProperty();
+        masterDataSourceProperty.setPoolName("master");
+        masterDataSourceProperty.setDriverClassName("org.h2.Driver");
+        masterDataSourceProperty.setUrl("jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'classpath:db/spring-expression-language.sql'");
+        masterDataSourceProperty.setUsername("sa");
+        masterDataSourceProperty.setPassword("");
+        DataSourceProperty tenant1_1DataSourceProperty = new DataSourceProperty();
+        masterDataSourceProperty.setPoolName("tenant1_1");
+        masterDataSourceProperty.setDriverClassName("org.h2.Driver");
+        masterDataSourceProperty.setUrl("jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'classpath:db/spring-expression-language.sql'");
+        masterDataSourceProperty.setUsername("tenant1_1");
+        masterDataSourceProperty.setPassword("");
+        DataSourceProperty tenant1_2DataSourceProperty = new DataSourceProperty();
+        masterDataSourceProperty.setPoolName("tenant1_2");
+        masterDataSourceProperty.setDriverClassName("org.h2.Driver");
+        masterDataSourceProperty.setUrl("jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'classpath:db/spring-expression-language.sql'");
+        masterDataSourceProperty.setUsername("tenant1_2");
+        masterDataSourceProperty.setPassword("");
+        DataSourceProperty tenant2_1DataSourceProperty = new DataSourceProperty();
+        masterDataSourceProperty.setPoolName("tenant2_1");
+        masterDataSourceProperty.setDriverClassName("org.h2.Driver");
+        masterDataSourceProperty.setUrl("jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'classpath:db/spring-expression-language.sql'");
+        masterDataSourceProperty.setUsername("tenant2_1");
+        masterDataSourceProperty.setPassword("");
+        DataSourceProperty tenant2_2DataSourceProperty = new DataSourceProperty();
+        masterDataSourceProperty.setPoolName("tenant2_2");
+        masterDataSourceProperty.setDriverClassName("org.h2.Driver");
+        masterDataSourceProperty.setUrl("jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'classpath:db/spring-expression-language.sql'");
+        masterDataSourceProperty.setUsername("tenant2_2");
+        masterDataSourceProperty.setPassword("");
         DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
         ds.addDataSource(masterDataSourceProperty.getPoolName(), dataSourceCreator.createDataSource(masterDataSourceProperty));
         ds.addDataSource(tenant1_1DataSourceProperty.getPoolName(), dataSourceCreator.createDataSource(tenant1_1DataSourceProperty));
