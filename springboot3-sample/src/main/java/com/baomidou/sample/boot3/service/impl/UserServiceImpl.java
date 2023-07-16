@@ -16,7 +16,7 @@
 package com.baomidou.sample.boot3.service.impl;
 
 
-import com.baomidou.dynamic.datasource.annotation.DS;
+import com.baomidou.dynamic.datasource.annotation.Slave;
 import com.baomidou.sample.boot3.entity.User;
 import com.baomidou.sample.boot3.mapper.UserMapper;
 import com.baomidou.sample.boot3.service.UserService;
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectUsers();
     }
 
-    @DS("#header.ds")
+    @Slave
     @Override
     public List<User> selectSlaveUsers() {
         return userMapper.selectUsers();

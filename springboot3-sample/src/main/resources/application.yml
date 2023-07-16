@@ -1,5 +1,10 @@
 spring:
   datasource:
+    druid:
+      stat-view-servlet:
+        enabled: true
+        login-username: admin
+        login-password: 123456
     dynamic:
       datasource:
         master:
