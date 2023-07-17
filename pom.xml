@@ -14,7 +14,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <ds.version>4.1.1</ds.version>
+        <ds.version>4.1.0</ds.version>
         <mybatis-spring-boot-starter.version>3.0.0</mybatis-spring-boot-starter.version>
         <druid.version>1.2.18</druid.version>
         <p6spy.version>3.9.1</p6spy.version>

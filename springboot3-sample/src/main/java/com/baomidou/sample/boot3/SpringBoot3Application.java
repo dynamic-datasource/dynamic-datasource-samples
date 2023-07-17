@@ -16,18 +16,28 @@
 package com.baomidou.sample.boot3;
 
 import com.alibaba.druid.spring.boot3.autoconfigure.DruidDataSourceAutoConfigure;
+import com.alibaba.druid.spring.boot3.autoconfigure.properties.DruidStatProperties;
+import com.alibaba.druid.spring.boot3.autoconfigure.stat.DruidFilterConfiguration;
+import com.alibaba.druid.spring.boot3.autoconfigure.stat.DruidSpringAopConfiguration;
+import com.alibaba.druid.spring.boot3.autoconfigure.stat.DruidStatViewServletConfiguration;
+import com.alibaba.druid.spring.boot3.autoconfigure.stat.DruidWebStatFilterConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Import;
 
 @Slf4j
 @SpringBootApplication(exclude = DruidDataSourceAutoConfigure.class)
+@Import({DruidSpringAopConfiguration.class, DruidStatViewServletConfiguration.class, DruidWebStatFilterConfiguration.class, DruidFilterConfiguration.class})
+@EnableConfigurationProperties(DruidStatProperties.class)
 @MapperScan("com.baomidou.sample.boot3.mapper")
 public class SpringBoot3Application {
 
     public static void main(String[] args) {
         SpringApplication.run(SpringBoot3Application.class, args);
-        log.info("open http://localhost:8080/swagger-ui.html");
+        log.info("open http://localhost:8080/swagger-ui.html \n" +
+                "http://localhost:8080/druid/index.html");
     }
 }
