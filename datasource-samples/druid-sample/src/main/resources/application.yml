@@ -23,6 +23,8 @@ spring:
           driver-class-name: org.h2.Driver
           init:
             schema: db/schema.sql
+          druid:
+            socketTimeout: 1111
         slave_1:
           username: sa
           password: "123456"
