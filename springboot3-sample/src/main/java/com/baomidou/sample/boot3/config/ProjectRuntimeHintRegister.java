@@ -13,22 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.baomidou.sample.boot3.mapper;
+package com.baomidou.sample.boot3.config;
 
-import com.baomidou.sample.boot3.entity.User;
-import org.apache.ibatis.annotations.*;
+import org.springframework.aot.hint.RuntimeHints;
+import org.springframework.aot.hint.RuntimeHintsRegistrar;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportRuntimeHints;
 
-import java.util.List;
+@Configuration(proxyBeanMethods = false)
+@ImportRuntimeHints(ProjectRuntimeHintRegister.class)
+public class ProjectRuntimeHintRegister implements RuntimeHintsRegistrar {
 
-@Mapper
-public interface UserMapper {
-
-    @Select("select * from t_user")
-    List<User> selectUsers();
-
-    @Insert("insert into t_user (name,age) values (#{name},#{age})")
-    boolean addUser(@Param("name") String name, @Param("age") Integer age);
-
-    @Delete("delete from t_user where id = #{id}")
-    void deleteUserById(Long id);
+    @Override
+    public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
+        hints.resources()
+                .registerPattern("db/schema.sql");
+    }
 }
