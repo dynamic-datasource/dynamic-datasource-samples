@@ -42,11 +42,11 @@ jobs:
           cache: 'maven'
       - name: Build datasource test with Maven
         run: |
-          ./mvnw -am -pl datasource-samples/druid-sample -B clean test
+          ./mvnw -am -pl datasource-samples/druid-sample -T1C -B clean test
       - name: Build orm test with Maven
         run: |
-          ./mvnw -am -pl orm-samples/mybatis-sample -B clean test
+          ./mvnw -am -pl orm-samples/mybatis-sample -T1C -B clean test
       - name: Build third-part test with Maven
         run: |
-          ./mvnw -am -pl third-part-samples/shardingsphere-sample/shardingsphere-jdbc-5.x-core-sample -B clean test
-          ./mvnw -am -pl third-part-samples/shardingsphere-sample/shardingsphere-jdbc-5.x-spring-sample -B clean test
+          ./mvnw -am -pl third-part-samples/shardingsphere-sample/shardingsphere-jdbc-5.x-core-sample -T1C -B clean test
+          ./mvnw -am -pl third-part-samples/shardingsphere-sample/shardingsphere-jdbc-5.x-spring-sample -T1C -B clean test

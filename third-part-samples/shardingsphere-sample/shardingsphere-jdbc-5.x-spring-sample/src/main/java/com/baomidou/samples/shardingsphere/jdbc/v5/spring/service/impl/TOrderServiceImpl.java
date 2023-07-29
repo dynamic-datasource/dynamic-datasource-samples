@@ -23,7 +23,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.IntStream;
-
+/**
+ * TODO Unit tests for ShardingSphere 5.4.0 need to be synchronized
+ */
 @Service
 public class TOrderServiceImpl implements TOrderService {
     private final TOrderMapper tOrderMapper;

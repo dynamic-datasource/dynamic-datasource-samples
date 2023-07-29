@@ -53,30 +53,33 @@ public class MapperLayerTests {
 
     @Test
     void whenRequestToAddByNameAndUserId() {
-        int firstNumberOfAffectedRows = tOrderMapper.addAll(101L, "Bright", 114514L);
-        int secondNumberOfAffectedRows = tOrderMapper.addAll(102L, "Jordan", 114515L);
+        int firstNumberOfAffectedRows = tOrderMapper.addByNameAndUserId("Bright", 114514L);
+        int secondNumberOfAffectedRows = tOrderMapper.addByNameAndUserId("Jordan", 114515L);
         assertEquals(firstNumberOfAffectedRows + secondNumberOfAffectedRows, 2);
         assertEquals(tOrderMapper.findAll().size(), 2);
     }
 
+    /**
+     * TODO Tracked on <a href="https://github.com/apache/shardingsphere/issues/27955">When a logic database uses both `SHARDING` and `READWRITE_SPLITTING` features, CRUD operations on table throw `NoSuchTableException`</a>
+     */
     @Test
-    void whenRequestToAddByNameAndUserIdByMultipleDataNodes() {
+    void whenRequestToAddByNameAndUserIdWithPrimaryKey() {
         List<TOrder> emptyState = tOrderMapper.findAll();
         assertEquals(emptyState.size(), 0);
         assertThrows(DataIntegrityViolationException.class, () -> {
-            tOrderMapper.addByNameAndUserId("Bright", 114514L);
-            tOrderMapper.addByNameAndUserId("Jordan", 114515L);
+            tOrderMapper.addAll(114514L, "Bright", 114514L);
+            tOrderMapper.addAll(114515L, "Jordan", 114515L);
         });
     }
 
     @Test
-    void whenRequestToDeleteByIdTest() {
-        tOrderMapper.addAll(101L, "Bright", 114514L);
-        tOrderMapper.addAll(102L, "Jordan", 114515L);
-        tOrderMapper.addAll(103L, "Lemon", 114516L);
-        tOrderMapper.addAll(104L, "Jack", 114517L);
-        tOrderMapper.addAll(105L, "Michael", 114518L);
-        tOrderMapper.addAll(106L, "Tony", 114519L);
+    void whenRequestToDeleteById() {
+        tOrderMapper.addByNameAndUserId("Bright", 114514L);
+        tOrderMapper.addByNameAndUserId("Jordan", 114515L);
+        tOrderMapper.addByNameAndUserId("Lemon", 114516L);
+        tOrderMapper.addByNameAndUserId("Jack", 114517L);
+        tOrderMapper.addByNameAndUserId("Michael", 114518L);
+        tOrderMapper.addByNameAndUserId("Tony", 114519L);
         int numberOfAffectedRows = tOrderMapper.deleteById(114514L);
         assertEquals(numberOfAffectedRows, 1);
         assertEquals(tOrderMapper.findAll().size(), 5);
@@ -84,12 +87,12 @@ public class MapperLayerTests {
 
     @Test
     void whenRequestToDeleteAll() {
-        tOrderMapper.addAll(101L, "Bright", 114514L);
-        tOrderMapper.addAll(102L, "Jordan", 114515L);
-        tOrderMapper.addAll(103L, "Lemon", 114516L);
-        tOrderMapper.addAll(104L, "Jack", 114517L);
-        tOrderMapper.addAll(105L, "Michael", 114518L);
-        tOrderMapper.addAll(106L, "Tony", 114519L);
+        tOrderMapper.addByNameAndUserId("Bright", 114514L);
+        tOrderMapper.addByNameAndUserId("Jordan", 114515L);
+        tOrderMapper.addByNameAndUserId("Lemon", 114516L);
+        tOrderMapper.addByNameAndUserId("Jack", 114517L);
+        tOrderMapper.addByNameAndUserId("Michael", 114518L);
+        tOrderMapper.addByNameAndUserId("Tony", 114519L);
         int numberOfAffectedRows = tOrderMapper.deleteAll();
         assertEquals(numberOfAffectedRows, 6);
         assertEquals(tOrderMapper.findAll().size(), 0);

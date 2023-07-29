@@ -2,7 +2,7 @@
 
 所有数据库连接为h2数据库，仅供测试。
 
-所有测试可直接跑，注意观察启动的日志。
+所有测试可在 OpenJDK 17 / OpenJDK 20 及其下游发行版直接跑，注意观察启动的日志。
 
 - add-remove-datasource 动态添加删除数据源的使用示例
 - all-datasource-sample 所有不同连接池使用示例（大乱炖，实际不建议）
@@ -16,7 +16,7 @@
 - nest-sample 嵌套切换数据源使用示例
 - quartz-sample 多数据源集成quartz示例
 - shardingsphere-jdbc-4.x-spring-sample 集成 ShardingSphere JDBC Spring Boot Starter 4.1.1 使用示例, 不再维护, 参考 https://github.com/apache/shardingsphere/releases/tag/5.0.0-alpha
-- shardingsphere-jdbc-5.x-core-sample 集成 ShardingSphere JDBC Driver 5.3.2 使用示例
+- shardingsphere-jdbc-5.x-core-sample 集成 ShardingSphere JDBC Driver 5.4.0 使用示例
 - shardingsphere-jdbc-5.x-spring-sample 集成 ShardingSphere JDBC Spring Boot Starter 5.2.1 使用示例, 不再维护, 参考 https://github.com/apache/shardingsphere/issues/22469
 - spel-sample 动态从外部参数spel来切换数据源的使用示例
 - tx-local-sample 本地事务示例项目★★★★★★必看★★★★★★
