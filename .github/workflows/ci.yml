@@ -31,7 +31,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest ]
-        java-version: [ 17, 19 ]
+        java-version: [ '17', '20' ]
     steps:
       - uses: actions/checkout@v3
       - name: Setup java
