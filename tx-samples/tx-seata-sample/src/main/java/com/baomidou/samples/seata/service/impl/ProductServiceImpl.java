@@ -20,6 +20,7 @@ import com.baomidou.samples.seata.entity.Product;
 import com.baomidou.samples.seata.mapper.ProductMapper;
 import com.baomidou.samples.seata.service.ProductService;
 import io.seata.core.context.RootContext;
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,11 +36,11 @@ public class ProductServiceImpl implements ProductService {
     private ProductMapper productMapper;
 
     /**
-     * 事务传播特性设置为 REQUIRES_NEW 开启新的事务
+     * 事务传播特性设置为
      */
     @DS("product")
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
+    @GlobalTransactional
     public Double reduceStock(Long productId, Integer amount) {
         log.info("=============PRODUCT START=================");
         log.info("当前 XID: {}", RootContext.getXID());

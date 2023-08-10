@@ -43,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
 
     @DS("order")
     @Override
-    @Transactional
+//    @Transactional
     @GlobalTransactional
     public void placeOrder(PlaceOrderRequest request) {
         log.info("=============ORDER START=================");

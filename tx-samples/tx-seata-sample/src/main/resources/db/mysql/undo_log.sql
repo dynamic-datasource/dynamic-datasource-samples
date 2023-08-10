@@ -1,14 +1,3 @@
-DROP TABLE IF EXISTS account;
-CREATE TABLE account
-(
-    id               INT(11) NOT NULL AUTO_INCREMENT,
-    balance          DOUBLE   DEFAULT NULL,
-    last_update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
-)
-  AUTO_INCREMENT = 1
-  DEFAULT CHARSET = utf8;
-
 DROP TABLE IF EXISTS undo_log;
 CREATE TABLE undo_log
 (
@@ -22,8 +11,5 @@ CREATE TABLE undo_log
     log_modified  DATETIME     NOT NULL,
     PRIMARY KEY (id),
     UNIQUE KEY ux_undo_log (xid, branch_id)
-)
-  AUTO_INCREMENT = 1
+) AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
-insert into account (id, balance)
-VALUES (1, 50);
