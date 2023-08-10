@@ -67,12 +67,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -82,13 +77,13 @@ import java.util.stream.Stream;
 public class MyBatisNativeConfiguration {
 
     @Bean
-    MyBatisBeanFactoryInitializationAotProcessor myBatisBeanFactoryInitializationAotProcessor() {
-        return new MyBatisBeanFactoryInitializationAotProcessor();
+    static MyBatisMapperFactoryBeanPostProcessor myBatisMapperFactoryBeanPostProcessor() {
+        return new MyBatisMapperFactoryBeanPostProcessor();
     }
 
     @Bean
-    static MyBatisMapperFactoryBeanPostProcessor myBatisMapperFactoryBeanPostProcessor() {
-        return new MyBatisMapperFactoryBeanPostProcessor();
+    MyBatisBeanFactoryInitializationAotProcessor myBatisBeanFactoryInitializationAotProcessor() {
+        return new MyBatisBeanFactoryInitializationAotProcessor();
     }
 
     static class MyBaitsRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
@@ -134,7 +129,8 @@ public class MyBatisNativeConfiguration {
             excludeClasses.add(MapperScannerConfigurer.class);
         }
 
-        @Override public boolean isExcludedFromAotProcessing(RegisteredBean registeredBean) {
+        @Override
+        public boolean isExcludedFromAotProcessing(RegisteredBean registeredBean) {
             return excludeClasses.contains(registeredBean.getBeanClass());
         }
 
@@ -275,8 +271,7 @@ public class MyBatisNativeConfiguration {
         private Class<?> getMapperInterface(RootBeanDefinition beanDefinition) {
             try {
                 return (Class<?>) beanDefinition.getPropertyValues().get("mapperInterface");
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 LOG.debug("Fail getting mapper interface type.", e);
                 return null;
             }
