@@ -4,23 +4,29 @@ spring:
       primary: order
       datasource:
         order:
-          username: root
-          password: 123456
-          url: jdbc:mysql://110.40.253.205:3306/local_order
+          username: postgres
+          password: nknUPjQsY2uz6WST
+          url: jdbc:postgresql://110.40.253.205:5432/local
+          hikari:
+            schema: local_order
           init:
-            schema: classpath:db/schema-order.sql
+            schema: classpath:db/postgresql/schema-order.sql
         account:
-          username: root
-          password: 123456
-          url: jdbc:mysql://110.40.253.205:3306/local_account
+          username: postgres
+          password: nknUPjQsY2uz6WST
+          url: jdbc:postgresql://110.40.253.205:5432/local
+          hikari:
+            schema: local_account
           init:
-            schema: classpath:db/schema-account.sql
+            schema: classpath:db/postgresql/schema-account.sql
         product:
-          username: root
-          password: 123456
-          url: jdbc:mysql://110.40.253.205:3306/local_product
+          username: postgres
+          password: nknUPjQsY2uz6WST
+          url: jdbc:postgresql://110.40.253.205:5432/local
+          hikari:
+            schema: local_product
           init:
-            schema: classpath:db/schema-product.sql
+            schema: classpath:db/postgresql/schema-product.sql
 logging:
   level:
     com.baomidou: debug

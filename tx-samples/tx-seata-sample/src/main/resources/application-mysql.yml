@@ -9,29 +9,25 @@ spring:
       seata-mode: AT #支持XA及AT模式,默认AT
       datasource:
         order:
-          username: postgres
-          password: nknUPjQsY2uz6WST
-          url: jdbc:postgresql://110.40.253.205:3306/seata
+          username: root
+          password: 123456
+          url: jdbc:mysql://110.40.253.205:3306/seata_order
           hikari:
-            schema: seata_order
           init:
-            schema: classpath:db/schema-order.sql
+            schema: classpath:db/mysql/schema-order.sql
         account:
-          username: postgres
-          password: nknUPjQsY2uz6WST
-          url: jdbc:postgresql://110.40.253.205:3306/seata
+          username: root
+          password: 123456
+          url: jdbc:mysql://110.40.253.205:3306/seata_account
           hikari:
-            schema: seata_account
           init:
-            schema: classpath:db/schema-account.sql
+            schema: classpath:db/mysql/schema-account.sql
         product:
-          username: postgres
-          password: nknUPjQsY2uz6WST
-          url: jdbc:postgresql://110.40.253.205:3306/seata
-          hikari:
-            schema: seata_product
+          username: root
+          password: 123456
+          url: jdbc:mysql://110.40.253.205:3306/seata_product
           init:
-            schema: classpath:db/schema-product.sql
+            schema: classpath:db/mysql/schema-product.sql
         test:
           username: sa
           password: ""

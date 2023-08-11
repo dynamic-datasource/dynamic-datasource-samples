@@ -6,6 +6,8 @@ spring:
         login-username: admin
         login-password: 123456
     dynamic:
+      druid:
+        validation-query: select 1
       datasource:
         master:
           username: sa
