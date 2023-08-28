@@ -2,8 +2,9 @@
 
 所有数据库连接为h2数据库，仅供测试。
 
-所有测试可在 OpenJDK 17 / OpenJDK 20 及其下游发行版直接跑，注意观察启动的日志。 除开 `com.baomidou:springboot3-sample`， 
-其他子模块均可在 OpenJDK 8 下执行单元测试。你可能希望参考 [位于 Github Actions 的 CI 文件](./.github/workflows/ci.yml)。
+所有测试可在 OpenJDK 17 / OpenJDK 21 及其下游发行版直接跑，注意观察启动的日志。 
+除开 `com.baomidou:springboot3-sample`， 其他子模块均可在 OpenJDK 8 下执行单元测试。
+你可能希望参考 [位于 Github Actions 的 CI 文件](./.github/workflows/ci.yml)。
 
 - add-remove-datasource 动态添加删除数据源的使用示例
 - all-datasource-sample 所有不同连接池使用示例（大乱炖，实际不建议）
