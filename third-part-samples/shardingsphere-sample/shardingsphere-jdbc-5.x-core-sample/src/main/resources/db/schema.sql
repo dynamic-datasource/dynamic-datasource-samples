@@ -1,23 +1,24 @@
-CREATE TABLE IF NOT EXISTS t_user
+DROP TABLE IF EXISTS `t_user`;
+DROP TABLE IF EXISTS `t_order0`;
+DROP TABLE IF EXISTS `t_order1`;
+
+CREATE TABLE `t_user`
 (
-    `id`   BIGINT(20)  NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(30) NULL DEFAULT NULL,
-    `age`  INT(11)     NULL DEFAULT NULL,
-    PRIMARY KEY (`id`)
+    `id`   BIGINT PRIMARY KEY,
+    `name` VARCHAR(255),
+    `age`  BIGINT
 );
 
-CREATE TABLE IF NOT EXISTS `t_order0`
+CREATE TABLE `t_order0`
 (
-    `order_id` BIGINT(20)  NOT NULL AUTO_INCREMENT,
-    `name`     VARCHAR(30) NULL DEFAULT NULL,
-    `user_id`  BIGINT(20)  NULL DEFAULT NULL,
-    PRIMARY KEY (`order_id`)
+    `order_id` BIGINT PRIMARY KEY,
+    `name`     VARCHAR(255),
+    `user_id`  BIGINT
 );
 
-CREATE TABLE IF NOT EXISTS `t_order1`
+CREATE TABLE `t_order1`
 (
-    `order_id` BIGINT(20)  NOT NULL AUTO_INCREMENT,
-    `name`     VARCHAR(30) NULL DEFAULT NULL,
-    `user_id`  BIGINT(20)  NULL DEFAULT NULL,
-    PRIMARY KEY (`order_id`)
+    `order_id` BIGINT PRIMARY KEY,
+    `name`     VARCHAR(255),
+    `user_id`  BIGINT
 );

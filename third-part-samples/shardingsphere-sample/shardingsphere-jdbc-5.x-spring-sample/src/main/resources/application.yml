@@ -1,6 +1,3 @@
-mybatis:
-  configuration:
-    map-underscore-to-camel-case: true
 spring:
   shardingsphere:
     datasource:
@@ -8,69 +5,67 @@ spring:
       shardingmaster:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: org.h2.Driver
-        jdbc-url: jdbc:h2:mem:master;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
+        jdbc-url: jdbc:h2:mem:master;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
         username: sa
-        password: ""
+        password:
       shardingslave0:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: org.h2.Driver
-        jdbc-url: jdbc:h2:mem:slave1;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
+        jdbc-url: jdbc:h2:mem:slave1;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
         username: sa
-        password: ""
+        password:
       shardingslave1:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: org.h2.Driver
-        jdbc-url: jdbc:h2:mem:slave2;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
+        jdbc-url: jdbc:h2:mem:slave2;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
         username: sa
-        password: ""
+        password:
     rules:
       sharding:
         tables:
           t_order:
             actualDataNodes: shardingmaster.t_order$->{0..1}
-            tableStrategy:
+            table-strategy:
               standard:
-                shardingColumn: order_id
-                shardingAlgorithmName: baomidou-inline
-            keyGenerateStrategy:
+                sharding-column: order_id
+                sharding-algorithm-name: baomidou_inline
+            key-generate-strategy:
               column: order_id
-              keyGeneratorName: baomidou-snowflake
+              key-generator-name: baomidou_snowflake
         sharding-algorithms:
-          baomidou-inline:
+          baomidou_inline:
             type: INLINE
             props:
               algorithm-expression: t_order$->{order_id % 2}
               allow-range-query-with-inline-sharding: true
         key-generators:
-          baomidou-snowflake:
+          baomidou_snowflake:
             type: SNOWFLAKE
-            props:
-              max-vibration-offset: 1
-              max-tolerate-time-difference-milliseconds: 10
       readwrite-splitting:
         data-sources:
-          baomidou-readwrite-data-sources:
+          baomidou_readwrite_data_sources:
             static-strategy:
               write-data-source-name: shardingmaster
               read-data-source-names: shardingslave0,shardingslave1
-            load-balancer-name: baomidou-load-balance-algorithm
+            load-balancer-name: baomidou_load_balance_algorithm
         load-balancers:
-          baomidou-load-balance-algorithm:
+          baomidou_load_balance_algorithm:
             type: ROUND_ROBIN
+    props:
+      sql-show: true
   datasource:
     dynamic:
       datasource:
         master:
           username: sa
           password: ""
-          url: jdbc:h2:mem:master;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
+          url: jdbc:h2:mem:baomidou_master;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
           driver-class-name: org.h2.Driver
         test:
           username: sa
           password: ""
-          url: jdbc:h2:mem:test;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
+          url: jdbc:h2:mem:baomidou_test;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
           driver-class-name: org.h2.Driver
 logging:
   level:
     com.baomidou: debug
-    org.apache.shardingsphere: debug

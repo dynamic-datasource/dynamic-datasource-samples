@@ -20,6 +20,7 @@ import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
 import com.baomidou.dynamic.datasource.provider.AbstractDataSourceProvider;
 import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -32,18 +33,22 @@ import java.util.Map;
 public class MyDataSourceConfiguration {
     private final DynamicDataSourceProperties properties;
     private final DefaultDataSourceCreator dataSourceCreator;
+    private final DataSource shardingSphereDataSource;
 
     /**
-     * 1. 建议 springboot2.5.0 以下版本或者发现不加 @Lazy 值是 null 的情况都打开 @Lazy
+     * 1. 建议 spring-boot 2.5.0 以下版本或者发现不加 `@Lazy` 值是 null 的情况都打开 `@Lazy`
      * 2. Compared with using SpringBoot Starter, if you encounter such problems,
      * you should directly use ShardingSphere's JDBC Driver to configure it as a JDBC data source, that is,
      * use `org.apache.shardingsphere:shardingsphere-jdbc-core:5.2.1` instead of `org.apache.shardingsphere:shardingsphere-jdbc-core-spring-boot-starter:5.2.1`.
      * For more information see <a href="https://shardingsphere.apache.org/document/5.2.1/en/user-manual/shardingsphere-jdbc/yaml-config/jdbc_driver/">JDBC Driver</a>
+     *
+     * @see org.springframework.context.annotation.Lazy
+     * @see org.apache.shardingsphere.driver.jdbc.core.datasource.ShardingSphereDataSource
      */
-//    @Lazy
-    private DataSource shardingSphereDataSource;
-
-    public MyDataSourceConfiguration(DynamicDataSourceProperties properties, DefaultDataSourceCreator dataSourceCreator, DataSource shardingSphereDataSource) {
+    public MyDataSourceConfiguration(DynamicDataSourceProperties properties,
+                                     DefaultDataSourceCreator dataSourceCreator,
+//                                     @Lazy
+                                     @Qualifier("shardingSphereDataSource") DataSource shardingSphereDataSource) {
         this.properties = properties;
         this.dataSourceCreator = dataSourceCreator;
         this.shardingSphereDataSource = shardingSphereDataSource;
@@ -55,7 +60,7 @@ public class MyDataSourceConfiguration {
             @Override
             public Map<String, DataSource> loadDataSources() {
                 Map<String, DataSource> dataSourceMap = new HashMap<>();
-                //把shardingSphereDataSource 加入多数据源，到时候使用的时候就可以@DS("shardingSphere")
+                //把 shardingSphereDataSource 加入多数据源，到时候使用的时候就可以 `@DS("shardingSphere")`
                 dataSourceMap.put("shardingSphere", shardingSphereDataSource);
                 return dataSourceMap;
             }

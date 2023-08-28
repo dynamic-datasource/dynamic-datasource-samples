@@ -30,6 +30,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ * TODO Unit tests for ShardingSphere 5.4.0 need to be synchronized.
+ *  Tracked on <a href="https://github.com/apache/shardingsphere/issues/27955">When a logic database uses both `SHARDING` and `READWRITE_SPLITTING` features, CRUD operations on table throw `NoSuchTableException`</a>
+ */
 @SpringBootTest
 public class MapperLayerTests {
     @Autowired
@@ -60,7 +64,7 @@ public class MapperLayerTests {
     }
 
     @Test
-    void whenRequestToAddByNameAndUserIdByMultipleDataNodes() {
+    void whenRequestToAddByNameAndUserIdWithPrimaryKey() {
         List<TOrder> emptyState = tOrderMapper.findAll();
         assertEquals(emptyState.size(), 0);
         assertThrows(UncategorizedSQLException.class, () -> {

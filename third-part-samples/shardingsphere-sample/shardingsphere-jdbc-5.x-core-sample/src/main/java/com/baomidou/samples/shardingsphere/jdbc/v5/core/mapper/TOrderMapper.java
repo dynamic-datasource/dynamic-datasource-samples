@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@SuppressWarnings({"SqlDialectInspection", "SqlNoDataSourceInspection"})
+@SuppressWarnings({"SqlDialectInspection", "SqlNoDataSourceInspection", "SqlResolve", "SqlWithoutWhere", "UnusedReturnValue"})
 @Component
 public interface TOrderMapper {
     @Select("select * from t_order")
