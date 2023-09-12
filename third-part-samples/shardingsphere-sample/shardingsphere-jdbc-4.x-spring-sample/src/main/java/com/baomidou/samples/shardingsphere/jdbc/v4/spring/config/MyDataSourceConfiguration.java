@@ -23,8 +23,10 @@ import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSour
 import org.apache.shardingsphere.shardingjdbc.jdbc.core.datasource.MasterSlaveDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,17 +43,18 @@ public class MyDataSourceConfiguration {
      * 主从: masterSlaveDataSource
      * 根据自己场景修改注入
      */
-//    @Lazy 某些springBoot版本不加会报错（暂不清楚原理0 0）
-    private final MasterSlaveDataSource masterSlaveDataSource;
+    @Lazy
+    @Resource(name = "masterSlaveDataSource")
+    private MasterSlaveDataSource masterSlaveDataSource;
 
-    public MyDataSourceConfiguration(DynamicDataSourceProperties properties, DefaultDataSourceCreator dataSourceCreator, MasterSlaveDataSource masterSlaveDataSource) {
+    public MyDataSourceConfiguration(DynamicDataSourceProperties properties, DefaultDataSourceCreator dataSourceCreator) {
         this.properties = properties;
         this.dataSourceCreator = dataSourceCreator;
-        this.masterSlaveDataSource = masterSlaveDataSource;
     }
-    //    @Lazy
-//    @Autowired
-//    private ShardingDataSource shardingDataSource;
+
+    //@Lazy
+    //@Autowired
+    //private ShardingDataSource shardingDataSource;
 
     @Bean
     public DynamicDataSourceProvider dynamicDataSourceProvider() {
