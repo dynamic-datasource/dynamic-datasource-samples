@@ -47,7 +47,7 @@ public class MyDataSourceConfiguration {
      */
     public MyDataSourceConfiguration(DynamicDataSourceProperties properties,
                                      DefaultDataSourceCreator dataSourceCreator,
-//                                     @Lazy
+                                     //@Lazy
                                      @Qualifier("shardingSphereDataSource") DataSource shardingSphereDataSource) {
         this.properties = properties;
         this.dataSourceCreator = dataSourceCreator;
