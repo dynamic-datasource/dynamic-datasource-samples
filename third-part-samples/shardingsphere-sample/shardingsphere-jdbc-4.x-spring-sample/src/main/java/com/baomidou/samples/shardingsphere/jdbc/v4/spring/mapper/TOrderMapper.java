@@ -15,7 +15,7 @@
  */
 package com.baomidou.samples.shardingsphere.jdbc.v4.spring.mapper;
 
-import com.baomidou.samples.shardingsphere.jdbc.v4.spring.entity.User;
+import com.baomidou.samples.shardingsphere.jdbc.v4.spring.entity.TOrder;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
@@ -24,15 +24,21 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@SuppressWarnings({"SqlDialectInspection", "SqlNoDataSourceInspection", "UnusedReturnValue"})
 @Component
-public interface UserMapper {
-    @Select("select * from t_user")
-    List<User> selectUsers();
+@SuppressWarnings({"SqlDialectInspection", "SqlNoDataSourceInspection", "SqlResolve", "SqlWithoutWhere", "UnusedReturnValue"})
+public interface TOrderMapper {
+    @Select("select * from t_order")
+    List<TOrder> findAll();
 
-    @Insert("insert into t_user (`name`,age) values (#{name},#{age})")
-    boolean addUser(@Param("name") String name, @Param("age") Integer age);
+    @Insert("insert into t_order (order_id,`name`,user_id) values (#{orderId},#{name},#{userId})")
+    int addAll(@Param("orderId") Long orderId, @Param("name") String name, @Param("userId") Long userId);
 
-    @Delete("delete from t_user where id = #{id}")
-    void deleteUserById(Long id);
+    @Insert("insert into t_order (`name`,user_id) values (#{name},#{userId})")
+    int addByNameAndUserId(@Param("name") String name, @Param("userId") Long userId);
+
+    @Delete("delete from t_order where user_id = #{userId}")
+    int deleteById(Long userId);
+
+    @Delete("delete from t_order")
+    int deleteAll();
 }

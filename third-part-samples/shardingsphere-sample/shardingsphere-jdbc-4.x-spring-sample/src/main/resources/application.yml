@@ -1,62 +1,57 @@
 spring:
-  # shardingjdbc 配置
   shardingsphere:
     datasource:
       names: shardingmaster,shardingslave0,shardingslave1
       shardingmaster:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: org.h2.Driver
-        jdbc-url: jdbc:h2:mem:master
+        jdbc-url: jdbc:h2:mem:master;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
         username: sa
         password: ""
       shardingslave0:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: org.h2.Driver
-        jdbc-url: jdbc:h2:mem:slave1
+        jdbc-url: jdbc:h2:mem:slave1;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
         username: sa
         password: ""
       shardingslave1:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: org.h2.Driver
-        jdbc-url: jdbc:h2:mem:slave2
+        jdbc-url: jdbc:h2:mem:slave2;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
         username: sa
         password: ""
     masterslave:
-      name: ms
+      name: baomidou_readwrite_data_sources
       load-balance-algorithm-type: round_robin
       master-data-source-name: shardingmaster
       slave-data-source-names: shardingslave0,shardingslave1
     sharding:
       tables:
         t_order:
-          actualDataNodes: shardingmaster.t_order${0..1}
+          actualDataNodes: shardingmaster.t_order$->{0..1}
           tableStrategy:
             inline:
               shardingColumn: order_id
-              algorithmExpression: t_order${order_id % 2}
+              algorithmExpression: t_order$->{order_id % 2}
           keyGenerator:
             type: SNOWFLAKE
             column: order_id
-  # 动态数据源配置
+    props:
+      sql:
+        show: true
   datasource:
     dynamic:
       datasource:
         master:
           username: sa
           password: ""
-          url: jdbc:h2:mem:master
+          url: jdbc:h2:mem:baomidou_master;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
           driver-class-name: org.h2.Driver
-          init:
-            schema: db/schema.sql
         test:
           username: sa
           password: ""
-          url: jdbc:h2:mem:test;MODE=MySQL
+          url: jdbc:h2:mem:baomidou_test;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
           driver-class-name: org.h2.Driver
-          init:
-            schema: db/schema.sql
 logging:
   level:
     com.baomidou: debug
-    org.apache.shardingsphere: debug
-#debug: true

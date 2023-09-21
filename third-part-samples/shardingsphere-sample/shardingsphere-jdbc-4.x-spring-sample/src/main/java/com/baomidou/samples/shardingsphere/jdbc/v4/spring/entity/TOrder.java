@@ -13,18 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.baomidou.samples.shardingsphere.jdbc.v4.spring.service;
+package com.baomidou.samples.shardingsphere.jdbc.v4.spring.entity;
 
-import com.baomidou.samples.shardingsphere.jdbc.v4.spring.entity.User;
+import lombok.Data;
 
-import java.util.List;
-
-public interface UserService {
-    List<User> selectUsersFromMaster();
-
-    List<User> selectUsersFromShardingSlave();
-
-    void addUser(User user);
-
-    void deleteUserById(Long id);
+@Data
+public class TOrder {
+    private Long orderId;
+    private String name;
+    private Long userId;
 }

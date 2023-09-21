@@ -13,6 +13,8 @@
 
     <properties>
         <shardingsphere.version>4.1.1</shardingsphere.version>
+        <!-- TODO For https://github.com/dynamic-datasource/dynamic-datasource-samples/pull/33 -->
+<!--        <spring-boot-dependencies.version>2.4.13</spring-boot-dependencies.version>-->
     </properties>
 
     <dependencies>
@@ -35,11 +37,6 @@
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
             <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
-            <version>${shardingsphere.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.shardingsphere</groupId>
-            <artifactId>sharding-jdbc-spring-namespace</artifactId>
             <version>${shardingsphere.version}</version>
         </dependency>
         <dependency>
