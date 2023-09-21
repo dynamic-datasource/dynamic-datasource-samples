@@ -15,16 +15,12 @@
  */
 package com.baomidou.samples.shardingsphere.jdbc.v4.spring.service;
 
-import com.baomidou.samples.shardingsphere.jdbc.v4.spring.entity.User;
+import com.baomidou.samples.shardingsphere.jdbc.v4.spring.entity.TOrder;
 
 import java.util.List;
 
-public interface UserService {
-    List<User> selectUsersFromMaster();
+public interface TOrderService {
+    List<TOrder> findAll();
 
-    List<User> selectUsersFromShardingSlave();
-
-    void addUser(User user);
-
-    void deleteUserById(Long id);
+    List<TOrder> addAll();
 }

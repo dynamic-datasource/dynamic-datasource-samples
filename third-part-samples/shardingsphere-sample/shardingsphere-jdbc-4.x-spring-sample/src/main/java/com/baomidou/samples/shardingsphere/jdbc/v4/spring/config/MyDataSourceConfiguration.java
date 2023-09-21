@@ -20,13 +20,12 @@ import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
 import com.baomidou.dynamic.datasource.provider.AbstractDataSourceProvider;
 import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
-import org.apache.shardingsphere.shardingjdbc.jdbc.core.datasource.MasterSlaveDataSource;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,35 +37,56 @@ public class MyDataSourceConfiguration {
 
     private final DefaultDataSourceCreator dataSourceCreator;
 
-    /**
-     * 分片: shardingDataSource
-     * 主从: masterSlaveDataSource
-     * 根据自己场景修改注入
-     */
-    @Lazy
-    @Resource(name = "masterSlaveDataSource")
-    private MasterSlaveDataSource masterSlaveDataSource;
+    //    private final DataSource encryptDataSource;
 
-    public MyDataSourceConfiguration(DynamicDataSourceProperties properties, DefaultDataSourceCreator dataSourceCreator) {
+    private final DataSource masterSlaveDataSource;
+
+    //    private final DataSource shadowDataSource;
+
+    private final DataSource shardingDataSource;
+
+    /**
+     * 1. 在 `org.apache.shardingsphere:sharding-jdbc-spring-boot-starter：4.1.1`中， 针对数据源的处理远比 ShardingSphere 5.x 要落后。
+     * 根据 SpringBootConfiguration，在  ShardingSphere 4.1.1 的 Spring Boot Starter 中，根据是否配置相关规则注册了 0-4 个 DataSource，
+     * 分别是 EncryptDataSource，MasterSlaveDataSource， ShadowDataSource，ShardingDataSource。分别处理数据加密，读写分离，影子库，数据分片。
+     * 2. 多个数据源的规则并不允许混合使用，只能 `@DS` 到某个子功能的数据源。混合规则在 ShardingSphere 5.x 被引入，参考
+     * <a href="https://shardingsphere.apache.org/document/5.4.0/en/user-manual/shardingsphere-jdbc/yaml-config/rules/mix/">MIXED RULES</a> 。
+     * 3. example: 把 `shardingDataSource` 加入多数据源，到时候使用的时候就可以 `@DS("shardingDataSourceInShardingSphere")`
+     *
+     * @see org.apache.shardingsphere.shardingjdbc.spring.boot.SpringBootConfiguration
+     * @see javax.sql.DataSource
+     * @see org.apache.shardingsphere.shardingjdbc.jdbc.core.datasource.EncryptDataSource
+     * @see org.apache.shardingsphere.shardingjdbc.jdbc.core.datasource.MasterSlaveDataSource
+     * @see org.apache.shardingsphere.shardingjdbc.jdbc.core.datasource.ShadowDataSource
+     * @see org.apache.shardingsphere.shardingjdbc.jdbc.core.datasource.ShardingDataSource
+     */
+    public MyDataSourceConfiguration(DynamicDataSourceProperties properties, DefaultDataSourceCreator dataSourceCreator,
+//                                     @Lazy @Qualifier("encryptDataSource") DataSource encryptDataSource,
+                                     @Lazy
+                                     @Qualifier("masterSlaveDataSource") DataSource masterSlaveDataSource,
+//                                     @Lazy @Qualifier("shadowDataSource") DataSource shadowDataSource,
+                                     @Lazy
+                                     @Qualifier("shardingDataSource") DataSource shardingDataSource
+    ) {
         this.properties = properties;
         this.dataSourceCreator = dataSourceCreator;
+//        this.encryptDataSource = encryptDataSource;
+        this.masterSlaveDataSource = masterSlaveDataSource;
+//        this.shadowDataSource = shadowDataSource;
+        this.shardingDataSource = shardingDataSource;
     }
 
-    //@Lazy
-    //@Autowired
-    //private ShardingDataSource shardingDataSource;
 
     @Bean
     public DynamicDataSourceProvider dynamicDataSourceProvider() {
         return new AbstractDataSourceProvider(dataSourceCreator) {
-
             @Override
             public Map<String, DataSource> loadDataSources() {
                 Map<String, DataSource> dataSourceMap = new HashMap<>();
-                dataSourceMap.put("sharding", masterSlaveDataSource);
-                //下面的代码可以把 shardingJdbc 内部管理的子数据源也同时添加到动态数据源里 (根据自己需要选择开启+注解了@Lazy被代理了不可以)
-                Map<String, DataSource> shardingInnerDataSources = masterSlaveDataSource.getDataSourceMap();
-                dataSourceMap.putAll(shardingInnerDataSources);
+//                dataSourceMap.put("encryptDataSourceInShardingSphere", encryptDataSource);
+                dataSourceMap.put("masterSlaveDataSourceInShardingSphere", masterSlaveDataSource);
+//                dataSourceMap.put("shadowDataSourceInShardingSphere", shadowDataSource);
+                dataSourceMap.put("shardingDataSourceInShardingSphere", shardingDataSource);
                 return dataSourceMap;
             }
         };
@@ -74,7 +94,7 @@ public class MyDataSourceConfiguration {
 
     /**
      * 将动态数据源设置为首选的
-     * 当spring存在多个数据源时, 自动注入的是首选的对象
+     * 当 Spring 存在多个数据源时, 自动注入的是首选的对象
      * 设置为主要的数据源之后，就可以支持shardingJdbc原生的配置方式了
      */
     @Primary

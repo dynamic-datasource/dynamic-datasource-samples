@@ -16,41 +16,35 @@
 package com.baomidou.samples.shardingsphere.jdbc.v4.spring.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.baomidou.samples.shardingsphere.jdbc.v4.spring.entity.User;
-import com.baomidou.samples.shardingsphere.jdbc.v4.spring.mapper.UserMapper;
-import com.baomidou.samples.shardingsphere.jdbc.v4.spring.service.UserService;
+import com.baomidou.samples.shardingsphere.jdbc.v4.spring.entity.TOrder;
+import com.baomidou.samples.shardingsphere.jdbc.v4.spring.mapper.TOrderMapper;
+import com.baomidou.samples.shardingsphere.jdbc.v4.spring.service.TOrderService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+import java.util.stream.IntStream;
+/**
+ * TODO Unit tests for ShardingSphere 5.4.0 need to be synchronized
+ */
 @Service
-public class UserServiceImpl implements UserService {
-    private final UserMapper userMapper;
+public class TOrderServiceImpl implements TOrderService {
+    private final TOrderMapper tOrderMapper;
 
-    public UserServiceImpl(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
-
-    @Override
-    public List<User> selectUsersFromMaster() {
-        return userMapper.selectUsers();
+    public TOrderServiceImpl(TOrderMapper tOrderMapper) {
+        this.tOrderMapper = tOrderMapper;
     }
 
     @Override
     @DS("shardingDataSourceInShardingSphere")
-    public List<User> selectUsersFromShardingSlave() {
-        return userMapper.selectUsers();
+    public List<TOrder> findAll() {
+        return tOrderMapper.findAll();
     }
 
-    @DS("shardingDataSourceInShardingSphere")
     @Override
-    public void addUser(User user) {
-        userMapper.addUser(user.getName(), user.getAge());
-    }
-
     @DS("shardingDataSourceInShardingSphere")
-    @Override
-    public void deleteUserById(Long id) {
-        userMapper.deleteUserById(id);
+    public List<TOrder> addAll() {
+        IntStream.range(0, 5)
+                .forEach(i -> tOrderMapper.addAll(i + 114514L, "测试" + i, (long) i));
+        return tOrderMapper.findAll();
     }
 }

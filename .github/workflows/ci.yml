@@ -48,5 +48,6 @@ jobs:
           ./mvnw -am -pl orm-samples/mybatis-sample -T1C -B -e clean test
       - name: Build third-part test with Maven
         run: |
+          ./mvnw -am -pl third-part-samples/shardingsphere-sample/shardingsphere-jdbc-4.x-spring-sample -T1C -B -e clean test
           ./mvnw -am -pl third-part-samples/shardingsphere-sample/shardingsphere-jdbc-5.x-core-sample -T1C -B -e clean test
           ./mvnw -am -pl third-part-samples/shardingsphere-sample/shardingsphere-jdbc-5.x-spring-sample -T1C -B -e clean test
