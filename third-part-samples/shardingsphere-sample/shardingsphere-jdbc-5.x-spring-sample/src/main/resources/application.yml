@@ -53,6 +53,7 @@ spring:
             type: ROUND_ROBIN
     props:
       sql-show: true
+  # dynamic-datasource 配置
   datasource:
     dynamic:
       datasource:

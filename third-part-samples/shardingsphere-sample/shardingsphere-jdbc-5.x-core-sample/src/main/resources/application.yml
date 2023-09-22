@@ -1,4 +1,5 @@
 spring:
+  # dynamic-datasource 配置
   datasource:
     dynamic:
       datasource:

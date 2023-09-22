@@ -36,7 +36,7 @@ public class MyDataSourceConfiguration {
     private final DataSource shardingSphereDataSource;
 
     /**
-     * 1. 建议 spring-boot 2.5.0 以下版本或者发现不加 `@Lazy` 值是 null 的情况都打开 `@Lazy`
+     * 1. 建议 spring-boot 2.5.0 以下版本或者发现不加 `@Lazy`, `DataSource shardingSphereDataSource` 是 null 的情况都打开 `@Lazy`
      * 2. Compared with using SpringBoot Starter, if you encounter such problems,
      * you should directly use ShardingSphere's JDBC Driver to configure it as a JDBC data source, that is,
      * use `org.apache.shardingsphere:shardingsphere-jdbc-core:5.2.1` instead of `org.apache.shardingsphere:shardingsphere-jdbc-core-spring-boot-starter:5.2.1`.
@@ -47,7 +47,6 @@ public class MyDataSourceConfiguration {
      */
     public MyDataSourceConfiguration(DynamicDataSourceProperties properties,
                                      DefaultDataSourceCreator dataSourceCreator,
-                                     //@Lazy
                                      @Qualifier("shardingSphereDataSource") DataSource shardingSphereDataSource) {
         this.properties = properties;
         this.dataSourceCreator = dataSourceCreator;
@@ -60,13 +59,18 @@ public class MyDataSourceConfiguration {
             @Override
             public Map<String, DataSource> loadDataSources() {
                 Map<String, DataSource> dataSourceMap = new HashMap<>();
-                //把 shardingSphereDataSource 加入多数据源，到时候使用的时候就可以 `@DS("shardingSphere")`
+                // 把 shardingSphereDataSource 加入多数据源，到时候使用的时候就可以 `@DS("shardingSphere")`
                 dataSourceMap.put("shardingSphere", shardingSphereDataSource);
                 return dataSourceMap;
             }
         };
     }
 
+    /**
+     * 将 dynamic-datasource 设置为首选的
+     * 当 Spring 存在多个数据源时, 自动注入的是首选的对象
+     * 设置为主要的数据源之后，就可以支持 shardingSphere 原生的配置方式了
+     */
     @Primary
     @Bean
     public DataSource dataSource() {

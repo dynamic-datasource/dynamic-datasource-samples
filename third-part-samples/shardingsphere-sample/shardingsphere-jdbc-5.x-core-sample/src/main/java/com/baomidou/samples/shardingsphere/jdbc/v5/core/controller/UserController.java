@@ -17,29 +17,45 @@ package com.baomidou.samples.shardingsphere.jdbc.v5.core.controller;
 
 import com.baomidou.samples.shardingsphere.jdbc.v5.core.entity.User;
 import com.baomidou.samples.shardingsphere.jdbc.v5.core.service.UserService;
-import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Random;
 
 @RestController
-@AllArgsConstructor
 @RequestMapping("/users")
 public class UserController {
     private static final Random RANDOM = new Random();
     private final UserService userService;
 
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    /**
+     * dynamic-datasource 的主库
+     */
     @GetMapping("master")
     public List<User> master() {
         return userService.selectUsersFromMaster();
     }
 
+    /**
+     * dynamic-datasource 代理的 shardingSphere 的从库, 经过 3 次选择
+     * 第 1 次: master => baomidou_readwrite_data_sources in shardingSphere
+     * 第 2 次: baomidou_readwrite_data_sources in shardingSphere => shardingslave0 or shardingslave1 in shardingSphere
+     * 第 3 次: shardingslave0 or shardingslave1 in shardingSphere => master
+     */
     @GetMapping("sharding_sphere")
     public List<User> shardingSlave() {
         return userService.selectUsersFromShardingSlave();
     }
 
+    /**
+     * dynamic-datasource 代理的 shardingSphere 的主库, 经过 2 次选择
+     * 第 1 次: master => shardingmaster in shardingSphere
+     * 第 2 次: shardingmaster in shardingSphere => master
+     */
     @PostMapping("sharding_sphere")
     public User addUser() {
         User user = new User();
@@ -49,6 +65,11 @@ public class UserController {
         return user;
     }
 
+    /**
+     * dynamic-datasource 代理的 shardingSphere 的主库, 经过 2 次选择
+     * 第 1 次: master => shardingmaster in shardingSphere
+     * 第 2 次: shardingmaster in shardingSphere => master
+     */
     @DeleteMapping("sharding_sphere/{id}")
     public String deleteUser(@PathVariable Long id) {
         userService.deleteUserById(id);

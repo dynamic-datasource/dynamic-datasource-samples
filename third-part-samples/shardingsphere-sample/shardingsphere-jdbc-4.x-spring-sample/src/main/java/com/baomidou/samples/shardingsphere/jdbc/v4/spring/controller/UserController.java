@@ -17,29 +17,46 @@ package com.baomidou.samples.shardingsphere.jdbc.v4.spring.controller;
 
 import com.baomidou.samples.shardingsphere.jdbc.v4.spring.entity.User;
 import com.baomidou.samples.shardingsphere.jdbc.v4.spring.service.UserService;
-import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Random;
 
 @RestController
-@AllArgsConstructor
 @RequestMapping("/users")
 public class UserController {
     private static final Random RANDOM = new Random();
     private final UserService userService;
 
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    /**
+     * dynamic-datasource 的主库
+     */
     @GetMapping("master")
     public List<User> master() {
         return userService.selectUsersFromMaster();
     }
 
+    /**
+     * TODO 这是一个在 ShardingSphere 4.1.1 上有趣的案例，仍需要修复。它展示了 ShardingSphere 5.x 与 ShardingSphere 4.x 的设计理念差异
+     * dynamic-datasource 代理的 shardingSphere 的从库, 经过 3 次选择
+     * 第 1 次: master => masterSlaveDataSourceInShardingSphere
+     * 第 2 次: masterSlaveDataSourceInShardingSphere => shardingslave0 or shardingslave1 in baomidou_readwrite_data_sources
+     * 第 3 次: shardingslave0 or shardingslave1 in baomidou_readwrite_data_sources => master
+     */
     @GetMapping("sharding_sphere")
     public List<User> shardingSlave() {
         return userService.selectUsersFromShardingSlave();
     }
 
+    /**
+     * dynamic-datasource 代理的 shardingSphere 的主库, 经过 2 次选择
+     * 第 1 次: master => shardingDataSourceInShardingSphere
+     * 第 2 次: shardingDataSourceInShardingSphere => master
+     */
     @PostMapping("sharding_sphere")
     public User addUser() {
         User user = new User();
@@ -49,6 +66,11 @@ public class UserController {
         return user;
     }
 
+    /**
+     * dynamic-datasource 代理的 shardingSphere 的主库, 经过 2 次选择
+     * 第 1 次: master => shardingDataSourceInShardingSphere
+     * 第 2 次: shardingDataSourceInShardingSphere => master
+     */
     @DeleteMapping("sharding_sphere/{id}")
     public String deleteUser(@PathVariable Long id) {
         userService.deleteUserById(id);

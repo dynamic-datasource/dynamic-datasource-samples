@@ -52,6 +52,7 @@ public class MyDataSourceConfiguration {
      * 2. 多个数据源的规则并不允许混合使用，只能 `@DS` 到某个子功能的数据源。混合规则在 ShardingSphere 5.x 被引入，参考
      * <a href="https://shardingsphere.apache.org/document/5.4.0/en/user-manual/shardingsphere-jdbc/yaml-config/rules/mix/">MIXED RULES</a> 。
      * 3. example: 把 `shardingDataSource` 加入多数据源，到时候使用的时候就可以 `@DS("shardingDataSourceInShardingSphere")`
+     * 4. 根据自己场景修改注入
      *
      * @see org.apache.shardingsphere.shardingjdbc.spring.boot.SpringBootConfiguration
      * @see javax.sql.DataSource
@@ -93,9 +94,9 @@ public class MyDataSourceConfiguration {
     }
 
     /**
-     * 将动态数据源设置为首选的
+     * 将 dynamic-datasource 设置为首选的
      * 当 Spring 存在多个数据源时, 自动注入的是首选的对象
-     * 设置为主要的数据源之后，就可以支持shardingJdbc原生的配置方式了
+     * 设置为主要的数据源之后，就可以支持 shardingSphere 原生的配置方式了
      */
     @Primary
     @Bean

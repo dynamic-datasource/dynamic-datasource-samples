@@ -17,7 +17,6 @@ package com.baomidou.samples.shardingsphere.jdbc.v5.spring.controller;
 
 import com.baomidou.samples.shardingsphere.jdbc.v5.spring.entity.TOrder;
 import com.baomidou.samples.shardingsphere.jdbc.v5.spring.service.TOrderService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,9 +26,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/t_order")
-@RequiredArgsConstructor
 public class TOrderController {
     private final TOrderService tOrderService;
+
+    public TOrderController(TOrderService tOrderService) {
+        this.tOrderService = tOrderService;
+    }
 
     @GetMapping("/findAll")
     public List<TOrder> findAll() {
