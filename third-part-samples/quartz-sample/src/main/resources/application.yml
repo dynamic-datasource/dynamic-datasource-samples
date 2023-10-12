@@ -5,7 +5,7 @@ spring:
     url: jdbc:mysql://110.40.253.205:3306/quartz
     driver-class-name: com.mysql.cj.jdbc.Driver
     dynamic:
-#      enabled: false 如果没有建表可以先打开这个配置禁用多数据源,自动建quartz表
+      #      enabled: false 如果没有建表可以先打开这个配置禁用多数据源,自动建quartz表
       datasource:
         master:
           username: sa
