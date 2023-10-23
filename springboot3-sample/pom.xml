@@ -16,7 +16,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-boot-dependencies.version>3.1.3</spring-boot-dependencies.version>
+        <spring-boot-dependencies.version>3.1.5</spring-boot-dependencies.version>
         <mybatis-spring-boot-starter.version>3.0.2</mybatis-spring-boot-starter.version>
     </properties>
 
@@ -45,7 +45,6 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-3-starter</artifactId>
-            <version>1.2.18</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -74,7 +73,7 @@
             <plugin>
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
-                <version>0.9.24</version>
+                <version>0.9.28</version>
                 <configuration>
                     <buildArgs combine.children="append">
                         <buildArg>--enable-preview</buildArg>

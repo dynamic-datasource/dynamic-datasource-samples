@@ -15,6 +15,7 @@ spring:
         min-idle: 3
         max-wait: 1000
         validation-query: 'select 1'
+        proxy-filters: myFilter1,myFilter2
       datasource:
         master:
           username: sa

@@ -1,6 +1,8 @@
 spring:
   datasource:
     dynamic:
+      druid:
+        filters: ""
       datasource:
         master:
           username: sa

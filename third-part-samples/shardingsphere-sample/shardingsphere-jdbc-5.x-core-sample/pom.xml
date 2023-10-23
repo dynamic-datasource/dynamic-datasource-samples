@@ -12,7 +12,7 @@
     <artifactId>shardingsphere-jdbc-5.x-core-sample</artifactId>
 
     <properties>
-        <shardingsphere.version>5.4.0</shardingsphere.version>
+        <shardingsphere.version>5.4.1</shardingsphere.version>
     </properties>
 
     <dependencies>

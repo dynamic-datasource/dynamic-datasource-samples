@@ -14,12 +14,12 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <ds.version>4.1.3</ds.version>
+        <ds.version>4.2.0</ds.version>
         <mybatis-spring-boot-starter.version>2.3.1</mybatis-spring-boot-starter.version>
-        <druid.version>1.2.18</druid.version>
+        <druid.version>1.2.20</druid.version>
         <p6spy.version>3.9.1</p6spy.version>
-        <h2.version>2.2.220</h2.version>
-        <spring-boot-dependencies.version>2.7.16</spring-boot-dependencies.version>
+        <h2.version>2.2.224</h2.version>
+        <spring-boot-dependencies.version>2.7.17</spring-boot-dependencies.version>
         <lombok.version>1.18.30</lombok.version>
     </properties>
 
@@ -76,6 +76,11 @@
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-3-starter</artifactId>
                 <version>${druid.version}</version>
             </dependency>
             <dependency>
