@@ -15,9 +15,13 @@
  */
 package com.baomidou.samples.spel.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     private Integer id;
@@ -27,4 +31,8 @@ public class User {
     private Integer age;
 
     private String tenantName;
+
+    public User(String tenantName) {
+        this(null, null, null, tenantName);
+    }
 }

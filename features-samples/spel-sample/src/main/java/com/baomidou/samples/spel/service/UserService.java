@@ -16,6 +16,7 @@
 package com.baomidou.samples.spel.service;
 
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.samples.spel.entity.User;
 
 import java.util.List;
@@ -29,4 +30,10 @@ public interface UserService {
     List<User> selectSpelByKey(String tenantName);
 
     List<User> selecSpelByTenant(User user);
+
+    @DS("#tenantName")
+    String getGroupNameInSpELSelf(String tenantName);
+
+    @DS("#user.tenantName")
+    String getGroupNameInsideObjectSpEL(User user);
 }

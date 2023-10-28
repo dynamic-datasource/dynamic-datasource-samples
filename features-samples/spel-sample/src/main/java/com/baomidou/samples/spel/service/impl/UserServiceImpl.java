@@ -17,10 +17,10 @@ package com.baomidou.samples.spel.service.impl;
 
 
 import com.baomidou.dynamic.datasource.annotation.DS;
+import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.baomidou.samples.spel.entity.User;
 import com.baomidou.samples.spel.mapper.UserMapper;
 import com.baomidou.samples.spel.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,8 +29,11 @@ import java.util.List;
 @DS("slave")
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
+
+    public UserServiceImpl(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
 
     @Override
     @DS("#session.tenantName")
@@ -47,6 +50,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @DS("#tenantName")
     public List<User> selectSpelByKey(String tenantName) {
+        assert !tenantName.equals("tenant1") || DynamicDataSourceContextHolder.peek().equals("tenant1");
         return userMapper.selectUsers();
     }
 
@@ -54,5 +58,17 @@ public class UserServiceImpl implements UserService {
     @DS("#user.tenantName")
     public List<User> selecSpelByTenant(User user) {
         return userMapper.selectUsers();
+    }
+
+    @Override
+    @DS("#tenantName")
+    public String getGroupNameInSpELSelf(String tenantName) {
+        return DynamicDataSourceContextHolder.peek();
+    }
+
+    @Override
+    @DS("#user.tenantName")
+    public String getGroupNameInsideObjectSpEL(User user) {
+        return DynamicDataSourceContextHolder.peek();
     }
 }

@@ -16,9 +16,10 @@
 package com.baomidou.samples.spel.test;
 
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
-import com.baomidou.dynamic.datasource.creator.DataSourceProperty;
 import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
 import com.baomidou.samples.spel.SpelApplication;
+import com.baomidou.samples.spel.entity.User;
+import com.baomidou.samples.spel.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.sql.DataSource;
 import java.nio.charset.StandardCharsets;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -40,11 +42,17 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @SpringBootTest(classes = SpelApplication.class, webEnvironment = RANDOM_PORT)
 public class SPELTest {
+
     MockMvc mockMvc;
+
     @Autowired
     DataSource dataSource;
+
     @Autowired
     DefaultDataSourceCreator dataSourceCreator;
+
+    @Autowired
+    UserService userService;
 
     @BeforeEach
     void setup(WebApplicationContext webApplicationContext) {
@@ -53,43 +61,8 @@ public class SPELTest {
 
     @Test
     void testSPEL() {
-        DataSourceProperty masterDataSourceProperty = new DataSourceProperty();
-        masterDataSourceProperty.setPoolName("master");
-        masterDataSourceProperty.setDriverClassName("org.h2.Driver");
-        masterDataSourceProperty.setUrl("jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'classpath:db/spring-expression-language.sql'");
-        masterDataSourceProperty.setUsername("sa");
-        masterDataSourceProperty.setPassword("");
-        DataSourceProperty tenant1_1DataSourceProperty = new DataSourceProperty();
-        masterDataSourceProperty.setPoolName("tenant1_1");
-        masterDataSourceProperty.setDriverClassName("org.h2.Driver");
-        masterDataSourceProperty.setUrl("jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'classpath:db/spring-expression-language.sql'");
-        masterDataSourceProperty.setUsername("tenant1_1");
-        masterDataSourceProperty.setPassword("");
-        DataSourceProperty tenant1_2DataSourceProperty = new DataSourceProperty();
-        masterDataSourceProperty.setPoolName("tenant1_2");
-        masterDataSourceProperty.setDriverClassName("org.h2.Driver");
-        masterDataSourceProperty.setUrl("jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'classpath:db/spring-expression-language.sql'");
-        masterDataSourceProperty.setUsername("tenant1_2");
-        masterDataSourceProperty.setPassword("");
-        DataSourceProperty tenant2_1DataSourceProperty = new DataSourceProperty();
-        masterDataSourceProperty.setPoolName("tenant2_1");
-        masterDataSourceProperty.setDriverClassName("org.h2.Driver");
-        masterDataSourceProperty.setUrl("jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'classpath:db/spring-expression-language.sql'");
-        masterDataSourceProperty.setUsername("tenant2_1");
-        masterDataSourceProperty.setPassword("");
-        DataSourceProperty tenant2_2DataSourceProperty = new DataSourceProperty();
-        masterDataSourceProperty.setPoolName("tenant2_2");
-        masterDataSourceProperty.setDriverClassName("org.h2.Driver");
-        masterDataSourceProperty.setUrl("jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'classpath:db/spring-expression-language.sql'");
-        masterDataSourceProperty.setUsername("tenant2_2");
-        masterDataSourceProperty.setPassword("");
         DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
-        ds.addDataSource(masterDataSourceProperty.getPoolName(), dataSourceCreator.createDataSource(masterDataSourceProperty));
-        ds.addDataSource(tenant1_1DataSourceProperty.getPoolName(), dataSourceCreator.createDataSource(tenant1_1DataSourceProperty));
-        ds.addDataSource(tenant1_2DataSourceProperty.getPoolName(), dataSourceCreator.createDataSource(tenant1_2DataSourceProperty));
-        ds.addDataSource(tenant2_1DataSourceProperty.getPoolName(), dataSourceCreator.createDataSource(tenant2_1DataSourceProperty));
-        ds.addDataSource(tenant2_2DataSourceProperty.getPoolName(), dataSourceCreator.createDataSource(tenant2_2DataSourceProperty));
-//        assertThat(ds.getDataSources().keySet().contains("master", "tenant1_1", "tenant1_2", "tenant2_1", "tenant2_2");
+        assertThat(ds.getDataSources().keySet()).contains("master", "tenant1_1", "tenant1_2", "tenant2_1", "tenant2_2");
         assertDoesNotThrow(() -> {
             mockMvc.perform(MockMvcRequestBuilders.get("/users/session").characterEncoding(StandardCharsets.UTF_8))
                     .andDo(print()).andExpectAll(
@@ -104,5 +77,7 @@ public class SPELTest {
                     content().encoding(StandardCharsets.UTF_8)
             ).andReturn().getResponse().getContentAsString();
         });
+        assertThat(userService.getGroupNameInSpELSelf("tenant1")).isEqualTo("tenant1");
+        assertThat(userService.getGroupNameInsideObjectSpEL(new User("tenant2"))).isEqualTo("tenant2");
     }
 }

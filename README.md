@@ -1,9 +1,11 @@
 # 演示例子
 
-所有数据库连接为h2数据库，仅供测试。
+大部分数据库连接为 H2Database，仅供测试。
 
-所有测试可在 OpenJDK 17 / OpenJDK 21 及其下游发行版直接跑，注意观察启动的日志。 
-除开 `com.baomidou:springboot3-sample`， 其他子模块均可在 OpenJDK 8 下执行单元测试。
+所有单元测试可在 OpenJDK 17 / OpenJDK 21 及其下游发行版执行，并在 Github Actions 完成验证。 
+
+除开 `com.baomidou:springboot3-sample`， 其他子模块均可在 OpenJDK 8 - OpenJDK 21 及其下游发行版下执行单元测试。
+
 你可能希望参考 [位于 Github Actions 的 CI 文件](./.github/workflows/ci.yml)。
 
 - add-remove-datasource 动态添加删除数据源的使用示例
@@ -19,9 +21,20 @@
 - quartz-sample 多数据源集成quartz示例
 - shardingsphere-jdbc-4.x-spring-sample 集成 ShardingSphere JDBC Spring Boot Starter 4.1.1 使用示例, 不再维护,
   参考 https://github.com/apache/shardingsphere/releases/tag/5.0.0-alpha
-- shardingsphere-jdbc-5.x-core-sample 集成 ShardingSphere JDBC Driver 5.4.0 使用示例
+- shardingsphere-jdbc-5.x-core-sample 集成 ShardingSphere JDBC Driver 5.4.1 使用示例
 - shardingsphere-jdbc-5.x-spring-sample 集成 ShardingSphere JDBC Spring Boot Starter 5.2.1 使用示例, 不再维护,
   参考 https://github.com/apache/shardingsphere/issues/22469
 - spel-sample 动态从外部参数spel来切换数据源的使用示例
 - tx-local-sample 本地事务示例项目★★★★★★必看★★★★★★
 - tx-seata-sample 基于seata的分布式事务集成使用示例
+
+## Contributing
+
+我们欢迎社区的贡献。
+
+在提交 Pull Request 之前, 请在本地通过 OpenJDK 17 - OpenJDK 21 下完成此命令的验证。
+我们鼓励通过 `SDKMAN!` 切换到 `21.0.1-graalce` 来验证。
+
+```shell
+./mvnw -T1C clean test
+```
