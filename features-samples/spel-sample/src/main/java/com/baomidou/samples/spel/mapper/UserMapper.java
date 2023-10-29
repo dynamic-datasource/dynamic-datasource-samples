@@ -20,6 +20,7 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
+@SuppressWarnings({"SqlDialectInspection", "SqlNoDataSourceInspection"})
 public interface UserMapper {
 
     @Select("select * from t_user")

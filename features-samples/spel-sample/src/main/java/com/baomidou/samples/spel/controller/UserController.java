@@ -17,7 +17,6 @@ package com.baomidou.samples.spel.controller;
 
 import com.baomidou.samples.spel.entity.User;
 import com.baomidou.samples.spel.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,8 +28,11 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/session")
     public List<User> session(HttpServletRequest request) {
