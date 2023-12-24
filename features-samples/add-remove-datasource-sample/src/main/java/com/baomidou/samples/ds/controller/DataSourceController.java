@@ -62,7 +62,7 @@ public class DataSourceController {
      * 删除数据源
      */
     @DeleteMapping
-    public String remove(String name) {
+    public String remove(@RequestParam String name) {
         DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
         ds.removeDataSource(name);
         return "删除成功";
