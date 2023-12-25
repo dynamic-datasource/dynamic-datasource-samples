@@ -30,7 +30,6 @@ import java.util.Random;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = NestApplication.class)
-
 public class NestApplicationTest {
 
     private final Random random = new Random();
