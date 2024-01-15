@@ -4,7 +4,7 @@
 
 除开 `com.baomidou:springboot3-sample`， 其他子模块均可在 [OpenJDK 8, OpenJDK 21] 的 JDK 范围及其下游发行版下执行单元测试。
 
-所有单元测试在 Github Actions 完成验证。 你可能希望参考 [位于 Github Actions 的 CI 文件](./.github/workflows/ci.yml)。
+所有单元测试在 Github Actions 完成验证。你可能希望参考 [位于 Github Actions 的 CI 文件](./.github/workflows/ci.yml)。
 
 - add-remove-datasource 动态添加删除数据源的使用示例
 - all-datasource-sample 所有不同连接池使用示例（大乱炖，实际不建议）
