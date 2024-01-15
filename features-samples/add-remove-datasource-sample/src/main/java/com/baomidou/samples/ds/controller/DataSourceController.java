@@ -20,7 +20,6 @@ import com.baomidou.dynamic.datasource.creator.DataSourceProperty;
 import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
 import com.baomidou.samples.ds.dto.DataSourceDTO;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,10 +30,13 @@ import java.util.Set;
 @RequestMapping("/datasources")
 public class DataSourceController {
 
-    @Autowired
-    private DataSource dataSource;
-    @Autowired
-    private DefaultDataSourceCreator dataSourceCreator;
+    private final DataSource dataSource;
+    private final DefaultDataSourceCreator dataSourceCreator;
+
+    public DataSourceController(DataSource dataSource, DefaultDataSourceCreator dataSourceCreator) {
+        this.dataSource = dataSource;
+        this.dataSourceCreator = dataSourceCreator;
+    }
 
     /**
      * 获取当前所有数据源

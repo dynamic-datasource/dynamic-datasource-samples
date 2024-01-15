@@ -2,11 +2,9 @@
 
 大部分数据库连接为 H2Database，仅供测试。
 
-所有单元测试可在 OpenJDK 17 / OpenJDK 21 及其下游发行版执行，并在 Github Actions 完成验证。 
+除开 `com.baomidou:springboot3-sample`， 其他子模块均可在 [OpenJDK 8, OpenJDK 21] 的 JDK 范围及其下游发行版下执行单元测试。
 
-除开 `com.baomidou:springboot3-sample`， 其他子模块均可在 OpenJDK 8 - OpenJDK 21 及其下游发行版下执行单元测试。
-
-你可能希望参考 [位于 Github Actions 的 CI 文件](./.github/workflows/ci.yml)。
+所有单元测试在 Github Actions 完成验证。 你可能希望参考 [位于 Github Actions 的 CI 文件](./.github/workflows/ci.yml)。
 
 - add-remove-datasource 动态添加删除数据源的使用示例
 - all-datasource-sample 所有不同连接池使用示例（大乱炖，实际不建议）
@@ -32,7 +30,8 @@
 
 我们欢迎社区的贡献。
 
-在提交 Pull Request 之前, 请在本地通过 OpenJDK 17 - OpenJDK 21 下完成此命令的验证。
+针对 IDE，项目的语言级别应设置为 JDK 8，对于单独的 `com.baomidou:springboot3-sample` 子模块，语言级别应设置为 JDK 17 。
+在提交 Pull Request 之前, 请在本地通过 [OpenJDK 17, OpenJDK 21] 的 JDK 范围下完成此命令的验证。
 我们鼓励通过 `SDKMAN!` 切换到 `21.0.1-graalce` 来验证。
 
 ```shell
