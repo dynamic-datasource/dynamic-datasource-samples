@@ -52,6 +52,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!--On ShardingSphere JDBC 5.2.1 we have to use the Java API of SnakeYAML 1.33-->
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
