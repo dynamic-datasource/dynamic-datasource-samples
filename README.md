@@ -28,12 +28,17 @@
 
 ## Contributing
 
-我们欢迎社区的贡献。
+我们欢迎社区的贡献。围绕此 git 的讨论与协作应通过 https://github.com/baomidou/dynamic-datasource/issues 进行。
 
 针对 IDE，项目的语言级别应设置为 JDK 8，对于单独的 `com.baomidou:springboot3-sample` 子模块，语言级别应设置为 JDK 17 。
 在提交 Pull Request 之前, 请在本地通过 [OpenJDK 17, OpenJDK 21] 的 JDK 范围下完成此命令的验证。
-我们鼓励通过 `SDKMAN!` 切换到 `21.0.1-graalce` 来验证。
+我们鼓励通过 `SDKMAN!` 切换到 `21.0.2-graalce` 来验证。
 
 ```shell
-./mvnw -T1C clean test
+sdk install java 21.0.2-graalce
+sdk use java 21.0.2-graalce
+
+git clone git@github.com:dynamic-datasource/dynamic-datasource-samples.git
+cd ./dynamic-datasource-samples/
+./mvnw -T1C -e clean test
 ```

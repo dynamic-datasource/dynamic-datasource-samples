@@ -21,7 +21,6 @@
         <h2.version>2.2.224</h2.version>
         <spring-boot-dependencies.version>2.7.18</spring-boot-dependencies.version>
         <lombok.version>1.18.30</lombok.version>
-        <logback.version>1.2.13</logback.version>
     </properties>
 
     <modules>
@@ -46,11 +45,6 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>dynamic-datasource-spring-boot3-starter</artifactId>
                 <version>${ds.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>${logback.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
