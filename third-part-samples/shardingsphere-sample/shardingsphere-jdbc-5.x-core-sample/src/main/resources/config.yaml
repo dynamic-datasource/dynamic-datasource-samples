@@ -40,7 +40,7 @@ rules:
     baomidou_snowflake:
       type: SNOWFLAKE
 - !READWRITE_SPLITTING
-  dataSources:
+  dataSourceGroups:
     baomidou_readwrite_data_sources:
       writeDataSourceName: shardingmaster
       readDataSourceNames:
