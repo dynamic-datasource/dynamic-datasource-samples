@@ -12,7 +12,7 @@
     <artifactId>shardingsphere-jdbc-5.x-core-sample</artifactId>
 
     <properties>
-        <shardingsphere.version>5.5.0</shardingsphere.version>
+        <shardingsphere.version>5.5.1</shardingsphere.version>
     </properties>
 
     <dependencies>
@@ -32,13 +32,6 @@
             <groupId>org.apache.shardingsphere</groupId>
             <artifactId>shardingsphere-jdbc</artifactId>
             <version>${shardingsphere.version}</version>
-            <exclusions>
-                <!--Affected by https://github.com/apache/shardingsphere/issues/31128-->
-                <exclusion>
-                    <groupId>org.apache.shardingsphere</groupId>
-                    <artifactId>shardingsphere-test-util</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>

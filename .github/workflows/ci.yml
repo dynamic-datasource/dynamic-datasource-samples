@@ -6,13 +6,6 @@ on:
   pull_request:
     branches: [ master ]
 
-concurrency:
-  group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
-env:
-  MAVEN_OPTS: -Dhttps.protocols=TLSv1.2 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true
-
 jobs:
   test-hotspot-jdk-ci:
     name: Test CI - JDK ${{ matrix.java-version }} on ${{ matrix.os }}
@@ -33,7 +26,6 @@ jobs:
       - name: Build all test with Maven
         run: |
           ./mvnw -T1C -B -e clean test
-
   test-minimum-hotspot-jdk-ci:
     name: Test CI - JDK ${{ matrix.java-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
