@@ -34,6 +34,7 @@ rules:
     baomidou_inline:
       type: INLINE
       props:
+        # TODO Affected by https://github.com/apache/shardingsphere/issues/27955 .
         algorithm-expression: t_order$->{ORDER_ID % 2}
         allow-range-query-with-inline-sharding: true
   keyGenerators:
