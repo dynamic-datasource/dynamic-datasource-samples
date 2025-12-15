@@ -38,10 +38,10 @@ public class MyDataSourceConfiguration {
 
     /**
      * 1. 建议 spring-boot 2.5.0 以下版本或者发现不加 `@Lazy`, `DataSource shardingSphereDataSource` 是 null 的情况都打开 `@Lazy`
-     * 2. Compared with using SpringBoot Starter, if you encounter such problems,
-     * you should directly use ShardingSphere's JDBC Driver to configure it as a JDBC data source, that is,
-     * use `org.apache.shardingsphere:shardingsphere-jdbc-core:5.2.1` instead of `org.apache.shardingsphere:shardingsphere-jdbc-core-spring-boot-starter:5.2.1`.
-     * For more information see <a href="https://shardingsphere.apache.org/document/5.2.1/en/user-manual/shardingsphere-jdbc/yaml-config/jdbc_driver/">JDBC Driver</a>
+     * 2. 与使用 Spring Boot Starter 相比，如果开发者遇到此类问题，
+     * 开发者应该直接使用 ShardingSphere 的 JDBC Driver 将其配置为 JDBC 数据源，即：
+     * 使用 `org.apache.shardingsphere:shardingsphere-jdbc-core:5.2.1` 而不是 `org.apache.shardingsphere:shardingsphere-jdbc-core-spring-boot-starter:5.2.1`。
+     * 更多信息请参阅 <a href="https://shardingsphere.apache.org/document/5.2.1/en/user-manual/shardingsphere-jdbc/yaml-config/jdbc_driver/">JDBC Driver</a>
      *
      * @see org.springframework.context.annotation.Lazy
      * @see org.apache.shardingsphere.driver.jdbc.core.datasource.ShardingSphereDataSource

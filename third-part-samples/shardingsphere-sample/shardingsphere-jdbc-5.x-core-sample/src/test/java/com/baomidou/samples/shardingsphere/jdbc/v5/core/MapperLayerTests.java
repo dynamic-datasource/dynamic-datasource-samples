@@ -23,12 +23,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 public class MapperLayerTests {
@@ -48,25 +47,22 @@ public class MapperLayerTests {
 
     @Test
     void whenRequestToFindAll() {
-        assertEquals(tOrderMapper.findAll().size(), 0);
+        assertEquals(0, tOrderMapper.findAll().size());
     }
 
     @Test
     void whenRequestToAddByNameAndUserId() {
         int firstNumberOfAffectedRows = tOrderMapper.addByNameAndUserId("Bright", 114514L);
         int secondNumberOfAffectedRows = tOrderMapper.addByNameAndUserId("Jordan", 114515L);
-        assertEquals(firstNumberOfAffectedRows + secondNumberOfAffectedRows, 2);
-        assertEquals(tOrderMapper.findAll().size(), 2);
+        assertEquals(2, firstNumberOfAffectedRows + secondNumberOfAffectedRows);
+        assertEquals(2, tOrderMapper.findAll().size());
     }
 
-    /**
-     * TODO Tracked on <a href="https://github.com/apache/shardingsphere/issues/27955">When a logic database uses both `SHARDING` and `READWRITE_SPLITTING` features, CRUD operations on table throw `NoSuchTableException`</a>
-     */
     @Test
     void whenRequestToAddByNameAndUserIdWithPrimaryKey() {
         List<TOrder> emptyState = tOrderMapper.findAll();
-        assertEquals(emptyState.size(), 0);
-        assertThrows(DataIntegrityViolationException.class, () -> {
+        assertEquals(0, emptyState.size());
+        assertDoesNotThrow(() -> {
             tOrderMapper.addAll(114514L, "Bright", 114514L);
             tOrderMapper.addAll(114515L, "Jordan", 114515L);
         });
@@ -81,8 +77,8 @@ public class MapperLayerTests {
         tOrderMapper.addByNameAndUserId("Michael", 114518L);
         tOrderMapper.addByNameAndUserId("Tony", 114519L);
         int numberOfAffectedRows = tOrderMapper.deleteById(114514L);
-        assertEquals(numberOfAffectedRows, 1);
-        assertEquals(tOrderMapper.findAll().size(), 5);
+        assertEquals(1, numberOfAffectedRows);
+        assertEquals(5, tOrderMapper.findAll().size());
     }
 
     @Test
@@ -94,7 +90,7 @@ public class MapperLayerTests {
         tOrderMapper.addByNameAndUserId("Michael", 114518L);
         tOrderMapper.addByNameAndUserId("Tony", 114519L);
         int numberOfAffectedRows = tOrderMapper.deleteAll();
-        assertEquals(numberOfAffectedRows, 6);
-        assertEquals(tOrderMapper.findAll().size(), 0);
+        assertEquals(6, numberOfAffectedRows);
+        assertEquals(0, tOrderMapper.findAll().size());
     }
 }

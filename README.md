@@ -1,8 +1,9 @@
 # 演示例子
 
-大部分数据库连接为 H2Database，仅供测试。
+大部分数据库连接为 `h2database` 或通过 `testcontainers-java` 启动的 `mysql-server`，仅供测试。讨论不同情况，
 
-除开 `com.baomidou:springboot3-sample`， 其他子模块均可在 [OpenJDK 8, OpenJDK 21] 的 JDK 范围及其下游发行版下执行单元测试。
+1. `com.baomidou:springboot3-sample` 可在 [OpenJDK 17, OpenJDK 21] 的 JDK 范围及其下游发行版下执行单元测试
+2. 除开 `com.baomidou:springboot3-sample`， 其他子模块均可在 [OpenJDK 8, OpenJDK 21] 的 JDK 范围及其下游发行版下执行单元测试
 
 所有单元测试在 Github Actions 完成验证。你可能希望参考 [位于 Github Actions 的 CI 文件](./.github/workflows/ci.yml)。
 
@@ -29,14 +30,35 @@
 ## Contributing
 
 我们欢迎社区的贡献。围绕此 git 的讨论与协作应通过 https://github.com/baomidou/dynamic-datasource/issues 进行。
-
-针对 IDE，项目的语言级别应设置为 JDK 8，对于单独的 `com.baomidou:springboot3-sample` 子模块，语言级别应设置为 JDK 17 。
 在提交 Pull Request 之前, 请在本地通过 [OpenJDK 17, OpenJDK 21] 的 JDK 范围下完成此命令的验证。
-我们鼓励通过 `SDKMAN!` 切换到 `21.0.2-graalce` 来验证。
+我们鼓励通过 `SDKMAN!` 或 `version-fox/vfox` 切换到 `21.0.2-graalce` 来验证。
+
+针对 IntelliJ IDEA 等 IDE，项目的语言级别应设置为 JDK 8，对于单独的 `com.baomidou:springboot3-sample` 子模块，语言级别应设置为 JDK 17。
+下文讨论不同情况下可能的测试流程，
+
+### Ubuntu 24.04
+
+假设 `SDKMAN!` 和 `Docker Engine` 已安装，在 Bash 执行如下命令，
 
 ```shell
 sdk install java 21.0.2-graalce
 sdk use java 21.0.2-graalce
+
+git clone git@github.com:dynamic-datasource/dynamic-datasource-samples.git
+cd ./dynamic-datasource-samples/
+./mvnw -T1C -e clean test
+```
+
+### Windows 11
+
+假设 `PowerShell/PowerShell`, `version-fox/vfox`, `git-for-windows/git` 和 `rancher-sandbox/rancher-desktop` 已安装，
+在 `PowerShell 7` 执行如下命令，
+
+```shell
+rdctl start --application.start-in-background --container-engine.name=moby --kubernetes.enabled=false
+vfox add java
+vfox install java@21.0.2-graalce
+vfox use --global java@21.0.2-graalce
 
 git clone git@github.com:dynamic-datasource/dynamic-datasource-samples.git
 cd ./dynamic-datasource-samples/

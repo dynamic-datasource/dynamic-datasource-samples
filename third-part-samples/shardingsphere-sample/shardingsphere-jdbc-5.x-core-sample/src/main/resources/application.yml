@@ -4,18 +4,18 @@ spring:
     dynamic:
       datasource:
         master:
-          username: sa
-          password: ""
+          driver-class-name: org.h2.Driver
           url: jdbc:h2:mem:baomidou_master;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
-          driver-class-name: org.h2.Driver
-        test:
           username: sa
           password: ""
-          url: jdbc:h2:mem:baomidou_test;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
+        test:
           driver-class-name: org.h2.Driver
+          url: jdbc:h2:mem:baomidou_test;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
+          username: sa
+          password: ""
         shardingSphere:
-          url: jdbc:shardingsphere:classpath:config.yaml
           driver-class-name: org.apache.shardingsphere.driver.ShardingSphereDriver
+          url: jdbc:shardingsphere:classpath:config.yaml
 logging:
   level:
     com.baomidou: debug

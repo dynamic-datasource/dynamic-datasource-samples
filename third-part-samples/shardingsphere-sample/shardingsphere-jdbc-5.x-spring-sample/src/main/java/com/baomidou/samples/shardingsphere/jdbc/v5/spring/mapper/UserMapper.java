@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@SuppressWarnings("SqlNoDataSourceInspection")
 @Component
 public interface UserMapper {
     @Select("select * from t_user")

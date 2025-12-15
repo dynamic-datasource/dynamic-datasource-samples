@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 /**
- * TODO Unit tests for ShardingSphere 5.4.0 need to be synchronized
+ * TODO Unit tests for ShardingSphere 5.5.2 need to be synchronized
  */
 @Service
 public class TOrderServiceImpl implements TOrderService {
@@ -44,8 +44,7 @@ public class TOrderServiceImpl implements TOrderService {
     @Override
     @DS("shardingSphere")
     public List<TOrder> addAll() {
-        IntStream.range(0, 5)
-                .forEach(i -> tOrderMapper.addAll(i + 114514L, "测试" + i, (long) i));
+        IntStream.range(0, 5).forEach(i -> tOrderMapper.addAll(i + 114514L, "测试" + i, (long) i));
         return tOrderMapper.findAll();
     }
 }
