@@ -24,8 +24,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@SuppressWarnings("SqlNoDataSourceInspection")
 @Component
-@SuppressWarnings({"SqlDialectInspection", "SqlNoDataSourceInspection", "SqlResolve", "SqlWithoutWhere", "UnusedReturnValue"})
 public interface TOrderMapper {
     @Select("select * from t_order")
     List<TOrder> findAll();

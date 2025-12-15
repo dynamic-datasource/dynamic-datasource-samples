@@ -21,6 +21,8 @@
         <h2.version>2.2.224</h2.version>
         <spring-boot-dependencies.version>2.7.18</spring-boot-dependencies.version>
         <lombok.version>1.18.30</lombok.version>
+        <!--TODO We need to change the project's `spring-boot-dependencies.version` to 4.0.0, see https://github.com/testcontainers/testcontainers-java/issues/11236 -->
+        <testcontainers-bom.version>1.21.3</testcontainers-bom.version>
     </properties>
 
     <modules>
@@ -50,6 +52,13 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers-bom.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

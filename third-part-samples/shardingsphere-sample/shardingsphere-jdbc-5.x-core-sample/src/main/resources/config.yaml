@@ -1,23 +1,17 @@
 dataSources:
+  # TODO The use of `test_hostname` is related to https://github.com/testcontainers/testcontainers-java/issues/4121
   shardingmaster:
     dataSourceClassName: com.zaxxer.hikari.HikariDataSource
-    driverClassName: org.h2.Driver
-    jdbcUrl: jdbc:h2:mem:master;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
-    username: sa
-    password:
+    driverClassName: org.testcontainers.jdbc.ContainerDatabaseDriver
+    jdbcUrl: jdbc:tc:mysql:8.4.7-oraclelinux9://test_hostname/master?TC_INITSCRIPT=db/schema.sql
   shardingslave0:
     dataSourceClassName: com.zaxxer.hikari.HikariDataSource
-    driverClassName: org.h2.Driver
-    jdbcUrl: jdbc:h2:mem:slave1;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
-    username: sa
-    password:
+    driverClassName: org.testcontainers.jdbc.ContainerDatabaseDriver
+    jdbcUrl: jdbc:tc:mysql:8.4.7-oraclelinux9://test_hostname/slave1?TC_INITSCRIPT=db/schema.sql
   shardingslave1:
     dataSourceClassName: com.zaxxer.hikari.HikariDataSource
-    driverClassName: org.h2.Driver
-    jdbcUrl: jdbc:h2:mem:slave2;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
-    username: sa
-    password:
-    
+    driverClassName: org.testcontainers.jdbc.ContainerDatabaseDriver
+    jdbcUrl: jdbc:tc:mysql:8.4.7-oraclelinux9://test_hostname/slave2?TC_INITSCRIPT=db/schema.sql
 rules:
 - !SHARDING
   tables:
@@ -34,8 +28,7 @@ rules:
     baomidou_inline:
       type: INLINE
       props:
-        # TODO Affected by https://github.com/apache/shardingsphere/issues/27955 .
-        algorithm-expression: t_order$->{ORDER_ID % 2}
+        algorithm-expression: t_order$->{order_id % 2}
         allow-range-query-with-inline-sharding: true
   keyGenerators:
     baomidou_snowflake:
@@ -54,6 +47,5 @@ rules:
 - !SINGLE
   tables:
     - "*.*"
-
 props:
   sql-show: true

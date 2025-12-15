@@ -25,7 +25,7 @@ jobs:
           cache: 'maven'
       - name: Build all test with Maven
         run: |
-          ./mvnw -T1C -B -e clean test
+          ./mvnw -T1C -e clean test
   test-minimum-hotspot-jdk-ci:
     name: Test CI - JDK ${{ matrix.java-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -50,6 +50,6 @@ jobs:
           ./mvnw -am -pl orm-samples/mybatis-sample -T1C -B -e clean test
       - name: Build third-part test with Maven
         run: |
-          ./mvnw -am -pl third-part-samples/shardingsphere-sample/shardingsphere-jdbc-4.x-spring-sample -T1C -B -e clean test
-          ./mvnw -am -pl third-part-samples/shardingsphere-sample/shardingsphere-jdbc-5.x-core-sample -T1C -B -e clean test
-          ./mvnw -am -pl third-part-samples/shardingsphere-sample/shardingsphere-jdbc-5.x-spring-sample -T1C -B -e clean test
+          ./mvnw -am -pl third-part-samples/shardingsphere-sample/shardingsphere-jdbc-4.x-spring-sample -T1C -e clean test
+          ./mvnw -am -pl third-part-samples/shardingsphere-sample/shardingsphere-jdbc-5.x-core-sample -T1C -e clean test
+          ./mvnw -am -pl third-part-samples/shardingsphere-sample/shardingsphere-jdbc-5.x-spring-sample -T1C -e clean test

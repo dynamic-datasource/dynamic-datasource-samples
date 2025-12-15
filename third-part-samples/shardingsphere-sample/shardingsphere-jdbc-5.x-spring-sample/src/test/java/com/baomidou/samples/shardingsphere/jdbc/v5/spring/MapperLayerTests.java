@@ -31,8 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * TODO Unit tests for ShardingSphere 5.4.0 need to be synchronized.
- *  Tracked on <a href="https://github.com/apache/shardingsphere/issues/27955">When a logic database uses both `SHARDING` and `READWRITE_SPLITTING` features, CRUD operations on table throw `NoSuchTableException`</a>
+ * TODO Unit tests for ShardingSphere 5.5.2 need to be synchronized.
  */
 @SpringBootTest
 public class MapperLayerTests {
@@ -52,21 +51,21 @@ public class MapperLayerTests {
 
     @Test
     void whenRequestToFindAll() {
-        assertEquals(tOrderMapper.findAll().size(), 0);
+        assertEquals(0, tOrderMapper.findAll().size());
     }
 
     @Test
     void whenRequestToAddByNameAndUserId() {
         int firstNumberOfAffectedRows = tOrderMapper.addAll(101L, "Bright", 114514L);
         int secondNumberOfAffectedRows = tOrderMapper.addAll(102L, "Jordan", 114515L);
-        assertEquals(firstNumberOfAffectedRows + secondNumberOfAffectedRows, 2);
-        assertEquals(tOrderMapper.findAll().size(), 2);
+        assertEquals(2, firstNumberOfAffectedRows + secondNumberOfAffectedRows);
+        assertEquals(2, tOrderMapper.findAll().size());
     }
 
     @Test
     void whenRequestToAddByNameAndUserIdWithPrimaryKey() {
         List<TOrder> emptyState = tOrderMapper.findAll();
-        assertEquals(emptyState.size(), 0);
+        assertEquals(0, emptyState.size());
         assertThrows(UncategorizedSQLException.class, () -> {
             tOrderMapper.addByNameAndUserId("Bright", 114514L);
             tOrderMapper.addByNameAndUserId("Jordan", 114515L);
@@ -82,8 +81,8 @@ public class MapperLayerTests {
         tOrderMapper.addAll(105L, "Michael", 114518L);
         tOrderMapper.addAll(106L, "Tony", 114519L);
         int numberOfAffectedRows = tOrderMapper.deleteById(114514L);
-        assertEquals(numberOfAffectedRows, 1);
-        assertEquals(tOrderMapper.findAll().size(), 5);
+        assertEquals(1, numberOfAffectedRows);
+        assertEquals(5, tOrderMapper.findAll().size());
     }
 
     @Test
@@ -95,7 +94,7 @@ public class MapperLayerTests {
         tOrderMapper.addAll(105L, "Michael", 114518L);
         tOrderMapper.addAll(106L, "Tony", 114519L);
         int numberOfAffectedRows = tOrderMapper.deleteAll();
-        assertEquals(numberOfAffectedRows, 6);
-        assertEquals(tOrderMapper.findAll().size(), 0);
+        assertEquals(6, numberOfAffectedRows);
+        assertEquals(0, tOrderMapper.findAll().size());
     }
 }
