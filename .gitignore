@@ -24,5 +24,6 @@ target
 /nbdist/
 /.nb-gradle/
 
-### We don't want to check in any binaries in Git ###
+# We don't want to check in any binaries in Git
 **/.mvn/wrapper/maven-wrapper.jar
+.vscode/
