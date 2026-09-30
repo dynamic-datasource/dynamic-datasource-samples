@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.baomidou</groupId>
+        <artifactId>dynamic-datasource-samples</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>spring-boot-4-samples</artifactId>
+    <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>17</java.version>
+
+        <ds.version>4.5.0</ds.version>
+        <mybatis-spring-boot-starter.version>4.0.0</mybatis-spring-boot-starter.version>
+        <mybatis-plus.version>3.5.17</mybatis-plus.version>
+        <druid.version>1.2.28</druid.version>
+        <p6spy.version>3.9.1</p6spy.version>
+        <h2.version>2.3.232</h2.version>
+        <spring-boot-dependencies.version>4.0.0</spring-boot-dependencies.version>
+        <spring-cloud-dependencies.version>2025.1.0</spring-cloud-dependencies.version>
+        <springdoc-openapi.version>3.0.3</springdoc-openapi.version>
+        <alibaba-nacos-config.version>2025.1.0.0</alibaba-nacos-config.version>
+        <lombok.version>1.18.38</lombok.version>
+        <testcontainers-bom.version>2.0.5</testcontainers-bom.version>
+    </properties>
+
+    <modules>
+        <module>add-remove-datasource-sample</module>
+        <module>beetlsql-sample</module>
+        <module>config-consul-sample</module>
+        <module>config-nacos-sample</module>
+        <module>druid-sample</module>
+        <module>jdbc-template-sample</module>
+        <module>load-datasource-from-jdbc-sample</module>
+        <module>mybatis-sample</module>
+        <module>mybatisplus3-sample</module>
+        <module>name-pattern-sample</module>
+        <module>quartz-sample</module>
+        <module>shardingsphere-jdbc-5.x-core-sample</module>
+        <module>shardingsphere-jdbc-5.x-spring-sample</module>
+        <module>spel-sample</module>
+        <module>tx-local-sample</module>
+        <module>tx-seata-sample</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <!--Must precede spring-boot-dependencies so its testcontainers version wins:
+                Boot 4.0.0 manages an older testcontainers line (see testcontainers-java#11236).-->
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot4-starter</artifactId>
+                <version>${ds.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc-openapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-alibaba-nacos-config</artifactId>
+                <version>${alibaba-nacos-config.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis-spring-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-4-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-spring-boot4-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>p6spy</groupId>
+                <artifactId>p6spy</artifactId>
+                <version>${p6spy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

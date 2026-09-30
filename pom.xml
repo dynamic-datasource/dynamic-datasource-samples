@@ -12,93 +12,16 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
-
-        <ds.version>4.3.1</ds.version>
-        <mybatis-spring-boot-starter.version>2.3.1</mybatis-spring-boot-starter.version>
-        <druid.version>1.2.27</druid.version>
-        <p6spy.version>3.9.1</p6spy.version>
-        <h2.version>2.2.224</h2.version>
-        <spring-boot-dependencies.version>2.7.18</spring-boot-dependencies.version>
-        <lombok.version>1.18.30</lombok.version>
-        <!--TODO We need to change the project's `spring-boot-dependencies.version` to 4.0.0, see https://github.com/testcontainers/testcontainers-java/issues/11236 -->
-        <testcontainers-bom.version>1.21.3</testcontainers-bom.version>
+        <!--默认值，各 spring-boot-* 聚合模块会按自己的 Boot 版本线覆盖。-->
+        <java.version>17</java.version>
+        <lombok.version>1.18.38</lombok.version>
     </properties>
 
     <modules>
-        <module>orm-samples</module>
-        <module>tx-samples</module>
-        <module>config-samples</module>
-        <module>datasource-samples</module>
-        <module>no-ds-samples</module>
-        <module>third-part-samples</module>
-        <module>features-samples</module>
-        <module>springboot3-sample</module>
+        <module>spring-boot-2</module>
+        <module>spring-boot-3</module>
+        <module>spring-boot-4</module>
     </modules>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-                <version>${ds.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>dynamic-datasource-spring-boot3-starter</artifactId>
-                <version>${ds.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot-dependencies.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>testcontainers-bom</artifactId>
-                <version>${testcontainers-bom.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-ui</artifactId>
-                <version>1.7.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.mybatis.spring.boot</groupId>
-                <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis-spring-boot-starter.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid</artifactId>
-                <version>${druid.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid-spring-boot-starter</artifactId>
-                <version>${druid.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid-spring-boot-3-starter</artifactId>
-                <version>${druid.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>p6spy</groupId>
-                <artifactId>p6spy</artifactId>
-                <version>${p6spy.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <version>${h2.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <build>
         <plugins>
@@ -109,6 +32,10 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <!--生成方法参数名（与 spring-boot-starter-parent 的默认行为一致）。
+                        新版 javac 不再把未使用的参数保留在 LocalVariableTable 中，
+                        而 SpEL 的 `#paramName` 解析（例如 @DS("#tenantName")）依赖参数名。-->
+                    <parameters>true</parameters>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -123,7 +50,7 @@
                 <artifactId>license-maven-plugin</artifactId>
                 <version>4.2</version>
                 <configuration>
-                    <header>${user.dir}/license.txt</header>
+                    <header>${maven.multiModuleProjectDirectory}/license.txt</header>
                     <includes>
                         <include>src/main/java/**</include>
                         <include>src/test/java/**</include>
