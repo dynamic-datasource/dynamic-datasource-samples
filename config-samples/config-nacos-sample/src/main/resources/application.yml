@@ -1,3 +1,0 @@
-nacos:
-  config:
-    server-addr: 110.40.253.205:8848

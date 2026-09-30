@@ -1,0 +1,3 @@
+CREATE SCHEMA IF NOT EXISTS seata_order;
+CREATE SCHEMA IF NOT EXISTS seata_account;
+CREATE SCHEMA IF NOT EXISTS seata_product;

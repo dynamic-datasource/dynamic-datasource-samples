@@ -10,7 +10,8 @@ jobs:
   test-hotspot-jdk-ci:
     name: Test CI - JDK ${{ matrix.java-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 60
+    # 集成测试要拉取较大的镜像（nacos/seata/mysql/postgres/consul），冷缓存时多留一些时间。
+    timeout-minutes: 120
     strategy:
       matrix:
         os: [ 'ubuntu-latest' ]
@@ -42,14 +43,8 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ matrix.java-version }}
           cache: 'maven'
-      - name: Build datasource test with Maven
+      - name: Build spring-boot-2 samples with Maven
+        # 主代码保持 Java 8 兼容；测试需要 testcontainers 2.x（加载要求 Java 17+），
+        # 因此 JDK 8 任务只做编译验证，测试在上面的 JDK 17/21 任务中执行。
         run: |
-          ./mvnw -am -pl datasource-samples/druid-sample -T1C -B -e clean test
-      - name: Build orm test with Maven
-        run: |
-          ./mvnw -am -pl orm-samples/mybatis-sample -T1C -B -e clean test
-      - name: Build third-part test with Maven
-        run: |
-          ./mvnw -am -pl third-part-samples/shardingsphere-sample/shardingsphere-jdbc-4.x-spring-sample -T1C -e clean test
-          ./mvnw -am -pl third-part-samples/shardingsphere-sample/shardingsphere-jdbc-5.x-core-sample -T1C -e clean test
-          ./mvnw -am -pl third-part-samples/shardingsphere-sample/shardingsphere-jdbc-5.x-spring-sample -T1C -e clean test
+          ./mvnw -am -pl spring-boot-2/shardingsphere-jdbc-4.x-spring-sample -T1C -B -e clean compile

@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: dynamic-datasource-nacos-sample
+  # 按 https://nacos.io/docs/latest/ecology/use-nacos-with-spring-boot3/ 的官方用法，
+  # 通过 spring.config.import 把 Nacos 上的配置作为属性源（无需 bootstrap 依赖）。
+  config:
+    import: nacos:dynamic-datasource.yaml?group=DEFAULT_GROUP
+  nacos:
+    config:
+      server-addr: 127.0.0.1:8848
