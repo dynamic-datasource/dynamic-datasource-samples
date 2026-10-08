@@ -1,0 +1,3 @@
+CREATE SCHEMA IF NOT EXISTS local_order;
+CREATE SCHEMA IF NOT EXISTS local_account;
+CREATE SCHEMA IF NOT EXISTS local_product;
