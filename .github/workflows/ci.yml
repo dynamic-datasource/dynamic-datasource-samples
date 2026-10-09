@@ -10,8 +10,7 @@ jobs:
   test-hotspot-jdk-ci:
     name: Test CI - JDK ${{ matrix.java-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    # 集成测试要拉取较大的镜像（nacos/seata/mysql/postgres/consul），冷缓存时多留一些时间。
-    timeout-minutes: 120
+    timeout-minutes: 60
     strategy:
       matrix:
         os: [ 'ubuntu-latest' ]
@@ -44,7 +43,5 @@ jobs:
           java-version: ${{ matrix.java-version }}
           cache: 'maven'
       - name: Build spring-boot-2 samples with Maven
-        # 主代码保持 Java 8 兼容；测试需要 testcontainers 2.x（加载要求 Java 17+），
-        # 因此 JDK 8 任务只做编译验证，测试在上面的 JDK 17/21 任务中执行。
         run: |
-          ./mvnw -am -pl spring-boot-2/shardingsphere-jdbc-4.x-spring-sample -T1C -B -e clean compile
+          ./mvnw -am -pl spring-boot-2/shardingsphere-jdbc-4.x-spring-sample,spring-boot-2/shardingsphere-jdbc-5.x-spring-sample -T1C -B -e clean test

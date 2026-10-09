@@ -20,11 +20,6 @@ spring:
         jdbc-url: jdbc:h2:mem:slave2;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
         username: sa
         password: ""
-    masterslave:
-      name: baomidou_readwrite_data_sources
-      load-balance-algorithm-type: round_robin
-      master-data-source-name: shardingmaster
-      slave-data-source-names: shardingslave0,shardingslave1
     sharding:
       tables:
         t_order:

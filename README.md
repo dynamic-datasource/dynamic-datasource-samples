@@ -26,8 +26,6 @@
 - name-pattern-sample 自定义切面的使用示例
 - quartz-sample 多数据源集成quartz示例
 - shardingsphere-jdbc-5.x-core-sample 集成 ShardingSphere JDBC Driver 5.5.2 使用示例
-- shardingsphere-jdbc-5.x-spring-sample 集成 ShardingSphere JDBC Driver 5.5.2 使用示例，
-  参考 https://github.com/apache/shardingsphere/issues/22469
 - spel-sample 动态从外部参数spel来切换数据源的使用示例
 - tx-local-sample 本地事务示例项目★★★★★★必看★★★★★★
 - tx-seata-sample 基于seata的分布式事务集成使用示例
@@ -38,16 +36,16 @@
 
 ## Spring Boot 2（`spring-boot-2/`）
 
-以下示例暂时无法迁移到高版本，予以保留：
-
-- shardingsphere-jdbc-4.x-spring-sample 集成 ShardingSphere JDBC Spring Boot Starter 4.1.1 使用示例, 不再维护,
+- shardingsphere-jdbc-4.x-spring-sample 集成 ShardingSphere JDBC Spring Boot Starter 4.1.1 使用示例, 不再维护，
   参考 https://github.com/apache/shardingsphere/releases/tag/5.0.0-alpha
+- shardingsphere-jdbc-5.x-spring-sample 集成 ShardingSphere JDBC Spring Boot Starter 5.2.1 使用示例，不再维护，
+  参考 https://github.com/apache/shardingsphere/issues/22469
 
 ## 单元测试说明
 
 - 纯 H2 的模块（`mybatisplus3-sample`、`beetlsql-sample`、`jdbc-template-sample`、`name-pattern-sample`、
   `add-remove-datasource-sample`、`load-datasource-from-jdbc-sample`、`druid-sample`、`spel-sample`、
-  `shardingsphere-jdbc-5.x-spring-sample`）可直接 `mvn test`，无需外部服务。
+  `shardingsphere-jdbc-4.x-spring-sample`、`shardingsphere-jdbc-5.x-spring-sample`）可直接 `mvn test`，无需外部服务。
 - 涉及外部中间件的模块使用 [Testcontainers](https://java.testcontainers.org/) 在测试中启动容器，
   本地与 CI 运行测试都需要可用的 Docker 环境：
   - `quartz-sample`：`mysql:8.4.7-oraclelinux9`
@@ -57,8 +55,9 @@
   - `config-nacos-sample`：`nacos/nacos-server:v3.2.4`（新版 starter 内含 3.x 客户端，走 gRPC，
     发布走 v3 运维 API，测试按实际映射端口动态计算 `nacos.server.grpc.port.offset`）
   - `shardingsphere-jdbc-5.x-core-sample`：`mysql:8.4.7-oraclelinux9`
-- `spring-boot-2` 下模块的主代码保持 Java 8 兼容，因此 JDK 8 的 CI 任务仅做 `clean compile`，
-  完整测试在 JDK 17/21 任务中执行。
+- `spring-boot-2` 下模块的主代码保持 Java 8 兼容，配套使用 testcontainers 1.x（2.x 要求 Java 17+），
+  因此 JDK 8 的 CI 任务直接对 `shardingsphere-jdbc-4.x-spring-sample` 与 `shardingsphere-jdbc-5.x-spring-sample` 执行 `clean test`；
+  JDK 17/21 的全量 `clean test` 同样覆盖这两个模块。
 
 ## Contributing
 

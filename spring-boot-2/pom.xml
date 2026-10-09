@@ -28,14 +28,24 @@
         <h2.version>2.2.224</h2.version>
         <spring-boot-dependencies.version>2.7.18</spring-boot-dependencies.version>
         <lombok.version>1.18.38</lombok.version>
+        <!--Java 8 模块只能用 testcontainers 1.x（2.x 要求 Java 17+），与 spring-boot-4 的 2.0.5 分开管理。-->
+        <testcontainers-bom.version>1.21.3</testcontainers-bom.version>
     </properties>
 
     <modules>
         <module>shardingsphere-jdbc-4.x-spring-sample</module>
+        <module>shardingsphere-jdbc-5.x-spring-sample</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
