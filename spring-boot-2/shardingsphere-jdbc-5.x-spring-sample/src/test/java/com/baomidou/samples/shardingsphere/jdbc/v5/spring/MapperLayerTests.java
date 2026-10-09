@@ -23,7 +23,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.jdbc.UncategorizedSQLException;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * 单元测试已按 ShardingSphere 5.5.2 driver 模式同步。
+ * TODO Unit tests for ShardingSphere 5.5.2 need to be synchronized.
  */
 @SpringBootTest
 public class MapperLayerTests {
@@ -66,7 +66,7 @@ public class MapperLayerTests {
     void whenRequestToAddByNameAndUserIdWithPrimaryKey() {
         List<TOrder> emptyState = tOrderMapper.findAll();
         assertEquals(0, emptyState.size());
-        assertThrows(DataIntegrityViolationException.class, () -> {
+        assertThrows(UncategorizedSQLException.class, () -> {
             tOrderMapper.addByNameAndUserId("Bright", 114514L);
             tOrderMapper.addByNameAndUserId("Jordan", 114515L);
         });

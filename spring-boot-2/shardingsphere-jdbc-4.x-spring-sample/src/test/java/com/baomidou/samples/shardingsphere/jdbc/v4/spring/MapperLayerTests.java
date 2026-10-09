@@ -20,11 +20,10 @@ import com.baomidou.samples.shardingsphere.jdbc.v4.spring.entity.TOrder;
 import com.baomidou.samples.shardingsphere.jdbc.v4.spring.mapper.TOrderMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.UncategorizedSQLException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 
@@ -35,7 +34,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * TODO Unit tests for ShardingSphere 5.4.0 need to be synchronized.
  */
 @SpringBootTest
-@Disabled("TODO wait for com.baomidou:dynamic-datasource-spring-boot-starter:4.2.0 release")
 public class MapperLayerTests {
     @Autowired
     TOrderMapper tOrderMapper;
@@ -68,7 +66,7 @@ public class MapperLayerTests {
     void whenRequestToAddByNameAndUserIdWithPrimaryKey() {
         List<TOrder> emptyState = tOrderMapper.findAll();
         assertEquals(0, emptyState.size());
-        assertThrows(UncategorizedSQLException.class, () -> {
+        assertThrows(DataIntegrityViolationException.class, () -> {
             tOrderMapper.addByNameAndUserId("Bright", 114514L);
             tOrderMapper.addByNameAndUserId("Jordan", 114515L);
         });

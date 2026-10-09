@@ -45,7 +45,6 @@
         <module>name-pattern-sample</module>
         <module>quartz-sample</module>
         <module>shardingsphere-jdbc-5.x-core-sample</module>
-        <module>shardingsphere-jdbc-5.x-spring-sample</module>
         <module>spel-sample</module>
         <module>tx-local-sample</module>
         <module>tx-seata-sample</module>
@@ -53,8 +52,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <!--Must precede spring-boot-dependencies so its testcontainers version wins:
-                Boot 4.0.0 manages an older testcontainers line (see testcontainers-java#11236).-->
             <dependency>
                 <groupId>org.testcontainers</groupId>
                 <artifactId>testcontainers-bom</artifactId>

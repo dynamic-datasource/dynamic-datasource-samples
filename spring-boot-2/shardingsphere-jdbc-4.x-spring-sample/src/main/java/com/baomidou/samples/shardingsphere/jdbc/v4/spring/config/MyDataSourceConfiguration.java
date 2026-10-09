@@ -40,7 +40,7 @@ public class MyDataSourceConfiguration {
 
     //    private final DataSource encryptDataSource;
 
-    private final DataSource masterSlaveDataSource;
+//    private final DataSource masterSlaveDataSource;
 
     //    private final DataSource shadowDataSource;
 
@@ -64,8 +64,7 @@ public class MyDataSourceConfiguration {
      */
     public MyDataSourceConfiguration(DynamicDataSourceProperties properties, DefaultDataSourceCreator dataSourceCreator,
 //                                     @Lazy @Qualifier("encryptDataSource") DataSource encryptDataSource,
-                                     @Lazy
-                                     @Qualifier("masterSlaveDataSource") DataSource masterSlaveDataSource,
+//                                     @Lazy @Qualifier("masterSlaveDataSource") DataSource masterSlaveDataSource,
 //                                     @Lazy @Qualifier("shadowDataSource") DataSource shadowDataSource,
                                      @Lazy
                                      @Qualifier("shardingDataSource") DataSource shardingDataSource
@@ -73,7 +72,7 @@ public class MyDataSourceConfiguration {
         this.properties = properties;
         this.dataSourceCreator = dataSourceCreator;
 //        this.encryptDataSource = encryptDataSource;
-        this.masterSlaveDataSource = masterSlaveDataSource;
+//        this.masterSlaveDataSource = masterSlaveDataSource;
 //        this.shadowDataSource = shadowDataSource;
         this.shardingDataSource = shardingDataSource;
     }
@@ -86,7 +85,7 @@ public class MyDataSourceConfiguration {
             public Map<String, DataSource> loadDataSources() {
                 Map<String, DataSource> dataSourceMap = new HashMap<>();
 //                dataSourceMap.put("encryptDataSourceInShardingSphere", encryptDataSource);
-                dataSourceMap.put("masterSlaveDataSourceInShardingSphere", masterSlaveDataSource);
+//                dataSourceMap.put("masterSlaveDataSourceInShardingSphere", masterSlaveDataSource);
 //                dataSourceMap.put("shadowDataSourceInShardingSphere", shadowDataSource);
                 dataSourceMap.put("shardingDataSourceInShardingSphere", shardingDataSource);
                 return dataSourceMap;

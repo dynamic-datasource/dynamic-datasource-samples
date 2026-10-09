@@ -3,22 +3,23 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>spring-boot-4-samples</artifactId>
+        <artifactId>spring-boot-2-samples</artifactId>
         <groupId>com.baomidou</groupId>
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>shardingsphere-jdbc-5.x-spring-sample</artifactId>
     <properties>
-        <shardingsphere.version>5.5.2</shardingsphere.version>
-        <guava.version>33.4.6-jre</guava.version>
+        <shardingsphere.version>5.2.1</shardingsphere.version>
+        <!--On ShardingSphere JDBC 5.2.1 we have to use the Java API of SnakeYAML 1.33-->
+        <snakeyaml.version>1.33</snakeyaml.version>
     </properties>
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>${snakeyaml.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -39,7 +40,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -55,16 +56,16 @@
 
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
-            <artifactId>shardingsphere-jdbc</artifactId>
+            <artifactId>shardingsphere-jdbc-core-spring-boot-starter</artifactId>
             <version>${shardingsphere.version}</version>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>dynamic-datasource-spring-boot4-starter</artifactId>
+            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <artifactId>springdoc-openapi-ui</artifactId>
         </dependency>
     </dependencies>
 </project>
