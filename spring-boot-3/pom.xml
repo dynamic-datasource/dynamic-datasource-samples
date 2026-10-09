@@ -21,9 +21,7 @@
         <ds.version>4.5.0</ds.version>
         <mybatis-spring-boot-starter.version>3.0.3</mybatis-spring-boot-starter.version>
         <druid.version>1.2.28</druid.version>
-        <h2.version>2.2.224</h2.version>
-        <spring-boot-dependencies.version>3.5.6</spring-boot-dependencies.version>
-        <lombok.version>1.18.38</lombok.version>
+        <spring-boot-dependencies.version>3.5.16</spring-boot-dependencies.version>
     </properties>
 
     <modules>
@@ -58,11 +56,6 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-3-starter</artifactId>
                 <version>${druid.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <version>${h2.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
