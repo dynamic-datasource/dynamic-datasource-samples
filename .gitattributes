@@ -1,0 +1,7 @@
+# 提交内容统一按 LF 规范化；检出的文本文件默认也使用 LF（覆盖 core.autocrlf 平台默认行为）。
+* text=auto eol=lf
+
+# Windows 批处理脚本保持 CRLF：mvnw.cmd 是 cmd / PowerShell polyglot 脚本，
+# cmd.exe 对 LF 行尾批处理的解析存在兼容风险。
+*.cmd text eol=crlf
+*.bat text eol=crlf

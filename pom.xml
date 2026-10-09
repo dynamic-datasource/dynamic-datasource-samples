@@ -14,7 +14,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!--默认值，各 spring-boot-* 聚合模块会按自己的 Boot 版本线覆盖。-->
         <java.version>17</java.version>
-        <lombok.version>1.18.38</lombok.version>
+        <!--JDK 27 要求 Lombok 1.18.48+，而各版本线的 Spring Boot BOM（目前最多管理到 1.18.46），
+            因此在根模块统一定义并覆盖，各子模块的 Lombok 依赖与注解处理器均使用该版本。-->
+        <lombok.version>1.18.48</lombok.version>
     </properties>
 
     <modules>
@@ -23,12 +25,22 @@
         <module>spring-boot-4</module>
     </modules>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <version>3.16.0</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -36,11 +48,12 @@
                         新版 javac 不再把未使用的参数保留在 LocalVariableTable 中，
                         而 SpEL 的 `#paramName` 解析（例如 @DS("#tenantName")）依赖参数名。-->
                     <parameters>true</parameters>
+                    <!--Lombok 版本交由各模块 dependencyManagement（Spring Boot BOM 或显式覆盖）决定，
+                        maven-compiler-plugin 3.12.0+ 支持不写版本（MCOMPILER-391）。-->
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
