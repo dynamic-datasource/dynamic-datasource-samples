@@ -12,7 +12,7 @@
     <properties>
         <shardingsphere.version>5.2.1</shardingsphere.version>
         <!--On ShardingSphere JDBC 5.2.1 we have to use the Java API of SnakeYAML 1.33-->
-        <snakeyaml.version>1.33</snakeyaml.version>
+        <snakeyaml.version>2.0</snakeyaml.version>
     </properties>
     <dependencyManagement>
         <dependencies>
