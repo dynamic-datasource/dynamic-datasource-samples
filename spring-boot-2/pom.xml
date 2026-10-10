@@ -28,7 +28,7 @@
         <testcontainers-bom.version>2.0.5</testcontainers-bom.version>
         <jackson-bom.version>2.20.1</jackson-bom.version>
         <!--testcontainers 2.x 经 commons-compress 用到 lang3 3.14+ 的 ArrayFill，Boot 2.7 只给 3.12.0，这里显式升级。-->
-        <commons-lang3.version>3.17.0</commons-lang3.version>
+        <commons-lang3.version>3.18.0</commons-lang3.version>
     </properties>
 
     <modules>
