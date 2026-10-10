@@ -17,8 +17,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-
-        <ds.version>4.5.0</ds.version>
         <mybatis-spring-boot-starter.version>2.3.1</mybatis-spring-boot-starter.version>
         <!--Boot 2.7.x 已 EOL，其 BOM 管理 H2 2.1.x，这里显式使用较新的 2.2.x。-->
         <h2.version>2.2.224</h2.version>

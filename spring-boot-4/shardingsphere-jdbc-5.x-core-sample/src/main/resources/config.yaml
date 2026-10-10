@@ -3,15 +3,15 @@ dataSources:
   shardingmaster:
     dataSourceClassName: com.zaxxer.hikari.HikariDataSource
     driverClassName: org.testcontainers.jdbc.ContainerDatabaseDriver
-    jdbcUrl: jdbc:tc:mysql:8.4.7-oraclelinux9://test_hostname/master?TC_INITSCRIPT=db/schema.sql
+    jdbcUrl: jdbc:tc:mysql:26.7.0-oraclelinux9://test_hostname/master?TC_INITSCRIPT=db/schema.sql
   shardingslave0:
     dataSourceClassName: com.zaxxer.hikari.HikariDataSource
     driverClassName: org.testcontainers.jdbc.ContainerDatabaseDriver
-    jdbcUrl: jdbc:tc:mysql:8.4.7-oraclelinux9://test_hostname/slave1?TC_INITSCRIPT=db/schema.sql
+    jdbcUrl: jdbc:tc:mysql:26.7.0-oraclelinux9://test_hostname/slave1?TC_INITSCRIPT=db/schema.sql
   shardingslave1:
     dataSourceClassName: com.zaxxer.hikari.HikariDataSource
     driverClassName: org.testcontainers.jdbc.ContainerDatabaseDriver
-    jdbcUrl: jdbc:tc:mysql:8.4.7-oraclelinux9://test_hostname/slave2?TC_INITSCRIPT=db/schema.sql
+    jdbcUrl: jdbc:tc:mysql:26.7.0-oraclelinux9://test_hostname/slave2?TC_INITSCRIPT=db/schema.sql
 rules:
 - !SHARDING
   tables:

@@ -44,7 +44,7 @@ class LocalTxSampleTest {
 
     @Container
     static PostgreSQLContainer<?> postgres =
-            new PostgreSQLContainer<>(DockerImageName.parse("postgres:16-alpine"))
+            new PostgreSQLContainer<>(DockerImageName.parse("postgres:18.6-trixie"))
                     .withInitScript("db/postgresql/init-schemas.sql");
 
     @DynamicPropertySource
