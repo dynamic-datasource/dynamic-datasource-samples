@@ -16,8 +16,6 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-boot-dependencies.version>3.5.6</spring-boot-dependencies.version>
-        <mybatis-spring-boot-starter.version>3.0.3</mybatis-spring-boot-starter.version>
     </properties>
 
     <dependencies>
@@ -32,7 +30,6 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.8.13</version>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -41,7 +38,6 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
-            <version>3.5.14</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -64,7 +60,7 @@
             <plugin>
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
-                <version>0.9.28</version>
+                <version>${native-maven-plugin.version}</version>
                 <configuration>
                     <buildArgs combine.children="append">
                         <buildArg>--enable-preview</buildArg>

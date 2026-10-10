@@ -21,8 +21,14 @@
         <!--Boot 2.7.x 已 EOL，其 BOM 管理 H2 2.1.x，这里显式使用较新的 2.2.x。-->
         <h2.version>2.2.224</h2.version>
         <spring-boot-dependencies.version>2.7.18</spring-boot-dependencies.version>
-        <!--Java 8 模块只能用 testcontainers 1.x（2.x 要求 Java 17+），与 spring-boot-4 的 2.0.5 分开管理。-->
-        <testcontainers-bom.version>1.21.3</testcontainers-bom.version>
+        <!--spring-boot-2 与 spring-boot-4 统一使用 testcontainers 2.0.5。
+            2.x 经 docker-java 3.7.1 要求较新的 Jackson，全家由 jackson-bom 显式 import 统一锁定；
+            又经 commons-compress 用到 lang3 3.14+ 的 ArrayFill，一并显式升级。
+            两处 pin 都必须保持在 spring-boot-dependencies 之前（first import wins）。-->
+        <testcontainers-bom.version>2.0.5</testcontainers-bom.version>
+        <jackson-bom.version>2.20.1</jackson-bom.version>
+        <!--testcontainers 2.x 经 commons-compress 用到 lang3 3.14+ 的 ArrayFill，Boot 2.7 只给 3.12.0，这里显式升级。-->
+        <commons-lang3.version>3.17.0</commons-lang3.version>
     </properties>
 
     <modules>
@@ -35,6 +41,19 @@
 
     <dependencyManagement>
         <dependencies>
+            <!--必须放在 spring-boot-dependencies 之前：first import wins，全家锁定同一 Jackson 版本，避免偏斜。-->
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.testcontainers</groupId>
                 <artifactId>testcontainers-bom</artifactId>

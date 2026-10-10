@@ -31,7 +31,6 @@
         <dependency>
             <groupId>com.ibeetl</groupId>
             <artifactId>sql-springboot4-starter</artifactId>
-            <version>3.40.0-RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>

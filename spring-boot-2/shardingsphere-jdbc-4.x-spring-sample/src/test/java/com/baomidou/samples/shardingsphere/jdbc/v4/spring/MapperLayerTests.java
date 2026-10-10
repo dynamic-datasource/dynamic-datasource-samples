@@ -15,8 +15,8 @@
  */
 package com.baomidou.samples.shardingsphere.jdbc.v4.spring;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.baomidou.samples.shardingsphere.jdbc.v4.spring.entity.TOrder;
@@ -27,9 +27,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 
-/** TODO Unit tests for ShardingSphere 5.4.0 need to be synchronized. */
 @SpringBootTest
 public class MapperLayerTests {
     @Autowired TOrderMapper tOrderMapper;
@@ -52,8 +50,8 @@ public class MapperLayerTests {
 
     @Test
     void whenRequestToAddByNameAndUserId() {
-        int firstNumberOfAffectedRows = tOrderMapper.addAll(101L, "Bright", 114514L);
-        int secondNumberOfAffectedRows = tOrderMapper.addAll(102L, "Jordan", 114515L);
+        int firstNumberOfAffectedRows = tOrderMapper.addByNameAndUserId("Bright", 114514L);
+        int secondNumberOfAffectedRows = tOrderMapper.addByNameAndUserId("Jordan", 114515L);
         assertEquals(2, firstNumberOfAffectedRows + secondNumberOfAffectedRows);
         assertEquals(2, tOrderMapper.findAll().size());
     }
@@ -62,22 +60,21 @@ public class MapperLayerTests {
     void whenRequestToAddByNameAndUserIdWithPrimaryKey() {
         List<TOrder> emptyState = tOrderMapper.findAll();
         assertEquals(0, emptyState.size());
-        assertThrows(
-                DataIntegrityViolationException.class,
+        assertDoesNotThrow(
                 () -> {
-                    tOrderMapper.addByNameAndUserId("Bright", 114514L);
-                    tOrderMapper.addByNameAndUserId("Jordan", 114515L);
+                    tOrderMapper.addAll(114514L, "Bright", 114514L);
+                    tOrderMapper.addAll(114515L, "Jordan", 114515L);
                 });
     }
 
     @Test
-    void whenRequestToDeleteByIdTest() {
-        tOrderMapper.addAll(101L, "Bright", 114514L);
-        tOrderMapper.addAll(102L, "Jordan", 114515L);
-        tOrderMapper.addAll(103L, "Lemon", 114516L);
-        tOrderMapper.addAll(104L, "Jack", 114517L);
-        tOrderMapper.addAll(105L, "Michael", 114518L);
-        tOrderMapper.addAll(106L, "Tony", 114519L);
+    void whenRequestToDeleteById() {
+        tOrderMapper.addByNameAndUserId("Bright", 114514L);
+        tOrderMapper.addByNameAndUserId("Jordan", 114515L);
+        tOrderMapper.addByNameAndUserId("Lemon", 114516L);
+        tOrderMapper.addByNameAndUserId("Jack", 114517L);
+        tOrderMapper.addByNameAndUserId("Michael", 114518L);
+        tOrderMapper.addByNameAndUserId("Tony", 114519L);
         int numberOfAffectedRows = tOrderMapper.deleteById(114514L);
         assertEquals(1, numberOfAffectedRows);
         assertEquals(5, tOrderMapper.findAll().size());
@@ -85,12 +82,12 @@ public class MapperLayerTests {
 
     @Test
     void whenRequestToDeleteAll() {
-        tOrderMapper.addAll(101L, "Bright", 114514L);
-        tOrderMapper.addAll(102L, "Jordan", 114515L);
-        tOrderMapper.addAll(103L, "Lemon", 114516L);
-        tOrderMapper.addAll(104L, "Jack", 114517L);
-        tOrderMapper.addAll(105L, "Michael", 114518L);
-        tOrderMapper.addAll(106L, "Tony", 114519L);
+        tOrderMapper.addByNameAndUserId("Bright", 114514L);
+        tOrderMapper.addByNameAndUserId("Jordan", 114515L);
+        tOrderMapper.addByNameAndUserId("Lemon", 114516L);
+        tOrderMapper.addByNameAndUserId("Jack", 114517L);
+        tOrderMapper.addByNameAndUserId("Michael", 114518L);
+        tOrderMapper.addByNameAndUserId("Tony", 114519L);
         int numberOfAffectedRows = tOrderMapper.deleteAll();
         assertEquals(6, numberOfAffectedRows);
         assertEquals(0, tOrderMapper.findAll().size());

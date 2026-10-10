@@ -43,11 +43,11 @@ public class UserController {
     }
 
     /**
-     * TODO 这是一个在 ShardingSphere 4.1.1 上有趣的案例，仍需要修复。它展示了 ShardingSphere 5.x 与 ShardingSphere 4.x
-     * 的设计理念差异 dynamic-datasource 代理的 shardingSphere 的从库, 经过 3 次选择 第 1 次: master =>
-     * masterSlaveDataSourceInShardingSphere 第 2 次: masterSlaveDataSourceInShardingSphere =>
-     * shardingslave0 or shardingslave1 in baomidou_readwrite_data_sources 第 3 次: shardingslave0 or
-     * shardingslave1 in baomidou_readwrite_data_sources => master
+     * 注意：这里的“从库读”实际读的是分片主库，这是 ShardingSphere 4.1.1 的硬限制而非接线错误。 4.1.1 的每种规则各管各的 DataSource，且
+     * ShardingRuleCondition 在配了 masterslave/encrypt 任一规则时直接拒绝建 shardingDataSource （"Have found
+     * master-slave or encrypt rule in environment"），分片与读写分离只能二选一； 本示例保 t_order 分片， 故
+     * selectUsersFromShardingSlave 只能指向 shardingDataSourceInShardingSphere。 同名方法在 5.x
+     * （core-sample）里走单个混合规则数据源，SELECT 进 shardingslave0/1——写后经本端点读：4.x 可见、5.x 不可见。
      */
     @GetMapping("sharding_sphere")
     public List<User> shardingSlave() {

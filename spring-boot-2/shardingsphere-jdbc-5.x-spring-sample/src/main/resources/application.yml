@@ -4,22 +4,22 @@ spring:
       names: shardingmaster,shardingslave0,shardingslave1
       shardingmaster:
         type: com.zaxxer.hikari.HikariDataSource
-        driver-class-name: org.h2.Driver
-        jdbc-url: jdbc:h2:mem:master;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
-        username: sa
-        password:
+        driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+        jdbc-url: jdbc:tc:mysql:8://test_hostname/master?TC_INITSCRIPT=db/schema.sql
+        username: test
+        password: test
       shardingslave0:
         type: com.zaxxer.hikari.HikariDataSource
-        driver-class-name: org.h2.Driver
-        jdbc-url: jdbc:h2:mem:slave1;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
-        username: sa
-        password:
+        driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+        jdbc-url: jdbc:tc:mysql:8://test_hostname/slave1?TC_INITSCRIPT=db/schema.sql
+        username: test
+        password: test
       shardingslave1:
         type: com.zaxxer.hikari.HikariDataSource
-        driver-class-name: org.h2.Driver
-        jdbc-url: jdbc:h2:mem:slave2;INIT=RUNSCRIPT FROM 'classpath:db/schema.sql'
-        username: sa
-        password:
+        driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+        jdbc-url: jdbc:tc:mysql:8://test_hostname/slave2?TC_INITSCRIPT=db/schema.sql
+        username: test
+        password: test
     rules:
       sharding:
         tables:
