@@ -34,6 +34,19 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+            <exclusions>
+                <!--TODO 同 5.x 模块：待上游把 Oracle 依赖改为 compileOnly 后可删除本 exclusion。
+                    排除 Java 11 字节码的 Oracle 驱动，保住 JDK8 下 JDBC 驱动的
+                    ServiceLoader 自动注册（否则 testcontainers-jdbc 注册不上）。-->
+                <exclusion>
+                    <groupId>com.oracle.database.spring</groupId>
+                    <artifactId>oracle-spring-boot-starter-ucp</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.oracle.database.jdbc</groupId>
+                    <artifactId>ucp</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
@@ -65,12 +78,12 @@
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
+            <artifactId>testcontainers-junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
-            <artifactId>mysql</artifactId>
+            <artifactId>testcontainers-mysql</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

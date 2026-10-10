@@ -62,10 +62,61 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+            <exclusions>
+                <!--TODO 上游 baomidou/dynamic-datasource-spring-boot-starter 把 oracle-spring-boot-starter-ucp
+                    和 ucp 声明成了 api（硬依赖）而非 compileOnly，导致 ojdbc11（Java 11 字节码）泄漏给所有下游。
+                    其 META-INF/services/java.sql.Driver 会让 JDK8 的 ServiceLoader 中断（DriverManager 静默吞掉异常），
+                    排在其后的 testcontainers-jdbc 等驱动全部无法自动注册，导致 "No suitable driver"。
+                    待上游改为 compileOnly 后可删除本 exclusion。示例工程用不到 Oracle，且 OracleUcp 相关自动配置
+                    本身是 @ConditionalOnClass 守卫的，缺席时自动回退。-->
+                <exclusion>
+                    <groupId>com.oracle.database.spring</groupId>
+                    <artifactId>oracle-spring-boot-starter-ucp</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.oracle.database.jdbc</groupId>
+                    <artifactId>ucp</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers-junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers-mysql</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>jdk17-plus-opens</id>
+            <activation>
+                <jdk>[17,)</jdk>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <argLine>--add-opens java.base/java.lang=ALL-UNNAMED</argLine>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

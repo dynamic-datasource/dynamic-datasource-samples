@@ -8,6 +8,7 @@ on:
 
 jobs:
   test-hotspot-jdk-ci:
+    if: github.repository == 'dynamic-datasource/dynamic-datasource-samples'
     name: Test CI - JDK ${{ matrix.java-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
@@ -27,6 +28,7 @@ jobs:
         run: |
           ./mvnw -T1C -e clean test
   test-minimum-hotspot-jdk-ci:
+    if: github.repository == 'dynamic-datasource/dynamic-datasource-samples'
     name: Test CI - JDK ${{ matrix.java-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
@@ -46,6 +48,7 @@ jobs:
         run: |
           ./mvnw -am -pl spring-boot-2/shardingsphere-jdbc-4.x-spring-sample,spring-boot-2/shardingsphere-jdbc-5.x-spring-sample -T1C -B -e clean test
   lint-format-ci:
+    if: github.repository == 'dynamic-datasource/dynamic-datasource-samples'
     name: Lint & Format CI
     runs-on: ubuntu-latest
     timeout-minutes: 30

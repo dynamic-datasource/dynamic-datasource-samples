@@ -79,11 +79,17 @@ cd ./dynamic-datasource-samples/
 ## 单元测试说明
 
 - 纯 H2 的模块（`mybatisplus3-sample`、`beetlsql-sample`、`jdbc-template-sample`、`name-pattern-sample`、
-  `add-remove-datasource-sample`、`load-datasource-from-jdbc-sample`、`druid-sample`、`spel-sample`、
-  `shardingsphere-jdbc-4.x-spring-sample`、`shardingsphere-jdbc-5.x-spring-sample`）可直接 `mvn test`，无需外部服务。
+  `add-remove-datasource-sample`、`load-datasource-from-jdbc-sample`、`druid-sample`、`spel-sample`）可直接 `mvn test`，无需外部服务。
 - 涉及外部中间件的模块使用 [Testcontainers](https://java.testcontainers.org/) 在测试中启动容器，
   本地与 CI 运行测试都需要可用的 Docker 环境：
   - `quartz-sample`：`mysql:26.7.0-oraclelinux9`
+  - `shardingsphere-jdbc-4.x-spring-sample`：`mysql:8`（全仓库统一 testcontainers 2.0.5；
+    `spring-boot-2` 另经 `jackson-bom:2.20.1` 锁定 Jackson 全家、显式升级 `commons-lang3:3.17.0`，
+    避免与 Boot 2.7 的旧版本偏斜。
+    且 Boot 2.7.x 管理的 `mysql-connector-j:8.0.33` 无法握手 MySQL 26，因此用 8.x 大版本镜像而非
+    `core-sample` 的 `26.7.0`。另注意 ShardingSphere 5.2.1/4.1.1 的 JDBC URL 解析器不支持 tag 中带
+    `.`/`-` 的 tc URL，故不能用 `8.4.7-oraclelinux9` 这类精确 tag）
+  - `shardingsphere-jdbc-5.x-spring-sample`：`mysql:8`（同上）
   - `tx-local-sample`：`postgres:18.6-trixie`（测试资源里用 `init-schemas.sql` 预建 schema）
   - `tx-seata-sample`：`postgres:18.6-trixie` + `apache/seata-server:2.6.0`（与客户端版本对齐）
   - `config-consul-sample`：`hashicorp/consul:2.0.4`（向 KV 写入 `dynamic-datasource/application/data`）
