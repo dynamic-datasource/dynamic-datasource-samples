@@ -34,10 +34,47 @@
 
 ## Spring Boot 2（`spring-boot-2/`）
 
-- shardingsphere-jdbc-4.x-spring-sample：集成 ShardingSphere JDBC Spring Boot Starter 4.1.1 使用示例, 不再维护，
+- shardingsphere-jdbc-4.x-spring-sample：集成 ShardingSphere JDBC Spring Boot Starter 4.1.1 使用示例，不再维护，
   参考 https://github.com/apache/shardingsphere/releases/tag/5.0.0-alpha
 - shardingsphere-jdbc-5.x-spring-sample：集成 ShardingSphere JDBC Spring Boot Starter 5.2.1 使用示例，不再维护，
   参考 https://github.com/apache/shardingsphere/issues/22469
+
+# Contributing
+
+我们欢迎社区的贡献。围绕此 git 的讨论与协作应通过 https://github.com/baomidou/dynamic-datasource/issues 进行。
+在提交 Pull Request 之前, 请在本地通过 [OpenJDK 17, OpenJDK 27] 的 JDK 范围下完成此命令的验证。
+我们鼓励通过 `version-fox/vfox` 切换到 `25.3.4.1-graalce` 来验证。
+
+针对 `JetBrains/intellij-community` 等 IDE，`spring-boot-2` 下模块的语言级别应设置为 JDK 8，
+`spring-boot-3` 与 `spring-boot-4` 下模块的语言级别应设置为 JDK 17。 下文讨论不同情况下可能的测试流程，
+
+## Ubuntu 26.04
+
+假设 `git/git`，`version-fox/vfox`，`Docker Engine` 已安装，在 Bash 执行如下命令，
+
+```shell
+vfox add java
+vfox install java@25.3.4.1-graalce
+vfox use --global java@25.3.4.1-graalce
+git clone git@github.com:dynamic-datasource/dynamic-datasource-samples.git
+cd ./dynamic-datasource-samples/
+./mvnw -T1C -e clean test
+```
+
+## Windows 11
+
+假设 `git-for-windows/git`，`PowerShell/PowerShell`，`rancher-sandbox/rancher-desktop`，`version-fox/vfox` 已安装，
+在 PowerShell 7 执行如下命令，
+
+```shell
+rdctl start --application.start-in-background --container-engine.name=moby --kubernetes.enabled=false
+vfox add java
+vfox install java@25.3.4.1-graalce
+vfox use --global java@25.3.4.1-graalce
+git clone git@github.com:dynamic-datasource/dynamic-datasource-samples.git
+cd ./dynamic-datasource-samples/
+./mvnw -T1C -e clean test
+```
 
 ## 单元测试说明
 
@@ -77,41 +114,3 @@ CI 的 `Lint & Format CI` 任务在 JDK 21 下执行格式与静态检查，本�
   新增抑制项请附带原因注释。
 - 两个工具都要求 JDK 21+ 运行（`google-java-format` 1.30+ 与 Checkstyle 14 的要求），
   其余构建（如 JDK 8/17 下的 `clean test`）不受影响。
-
-## Contributing
-
-我们欢迎社区的贡献。围绕此 git 的讨论与协作应通过 https://github.com/baomidou/dynamic-datasource/issues 进行。
-在提交 Pull Request 之前, 请在本地通过 [OpenJDK 17, OpenJDK 27] 的 JDK 范围下完成此命令的验证。
-我们鼓励通过 `SDKMAN!` 或 `version-fox/vfox` 切换到 `21.0.2-graalce` 来验证。
-
-针对 IntelliJ IDEA 等 IDE，`spring-boot-2` 下模块的语言级别应设置为 JDK 8，`spring-boot-3` 与 `spring-boot-4` 下模块的语言级别应设置为 JDK 17。
-下文讨论不同情况下可能的测试流程，
-
-### Ubuntu 26.04.1
-
-假设 `SDKMAN!` 和 `Docker Engine` 已安装，在 Bash 执行如下命令，
-
-```shell
-sdk install java 21.0.2-graalce
-sdk use java 21.0.2-graalce
-
-git clone git@github.com:dynamic-datasource/dynamic-datasource-samples.git
-cd ./dynamic-datasource-samples/
-./mvnw -T1C -e clean test
-```
-
-### Windows 11
-
-假设 `PowerShell/PowerShell`, `version-fox/vfox`, `git-for-windows/git` 和 `rancher-sandbox/rancher-desktop` 已安装，
-在 `PowerShell 7` 执行如下命令，
-
-```shell
-rdctl start --application.start-in-background --container-engine.name=moby --kubernetes.enabled=false
-vfox add java
-vfox install java@21.0.2-graalce
-vfox use --global java@21.0.2-graalce
-
-git clone git@github.com:dynamic-datasource/dynamic-datasource-samples.git
-cd ./dynamic-datasource-samples/
-./mvnw -T1C -e clean test
-```
