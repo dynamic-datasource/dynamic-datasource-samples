@@ -17,6 +17,8 @@
         <!--JDK 27 要求 Lombok 1.18.48+，而各版本线的 Spring Boot BOM（目前最多管理到 1.18.46），
             因此在根模块统一定义并覆盖，各子模块的 Lombok 依赖与注解处理器均使用该版本。-->
         <lombok.version>1.18.48</lombok.version>
+        <ds.version>4.5.0</ds.version>
+        <druid.version>1.2.28</druid.version>
         <maven-compiler-plugin.version>3.16.0</maven-compiler-plugin.version>
         <license-maven-plugin.version>4.2</license-maven-plugin.version>
         <spotless-maven-plugin.version>3.10.4</spotless-maven-plugin.version>

@@ -23,7 +23,7 @@
 - mybatisplus3-sample：集成mybatisPlus3的使用示例
 - name-pattern-sample：自定义切面的使用示例
 - quartz-sample：多数据源集成quartz示例
-- shardingsphere-jdbc-5.x-core-sample：集成 ShardingSphere JDBC Driver 5.5.2 使用示例
+- shardingsphere-jdbc-5.x-core-sample：集成 ShardingSphere JDBC Driver 5.5.3 使用示例
 - spel-sample：动态从外部参数spel来切换数据源的使用示例
 - tx-local-sample：本地事务示例项目★★★★★★必看★★★★★★
 - tx-seata-sample：基于seata的分布式事务集成使用示例
@@ -83,13 +83,13 @@ cd ./dynamic-datasource-samples/
   `shardingsphere-jdbc-4.x-spring-sample`、`shardingsphere-jdbc-5.x-spring-sample`）可直接 `mvn test`，无需外部服务。
 - 涉及外部中间件的模块使用 [Testcontainers](https://java.testcontainers.org/) 在测试中启动容器，
   本地与 CI 运行测试都需要可用的 Docker 环境：
-  - `quartz-sample`：`mysql:8.4.7-oraclelinux9`
-  - `tx-local-sample`：`postgres:16-alpine`（测试资源里用 `init-schemas.sql` 预建 schema）
-  - `tx-seata-sample`：`postgres:16-alpine` + `apache/seata-server:2.6.0`（与客户端版本对齐）
-  - `config-consul-sample`：`hashicorp/consul:1.15`（向 KV 写入 `dynamic-datasource/application/data`）
+  - `quartz-sample`：`mysql:26.7.0-oraclelinux9`
+  - `tx-local-sample`：`postgres:18.6-trixie`（测试资源里用 `init-schemas.sql` 预建 schema）
+  - `tx-seata-sample`：`postgres:18.6-trixie` + `apache/seata-server:2.6.0`（与客户端版本对齐）
+  - `config-consul-sample`：`hashicorp/consul:2.0.4`（向 KV 写入 `dynamic-datasource/application/data`）
   - `config-nacos-sample`：`nacos/nacos-server:v3.2.4`（新版 starter 内含 3.x 客户端，走 gRPC，
     发布走 v3 运维 API，测试按实际映射端口动态计算 `nacos.server.grpc.port.offset`）
-  - `shardingsphere-jdbc-5.x-core-sample`：`mysql:8.4.7-oraclelinux9`
+  - `shardingsphere-jdbc-5.x-core-sample`：`mysql:26.7.0-oraclelinux9`
 - `spring-boot-2` 下模块的主代码保持 Java 8 兼容，配套使用 testcontainers 1.x（2.x 要求 Java 17+），
   因此 JDK 8 的 CI 任务直接对 `shardingsphere-jdbc-4.x-spring-sample` 与 `shardingsphere-jdbc-5.x-spring-sample` 执行 `clean test`；
   JDK 17/21/25/27 的全量 `clean test` 同样覆盖这两个模块。

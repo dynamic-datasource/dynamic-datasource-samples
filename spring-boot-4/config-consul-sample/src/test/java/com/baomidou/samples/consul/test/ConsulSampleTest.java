@@ -39,7 +39,7 @@ class ConsulSampleTest {
 
     @Container
     static ConsulContainer consul =
-            new ConsulContainer(DockerImageName.parse("hashicorp/consul:1.15"));
+            new ConsulContainer(DockerImageName.parse("hashicorp/consul:2.0.4"));
 
     @BeforeAll
     static void setUp() throws Exception {
