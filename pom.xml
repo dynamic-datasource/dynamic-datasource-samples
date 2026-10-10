@@ -17,6 +17,12 @@
         <!--JDK 27 要求 Lombok 1.18.48+，而各版本线的 Spring Boot BOM（目前最多管理到 1.18.46），
             因此在根模块统一定义并覆盖，各子模块的 Lombok 依赖与注解处理器均使用该版本。-->
         <lombok.version>1.18.48</lombok.version>
+        <maven-compiler-plugin.version>3.16.0</maven-compiler-plugin.version>
+        <license-maven-plugin.version>4.2</license-maven-plugin.version>
+        <spotless-maven-plugin.version>3.10.4</spotless-maven-plugin.version>
+        <google-java-format.version>1.36.1</google-java-format.version>
+        <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
+        <checkstyle.version>14.3.0</checkstyle.version>
     </properties>
 
     <modules>
@@ -40,7 +46,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.16.0</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -61,7 +67,7 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>4.2</version>
+                <version>${license-maven-plugin.version}</version>
                 <configuration>
                     <header>${maven.multiModuleProjectDirectory}/license.txt</header>
                     <includes>
@@ -77,7 +83,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--代码格式化（npm 生态 oxfmt 的等价物）：`spotless:apply` 一键修复，`spotless:check` 在 CI 校验。
+            <!--代码格式化：`spotless:apply` 一键修复，`spotless:check` 在 CI 校验。
                 使用 google-java-format 的 AOSP 风格（4 空格缩进），与现有代码保持一致。
                 注意：google-java-format 1.30+ 需要 JDK 21+ 运行，且版本需与 Spotless 内嵌 glue 兼容，不要随意升级
                 （1.37.0 改过 JavaFormatterOptions.Style 的 API，Spotless 3.10.4 尚不兼容）。
@@ -85,29 +91,29 @@
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
-                <version>3.10.4</version>
+                <version>${spotless-maven-plugin.version}</version>
                 <configuration>
                     <java>
                         <googleJavaFormat>
-                            <version>1.36.1</version>
+                            <version>${google-java-format.version}</version>
                             <style>AOSP</style>
                         </googleJavaFormat>
                         <removeUnusedImports/>
                     </java>
                 </configuration>
             </plugin>
-            <!--代码检查（npm 生态 oxlint 的等价物）：Checkstyle 官方的 google_checks.xml。
+            <!--代码检查：Checkstyle 官方的 google_checks.xml。
                 与格式化冲突或示例项目不适用的规则在 config/checkstyle/suppressions.xml 中抑制。
                 注意：Checkstyle 14 需要 JDK 21+ 运行。-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>${maven-checkstyle-plugin.version}</version>
                 <dependencies>
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>14.3.0</version>
+                        <version>${checkstyle.version}</version>
                     </dependency>
                 </dependencies>
                 <configuration>
