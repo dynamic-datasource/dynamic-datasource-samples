@@ -15,6 +15,8 @@
  */
 package com.baomidou.samples.beetl.test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.baomidou.samples.beetl.entity.User;
 import com.baomidou.samples.beetl.service.UserService;
 import org.junit.jupiter.api.AfterEach;
@@ -22,17 +24,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @SpringBootTest
 class UserServiceTest {
 
-    @Autowired
-    private UserService userService;
+    @Autowired private UserService userService;
 
     @AfterEach
     void cleanUp() {
-        userService.selectMasterUsers().forEach(user -> userService.deleteUserById(user.getId().longValue()));
+        userService
+                .selectMasterUsers()
+                .forEach(user -> userService.deleteUserById(user.getId().longValue()));
     }
 
     @Test

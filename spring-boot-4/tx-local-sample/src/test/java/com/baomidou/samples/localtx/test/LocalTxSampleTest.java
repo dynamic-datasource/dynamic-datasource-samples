@@ -15,6 +15,9 @@
  */
 package com.baomidou.samples.localtx.test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.baomidou.samples.localtx.dto.PlaceOrderRequest;
 import com.baomidou.samples.localtx.entity.Account;
@@ -35,16 +38,14 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 @Testcontainers
 @SpringBootTest
 class LocalTxSampleTest {
 
     @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(DockerImageName.parse("postgres:16-alpine"))
-            .withInitScript("db/postgresql/init-schemas.sql");
+    static PostgreSQLContainer<?> postgres =
+            new PostgreSQLContainer<>(DockerImageName.parse("postgres:16-alpine"))
+                    .withInitScript("db/postgresql/init-schemas.sql");
 
     @DynamicPropertySource
     static void datasourceProperties(DynamicPropertyRegistry registry) {
@@ -52,24 +53,24 @@ class LocalTxSampleTest {
         registry.add("spring.datasource.dynamic.datasource.order.username", postgres::getUsername);
         registry.add("spring.datasource.dynamic.datasource.order.password", postgres::getPassword);
         registry.add("spring.datasource.dynamic.datasource.account.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.dynamic.datasource.account.username", postgres::getUsername);
-        registry.add("spring.datasource.dynamic.datasource.account.password", postgres::getPassword);
+        registry.add(
+                "spring.datasource.dynamic.datasource.account.username", postgres::getUsername);
+        registry.add(
+                "spring.datasource.dynamic.datasource.account.password", postgres::getPassword);
         registry.add("spring.datasource.dynamic.datasource.product.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.dynamic.datasource.product.username", postgres::getUsername);
-        registry.add("spring.datasource.dynamic.datasource.product.password", postgres::getPassword);
+        registry.add(
+                "spring.datasource.dynamic.datasource.product.username", postgres::getUsername);
+        registry.add(
+                "spring.datasource.dynamic.datasource.product.password", postgres::getPassword);
     }
 
-    @Autowired
-    private OrderService orderService;
+    @Autowired private OrderService orderService;
 
-    @Autowired
-    private OrderMapper orderMapper;
+    @Autowired private OrderMapper orderMapper;
 
-    @Autowired
-    private AccountMapper accountMapper;
+    @Autowired private AccountMapper accountMapper;
 
-    @Autowired
-    private ProductMapper productMapper;
+    @Autowired private ProductMapper productMapper;
 
     @AfterEach
     void cleanUp() {

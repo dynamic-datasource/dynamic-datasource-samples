@@ -15,10 +15,8 @@
  */
 package com.baomidou.samples.spel.service;
 
-
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.samples.spel.entity.User;
-
 import java.util.List;
 
 public interface UserService {

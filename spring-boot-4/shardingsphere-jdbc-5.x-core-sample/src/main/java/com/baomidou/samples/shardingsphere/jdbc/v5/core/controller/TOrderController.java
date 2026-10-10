@@ -17,12 +17,11 @@ package com.baomidou.samples.shardingsphere.jdbc.v5.core.controller;
 
 import com.baomidou.samples.shardingsphere.jdbc.v5.core.entity.TOrder;
 import com.baomidou.samples.shardingsphere.jdbc.v5.core.service.TOrderService;
+import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/t_order")

@@ -15,9 +15,7 @@
  */
 package com.baomidou.samples.beetl.service;
 
-
 import com.baomidou.samples.beetl.entity.User;
-
 import java.util.List;
 
 public interface UserService {

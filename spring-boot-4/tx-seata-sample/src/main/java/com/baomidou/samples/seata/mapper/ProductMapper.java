@@ -20,6 +20,4 @@ import com.baomidou.samples.seata.entity.Product;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface ProductMapper extends BaseMapper<Product> {
-
-}
+public interface ProductMapper extends BaseMapper<Product> {}

@@ -15,20 +15,17 @@
  */
 package com.baomidou.samples.pattern.service.impl;
 
-
 import com.baomidou.samples.pattern.entity.User;
 import com.baomidou.samples.pattern.mapper.UserMapper;
 import com.baomidou.samples.pattern.service.UserService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserMapper userMapper;
+    @Autowired private UserMapper userMapper;
 
     @Override
     public User selectById(Integer id) {

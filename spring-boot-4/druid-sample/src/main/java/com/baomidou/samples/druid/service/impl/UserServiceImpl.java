@@ -15,14 +15,12 @@
  */
 package com.baomidou.samples.druid.service.impl;
 
-
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.samples.druid.entity.User;
 import com.baomidou.samples.druid.mapper.UserMapper;
 import com.baomidou.samples.druid.service.UserService;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {

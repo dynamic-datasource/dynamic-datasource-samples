@@ -15,7 +15,6 @@
  */
 package com.baomidou.samples.mybatisplus3.service.impl;
 
-
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.dynamic.datasource.annotation.Slave;
 import com.baomidou.mybatisplus.core.enums.SqlMethod;
@@ -23,25 +22,22 @@ import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.Assert;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.repository.AbstractRepository;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.baomidou.samples.mybatisplus3.entity.User;
 import com.baomidou.samples.mybatisplus3.mapper.UserMapper;
 import com.baomidou.samples.mybatisplus3.service.UserService;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 @Service
 public class UserServiceImpl extends AbstractRepository<UserMapper, User> implements UserService {
 
-    @Autowired
-    private UserMapper baseMapper;
+    @Autowired private UserMapper baseMapper;
 
     @Override
     public UserMapper getBaseMapper() {
@@ -90,21 +86,36 @@ public class UserServiceImpl extends AbstractRepository<UserMapper, User> implem
     @Transactional(rollbackFor = Exception.class)
     public boolean saveBatch(Collection<User> entityList, int batchSize) {
         String sqlStatement = SqlHelper.getSqlStatement(getMapperClass(), SqlMethod.INSERT_ONE);
-        return executeBatch(entityList, batchSize, (sqlSession, entity) -> sqlSession.insert(sqlStatement, entity));
+        return executeBatch(
+                entityList,
+                batchSize,
+                (sqlSession, entity) -> sqlSession.insert(sqlStatement, entity));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean saveOrUpdateBatch(Collection<User> entityList, int batchSize) {
         TableInfo tableInfo = TableInfoHelper.getTableInfo(User.class);
-        Assert.notNull(tableInfo, "error: can not execute. because can not find cache of TableInfo for entity!");
+        Assert.notNull(
+                tableInfo,
+                "error: can not execute. because can not find cache of TableInfo for entity!");
         String keyProperty = tableInfo.getKeyProperty();
-        Assert.notEmpty(keyProperty, "error: can not execute. because can not find column for id from entity!");
-        String updateStatement = SqlHelper.getSqlStatement(getMapperClass(), SqlMethod.UPDATE_BY_ID);
-        return SqlHelper.saveOrUpdateBatch(getSqlSessionFactory(), getMapperClass(), log, entityList, batchSize,
-                (sqlSession, entity) -> StringUtils.checkValNull(tableInfo.getPropertyValue(entity, keyProperty)),
+        Assert.notEmpty(
+                keyProperty,
+                "error: can not execute. because can not find column for id from entity!");
+        String updateStatement =
+                SqlHelper.getSqlStatement(getMapperClass(), SqlMethod.UPDATE_BY_ID);
+        return SqlHelper.saveOrUpdateBatch(
+                getSqlSessionFactory(),
+                getMapperClass(),
+                log,
+                entityList,
+                batchSize,
+                (sqlSession, entity) ->
+                        StringUtils.checkValNull(tableInfo.getPropertyValue(entity, keyProperty)),
                 // BaseMapper.updateById 的参数声明为 @Param("et")，因此实体必须包一层再传入。
-                (sqlSession, entity) -> sqlSession.update(updateStatement, Collections.singletonMap("et", entity)));
+                (sqlSession, entity) ->
+                        sqlSession.update(updateStatement, Collections.singletonMap("et", entity)));
     }
 
     @Override
@@ -112,6 +123,10 @@ public class UserServiceImpl extends AbstractRepository<UserMapper, User> implem
     public boolean updateBatchById(Collection<User> entityList, int batchSize) {
         String sqlStatement = SqlHelper.getSqlStatement(getMapperClass(), SqlMethod.UPDATE_BY_ID);
         // BaseMapper.updateById 的参数声明为 @Param("et")，因此实体必须包一层再传入。
-        return executeBatch(entityList, batchSize, (sqlSession, entity) -> sqlSession.update(sqlStatement, Collections.singletonMap("et", entity)));
+        return executeBatch(
+                entityList,
+                batchSize,
+                (sqlSession, entity) ->
+                        sqlSession.update(sqlStatement, Collections.singletonMap("et", entity)));
     }
 }

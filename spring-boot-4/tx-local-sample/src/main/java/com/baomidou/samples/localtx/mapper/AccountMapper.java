@@ -20,6 +20,4 @@ import com.baomidou.samples.localtx.entity.Account;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface AccountMapper extends BaseMapper<Account> {
-
-}
+public interface AccountMapper extends BaseMapper<Account> {}

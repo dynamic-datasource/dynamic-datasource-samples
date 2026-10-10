@@ -77,6 +77,47 @@
                     </execution>
                 </executions>
             </plugin>
+            <!--代码格式化（npm 生态 oxfmt 的等价物）：`spotless:apply` 一键修复，`spotless:check` 在 CI 校验。
+                使用 google-java-format 的 AOSP 风格（4 空格缩进），与现有代码保持一致。
+                注意：google-java-format 1.30+ 需要 JDK 21+ 运行，且版本需与 Spotless 内嵌 glue 兼容，不要随意升级
+                （1.37.0 改过 JavaFormatterOptions.Style 的 API，Spotless 3.10.4 尚不兼容）。
+                通配符 `*` 导入由 Checkstyle 的 AvoidStarImport 拦截，需要手工展开。-->
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>3.10.4</version>
+                <configuration>
+                    <java>
+                        <googleJavaFormat>
+                            <version>1.36.1</version>
+                            <style>AOSP</style>
+                        </googleJavaFormat>
+                        <removeUnusedImports/>
+                    </java>
+                </configuration>
+            </plugin>
+            <!--代码检查（npm 生态 oxlint 的等价物）：Checkstyle 官方的 google_checks.xml。
+                与格式化冲突或示例项目不适用的规则在 config/checkstyle/suppressions.xml 中抑制。
+                注意：Checkstyle 14 需要 JDK 21+ 运行。-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.6.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>14.3.0</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <configLocation>google_checks.xml</configLocation>
+                    <suppressionsLocation>${maven.multiModuleProjectDirectory}/config/checkstyle/suppressions.xml</suppressionsLocation>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <!--google_checks.xml 中规则的默认级别是 warning，这里以 warning 作为失败阈值。-->
+                    <violationSeverity>warning</violationSeverity>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

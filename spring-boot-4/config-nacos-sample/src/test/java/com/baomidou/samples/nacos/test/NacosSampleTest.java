@@ -15,7 +15,17 @@
  */
 package com.baomidou.samples.nacos.test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import javax.sql.DataSource;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -27,17 +37,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import javax.sql.DataSource;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @Testcontainers
 @SpringBootTest
 class NacosSampleTest {
@@ -47,22 +46,25 @@ class NacosSampleTest {
     // 测试服务端用同代的 Nacos 3.x。Nacos 3.x 的 HTTP 客户端 API 只读不写，
     // 发布配置要走运维 API，且运维 API 自带独立鉴权开关，测试里一并关闭。
     @Container
-    static GenericContainer<?> nacos = new GenericContainer<>(DockerImageName.parse("nacos/nacos-server:v3.2.4"))
-            .withEnv("MODE", "standalone")
-            .withEnv("NACOS_AUTH_ENABLE", "false")
-            .withEnv("NACOS_AUTH_ADMIN_ENABLE", "false")
-            .withEnv("NACOS_AUTH_CONSOLE_ENABLE", "false")
-            .withEnv("NACOS_AUTH_TOKEN", "MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=")
-            .withEnv("NACOS_AUTH_IDENTITY_KEY", "serverIdentity")
-            .withEnv("NACOS_AUTH_IDENTITY_VALUE", "security")
-            .withExposedPorts(8848, 9848, 9849)
-            .waitingFor(Wait.forLogMessage(".*Nacos Server API started successfully.*", 1)
-                    .withStartupTimeout(Duration.ofMinutes(5)));
+    static GenericContainer<?> nacos =
+            new GenericContainer<>(DockerImageName.parse("nacos/nacos-server:v3.2.4"))
+                    .withEnv("MODE", "standalone")
+                    .withEnv("NACOS_AUTH_ENABLE", "false")
+                    .withEnv("NACOS_AUTH_ADMIN_ENABLE", "false")
+                    .withEnv("NACOS_AUTH_CONSOLE_ENABLE", "false")
+                    .withEnv("NACOS_AUTH_TOKEN", "MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=")
+                    .withEnv("NACOS_AUTH_IDENTITY_KEY", "serverIdentity")
+                    .withEnv("NACOS_AUTH_IDENTITY_VALUE", "security")
+                    .withExposedPorts(8848, 9848, 9849)
+                    .waitingFor(
+                            Wait.forLogMessage(".*Nacos Server API started successfully.*", 1)
+                                    .withStartupTimeout(Duration.ofMinutes(5)));
 
     @BeforeAll
     static void setUp() throws Exception {
         // spring.config.import 在环境准备的最早期求值，地址只能用系统属性覆盖。
-        System.setProperty("spring.nacos.config.server-addr",
+        System.setProperty(
+                "spring.nacos.config.server-addr",
                 nacos.getHost() + ":" + nacos.getMappedPort(8848));
         // 3.x 客户端按（http 端口 + 偏移量）计算服务端的 gRPC 端口；
         // testcontainers 的随机端口映射下默认的 1000 偏移不再成立，因此按实际映射端口动态计算偏移。
@@ -78,35 +80,44 @@ class NacosSampleTest {
     }
 
     static void publishConfig() throws Exception {
-        String yaml = "spring:\n"
-                + "  datasource:\n"
-                + "    dynamic:\n"
-                + "      datasource:\n"
-                + "        master:\n"
-                + "          driver-class-name: org.h2.Driver\n"
-                + "          url: jdbc:h2:mem:nacos_master\n"
-                + "          username: sa\n"
-                + "          password: \"\"\n";
+        String yaml =
+                "spring:\n"
+                        + "  datasource:\n"
+                        + "    dynamic:\n"
+                        + "      datasource:\n"
+                        + "        master:\n"
+                        + "          driver-class-name: org.h2.Driver\n"
+                        + "          url: jdbc:h2:mem:nacos_master\n"
+                        + "          username: sa\n"
+                        + "          password: \"\"\n";
         String baseUrl = "http://" + nacos.getHost() + ":" + nacos.getMappedPort(8848);
-        String body = "dataId=dynamic-datasource.yaml&groupName=DEFAULT_GROUP&type=yaml&content="
-                + URLEncoder.encode(yaml, StandardCharsets.UTF_8);
-        HttpRequest request = HttpRequest.newBuilder(URI.create(baseUrl + "/nacos/v3/admin/cs/config"))
-                .header("Content-Type", "application/x-www-form-urlencoded")
-                .POST(HttpRequest.BodyPublishers.ofString(body))
-                .build();
+        String body =
+                "dataId=dynamic-datasource.yaml&groupName=DEFAULT_GROUP&type=yaml&content="
+                        + URLEncoder.encode(yaml, StandardCharsets.UTF_8);
+        HttpRequest request =
+                HttpRequest.newBuilder(URI.create(baseUrl + "/nacos/v3/admin/cs/config"))
+                        .header("Content-Type", "application/x-www-form-urlencoded")
+                        .POST(HttpRequest.BodyPublishers.ofString(body))
+                        .build();
         HttpClient client = HttpClient.newHttpClient();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertThat(response.statusCode()).isEqualTo(200);
         assertThat(response.body()).contains("\"data\":true");
         // 发布后服务端内部同步需要一点时间，先等到配置可读再启动 Spring 上下文。
-        HttpRequest query = HttpRequest.newBuilder(
-                        URI.create(baseUrl + "/nacos/v3/client/cs/config?dataId=dynamic-datasource.yaml&groupName=DEFAULT_GROUP"))
-                .GET()
-                .build();
+        HttpRequest query =
+                HttpRequest.newBuilder(
+                                URI.create(
+                                        baseUrl
+                                                + "/nacos/v3/client/cs/config?dataId=dynamic-datasource.yaml&groupName=DEFAULT_GROUP"))
+                        .GET()
+                        .build();
         boolean visible = false;
         for (int i = 0; i < 60 && !visible; i++) {
-            HttpResponse<String> queryResponse = client.send(query, HttpResponse.BodyHandlers.ofString());
-            visible = queryResponse.statusCode() == 200 && queryResponse.body().contains("jdbc:h2:mem:nacos_master");
+            HttpResponse<String> queryResponse =
+                    client.send(query, HttpResponse.BodyHandlers.ofString());
+            visible =
+                    queryResponse.statusCode() == 200
+                            && queryResponse.body().contains("jdbc:h2:mem:nacos_master");
             if (!visible) {
                 Thread.sleep(1000);
             }
@@ -114,8 +125,7 @@ class NacosSampleTest {
         assertThat(visible).isTrue();
     }
 
-    @Autowired
-    private DataSource dataSource;
+    @Autowired private DataSource dataSource;
 
     @Test
     void datasourceConfigLoadedFromNacos() {

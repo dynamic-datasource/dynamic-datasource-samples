@@ -18,19 +18,17 @@ package com.baomidou.samples.druid.test;
 import com.baomidou.samples.druid.DruidApplication;
 import com.baomidou.samples.druid.entity.User;
 import com.baomidou.samples.druid.service.UserService;
+import java.util.Random;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Random;
 
 @SpringBootTest(classes = DruidApplication.class)
 public class DruidApplicationTest {
 
     private final Random random = new Random();
 
-    @Autowired
-    private UserService userService;
+    @Autowired private UserService userService;
 
     @Test
     public void addUser() {
@@ -49,5 +47,4 @@ public class DruidApplicationTest {
     public void selectUserFromDsGroup() {
         userService.selectSlaveUsers();
     }
-
 }

@@ -16,7 +16,6 @@
 package com.baomidou.samples.shardingsphere.jdbc.v5.core.service;
 
 import com.baomidou.samples.shardingsphere.jdbc.v5.core.entity.TOrder;
-
 import java.util.List;
 
 public interface TOrderService {

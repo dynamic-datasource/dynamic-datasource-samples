@@ -17,10 +17,14 @@ package com.baomidou.samples.shardingsphere.jdbc.v4.spring.controller;
 
 import com.baomidou.samples.shardingsphere.jdbc.v4.spring.entity.User;
 import com.baomidou.samples.shardingsphere.jdbc.v4.spring.service.UserService;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Random;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/users")
@@ -32,20 +36,18 @@ public class UserController {
         this.userService = userService;
     }
 
-    /**
-     * dynamic-datasource 的主库
-     */
+    /** dynamic-datasource 的主库 */
     @GetMapping("master")
     public List<User> master() {
         return userService.selectUsersFromMaster();
     }
 
     /**
-     * TODO 这是一个在 ShardingSphere 4.1.1 上有趣的案例，仍需要修复。它展示了 ShardingSphere 5.x 与 ShardingSphere 4.x 的设计理念差异
-     * dynamic-datasource 代理的 shardingSphere 的从库, 经过 3 次选择
-     * 第 1 次: master => masterSlaveDataSourceInShardingSphere
-     * 第 2 次: masterSlaveDataSourceInShardingSphere => shardingslave0 or shardingslave1 in baomidou_readwrite_data_sources
-     * 第 3 次: shardingslave0 or shardingslave1 in baomidou_readwrite_data_sources => master
+     * TODO 这是一个在 ShardingSphere 4.1.1 上有趣的案例，仍需要修复。它展示了 ShardingSphere 5.x 与 ShardingSphere 4.x
+     * 的设计理念差异 dynamic-datasource 代理的 shardingSphere 的从库, 经过 3 次选择 第 1 次: master =>
+     * masterSlaveDataSourceInShardingSphere 第 2 次: masterSlaveDataSourceInShardingSphere =>
+     * shardingslave0 or shardingslave1 in baomidou_readwrite_data_sources 第 3 次: shardingslave0 or
+     * shardingslave1 in baomidou_readwrite_data_sources => master
      */
     @GetMapping("sharding_sphere")
     public List<User> shardingSlave() {
@@ -53,9 +55,8 @@ public class UserController {
     }
 
     /**
-     * dynamic-datasource 代理的 shardingSphere 的主库, 经过 2 次选择
-     * 第 1 次: master => shardingDataSourceInShardingSphere
-     * 第 2 次: shardingDataSourceInShardingSphere => master
+     * dynamic-datasource 代理的 shardingSphere 的主库, 经过 2 次选择 第 1 次: master =>
+     * shardingDataSourceInShardingSphere 第 2 次: shardingDataSourceInShardingSphere => master
      */
     @PostMapping("sharding_sphere")
     public User addUser() {
@@ -67,9 +68,8 @@ public class UserController {
     }
 
     /**
-     * dynamic-datasource 代理的 shardingSphere 的主库, 经过 2 次选择
-     * 第 1 次: master => shardingDataSourceInShardingSphere
-     * 第 2 次: shardingDataSourceInShardingSphere => master
+     * dynamic-datasource 代理的 shardingSphere 的主库, 经过 2 次选择 第 1 次: master =>
+     * shardingDataSourceInShardingSphere 第 2 次: shardingDataSourceInShardingSphere => master
      */
     @DeleteMapping("sharding_sphere/{id}")
     public String deleteUser(@PathVariable Long id) {

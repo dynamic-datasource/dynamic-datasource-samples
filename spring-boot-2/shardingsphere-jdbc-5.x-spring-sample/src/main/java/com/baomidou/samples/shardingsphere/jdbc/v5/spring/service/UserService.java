@@ -16,7 +16,6 @@
 package com.baomidou.samples.shardingsphere.jdbc.v5.spring.service;
 
 import com.baomidou.samples.shardingsphere.jdbc.v5.spring.entity.User;
-
 import java.util.List;
 
 public interface UserService {

@@ -15,9 +15,7 @@
  */
 package com.baomidou.sample.boot3.service;
 
-
 import com.baomidou.sample.boot3.entity.User;
-
 import java.util.List;
 
 public interface UserService {

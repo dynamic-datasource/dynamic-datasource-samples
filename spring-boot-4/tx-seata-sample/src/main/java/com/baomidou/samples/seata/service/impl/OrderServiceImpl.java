@@ -33,16 +33,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
-    private OrderMapper orderMapper;
-    @Autowired
-    private AccountService accountService;
-    @Autowired
-    private ProductService productService;
+    @Autowired private OrderMapper orderMapper;
+    @Autowired private AccountService accountService;
+    @Autowired private ProductService productService;
 
     @DS("order")
     @Override
-//    @Transactional
+    //    @Transactional
     @GlobalTransactional
     public void placeOrder(PlaceOrderRequest request) {
         log.info("=============ORDER START=================");
@@ -53,12 +50,13 @@ public class OrderServiceImpl implements OrderService {
 
         log.info("当前 XID: {}", RootContext.getXID());
 
-        Order order = Order.builder()
-                .userId(userId)
-                .productId(productId)
-                .status(OrderStatus.INIT)
-                .amount(amount)
-                .build();
+        Order order =
+                Order.builder()
+                        .userId(userId)
+                        .productId(productId)
+                        .status(OrderStatus.INIT)
+                        .amount(amount)
+                        .build();
 
         orderMapper.insert(order);
         log.info("订单一阶段生成，等待扣库存付款中");

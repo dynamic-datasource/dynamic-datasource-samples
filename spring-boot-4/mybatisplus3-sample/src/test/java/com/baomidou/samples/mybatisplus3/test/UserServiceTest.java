@@ -15,25 +15,23 @@
  */
 package com.baomidou.samples.mybatisplus3.test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.samples.mybatisplus3.entity.User;
 import com.baomidou.samples.mybatisplus3.service.UserService;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @SpringBootTest
 class UserServiceTest {
 
-    @Autowired
-    private UserService userService;
+    @Autowired private UserService userService;
 
     @AfterEach
     void cleanUp() {
@@ -97,7 +95,10 @@ class UserServiceTest {
         assertThat(userService.saveOrUpdateBatch(users, 100)).isTrue();
         assertThat(userService.count()).isEqualTo(3);
 
-        assertThat(userService.removeByIds(Arrays.asList(first.getId(), second.getId(), third.getId()))).isTrue();
+        assertThat(
+                        userService.removeByIds(
+                                Arrays.asList(first.getId(), second.getId(), third.getId())))
+                .isTrue();
         assertThat(userService.count()).isZero();
     }
 

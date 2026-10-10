@@ -26,7 +26,8 @@ public class HelloworldJob extends QuartzJobBean {
     private static int time = 0;
 
     @Override
-    protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    protected void executeInternal(JobExecutionContext jobExecutionContext)
+            throws JobExecutionException {
         log.info("Hello world!:" + jobExecutionContext.getJobDetail().getKey() + "-" + (time++));
     }
 }

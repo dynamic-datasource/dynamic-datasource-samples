@@ -15,10 +15,8 @@
  */
 package com.baomidou.samples.mybatisplus3.service;
 
-
 import com.baomidou.mybatisplus.extension.repository.IRepository;
 import com.baomidou.samples.mybatisplus3.entity.User;
-
 import java.util.List;
 
 public interface UserService extends IRepository<User> {

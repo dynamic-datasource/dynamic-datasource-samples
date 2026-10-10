@@ -15,7 +15,14 @@
  */
 package com.baomidou.samples.consul.test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import javax.sql.DataSource;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -26,37 +33,34 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import javax.sql.DataSource;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @Testcontainers
 @SpringBootTest
 class ConsulSampleTest {
 
     @Container
-    static ConsulContainer consul = new ConsulContainer(DockerImageName.parse("hashicorp/consul:1.15"));
+    static ConsulContainer consul =
+            new ConsulContainer(DockerImageName.parse("hashicorp/consul:1.15"));
 
     @BeforeAll
     static void setUp() throws Exception {
-        String yaml = "spring:\n"
-                + "  datasource:\n"
-                + "    dynamic:\n"
-                + "      datasource:\n"
-                + "        master:\n"
-                + "          driver-class-name: org.h2.Driver\n"
-                + "          url: jdbc:h2:mem:consul_master\n"
-                + "          username: sa\n"
-                + "          password: \"\"\n";
+        String yaml =
+                "spring:\n"
+                        + "  datasource:\n"
+                        + "    dynamic:\n"
+                        + "      datasource:\n"
+                        + "        master:\n"
+                        + "          driver-class-name: org.h2.Driver\n"
+                        + "          url: jdbc:h2:mem:consul_master\n"
+                        + "          username: sa\n"
+                        + "          password: \"\"\n";
         String baseUrl = "http://" + consul.getHost() + ":" + consul.getMappedPort(8500);
-        HttpRequest request = HttpRequest.newBuilder(URI.create(baseUrl + "/v1/kv/dynamic-datasource/application/data"))
-                .PUT(HttpRequest.BodyPublishers.ofString(yaml))
-                .build();
-        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        HttpRequest request =
+                HttpRequest.newBuilder(
+                                URI.create(baseUrl + "/v1/kv/dynamic-datasource/application/data"))
+                        .PUT(HttpRequest.BodyPublishers.ofString(yaml))
+                        .build();
+        HttpResponse<String> response =
+                HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         assertThat(response.statusCode()).isEqualTo(200);
         // 这里用系统属性而不用 @DynamicPropertySource，这样 Spring Cloud bootstrap 上下文也能读到这些值。
         System.setProperty("spring.cloud.consul.host", consul.getHost());
@@ -69,8 +73,7 @@ class ConsulSampleTest {
         System.clearProperty("spring.cloud.consul.port");
     }
 
-    @Autowired
-    private DataSource dataSource;
+    @Autowired private DataSource dataSource;
 
     @Test
     void datasourceConfigLoadedFromConsul() {

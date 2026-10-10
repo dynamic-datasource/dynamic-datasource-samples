@@ -19,22 +19,20 @@ import com.baomidou.dynamic.datasource.creator.DataSourceProperty;
 import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
 import com.baomidou.dynamic.datasource.provider.AbstractJdbcDataSourceProvider;
 import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class LoadDsApplication {
 
-    @Autowired
-    private DefaultDataSourceCreator dataSourceCreator;
+    @Autowired private DefaultDataSourceCreator dataSourceCreator;
 
     public static void main(String[] args) {
         SpringApplication.run(LoadDsApplication.class, args);
@@ -42,19 +40,21 @@ public class LoadDsApplication {
 
     @Bean
     public DynamicDataSourceProvider dynamicDataSourceProvider() {
-        return new AbstractJdbcDataSourceProvider(dataSourceCreator, "org.h2.Driver", "jdbc:h2:mem:test;MODE=MySQL", "sa", "") {
+        return new AbstractJdbcDataSourceProvider(
+                dataSourceCreator, "org.h2.Driver", "jdbc:h2:mem:test;MODE=MySQL", "sa", "") {
             @Override
             protected Map<String, DataSourceProperty> executeStmt(Statement statement)
                     throws SQLException {
-                //*************** 实际运行应直接从库中查出，演示所以需要先插入数据***************
-                statement.execute("CREATE TABLE IF NOT EXISTS `DB`\n"
-                        + "(\n"
-                        + "    `name`   VARCHAR(30) NULL DEFAULT NULL,\n"
-                        + "    `username`   VARCHAR(30) NULL DEFAULT NULL,\n"
-                        + "    `password`   VARCHAR(30) NULL DEFAULT NULL,\n"
-                        + "    `url`   VARCHAR(30) NULL DEFAULT NULL,\n"
-                        + "    `driver`   VARCHAR(30) NULL DEFAULT NULL\n"
-                        + ")");
+                // *************** 实际运行应直接从库中查出，演示所以需要先插入数据***************
+                statement.execute(
+                        "CREATE TABLE IF NOT EXISTS `DB`\n"
+                                + "(\n"
+                                + "    `name`   VARCHAR(30) NULL DEFAULT NULL,\n"
+                                + "    `username`   VARCHAR(30) NULL DEFAULT NULL,\n"
+                                + "    `password`   VARCHAR(30) NULL DEFAULT NULL,\n"
+                                + "    `url`   VARCHAR(30) NULL DEFAULT NULL,\n"
+                                + "    `driver`   VARCHAR(30) NULL DEFAULT NULL\n"
+                                + ")");
                 statement.executeUpdate(
                         "insert into DB values ('db1','sa','','jdbc:h2:mem:test2','org.h2.Driver')");
                 statement.executeUpdate(
@@ -62,21 +62,16 @@ public class LoadDsApplication {
                 statement.executeUpdate(
                         "insert into DB values ('db3','sa','','jdbc:h2:mem:test4','org.h2.Driver')");
                 Map<String, DataSourceProperty> map = new HashMap<>();
-                //*************** ↑↑↑↑↑↑↑ END  ***************
+                // *************** ↑↑↑↑↑↑↑ END  ***************
 
                 ResultSet rs = statement.executeQuery("select * from DB");
                 while (rs.next()) {
-                    String name = rs.getString("name");
-                    String username = rs.getString("username");
-                    String password = rs.getString("password");
-                    String url = rs.getString("url");
-                    String driver = rs.getString("driver");
                     DataSourceProperty property = new DataSourceProperty();
-                    property.setUsername(username);
-                    property.setPassword(password);
-                    property.setUrl(url);
-                    property.setDriverClassName(driver);
-                    map.put(name, property);
+                    property.setUsername(rs.getString("username"));
+                    property.setPassword(rs.getString("password"));
+                    property.setUrl(rs.getString("url"));
+                    property.setDriverClassName(rs.getString("driver"));
+                    map.put(rs.getString("name"), property);
                 }
                 return map;
             }

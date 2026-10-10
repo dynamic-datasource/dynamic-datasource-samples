@@ -45,3 +45,20 @@ jobs:
       - name: Build spring-boot-2 samples with Maven
         run: |
           ./mvnw -am -pl spring-boot-2/shardingsphere-jdbc-4.x-spring-sample,spring-boot-2/shardingsphere-jdbc-5.x-spring-sample -T1C -B -e clean test
+  lint-format-ci:
+    name: Lint & Format CI
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup java
+        uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          # Checkstyle 14 与 google-java-format 1.30+ 都要求 JDK 21+。
+          java-version: '21'
+          cache: 'maven'
+      - name: Check format with Spotless
+        run: ./mvnw -B -e spotless:check
+      - name: Check lint with Checkstyle
+        run: ./mvnw -B -e checkstyle:check

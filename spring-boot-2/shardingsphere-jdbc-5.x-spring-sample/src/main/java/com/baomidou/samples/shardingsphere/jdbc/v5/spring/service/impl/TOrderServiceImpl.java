@@ -19,14 +19,11 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.samples.shardingsphere.jdbc.v5.spring.entity.TOrder;
 import com.baomidou.samples.shardingsphere.jdbc.v5.spring.mapper.TOrderMapper;
 import com.baomidou.samples.shardingsphere.jdbc.v5.spring.service.TOrderService;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.IntStream;
+import org.springframework.stereotype.Service;
 
-/**
- * TODO Unit tests for ShardingSphere 5.5.2 need to be synchronized
- */
+/** TODO Unit tests for ShardingSphere 5.5.2 need to be synchronized */
 @Service
 public class TOrderServiceImpl implements TOrderService {
     private final TOrderMapper tOrderMapper;

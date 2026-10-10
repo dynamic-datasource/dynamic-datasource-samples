@@ -52,7 +52,12 @@ public class ProductService {
         product.setStock(currentStock);
         productMapper.updateById(product);
         double totalPrice = product.getPrice() * amount;
-        log.info("扣减商品编号为 {} 库存成功,扣减后库存为{}, {} 件商品总价为 {} ", productId, currentStock, amount, totalPrice);
+        log.info(
+                "扣减商品编号为 {} 库存成功,扣减后库存为{}, {} 件商品总价为 {} ",
+                productId,
+                currentStock,
+                amount,
+                totalPrice);
         log.info("=============PRODUCT END=================");
         return totalPrice;
     }

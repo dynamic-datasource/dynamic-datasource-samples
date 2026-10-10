@@ -15,20 +15,12 @@
  */
 package com.baomidou.samples.seata.common;
 
-/**
- * 订单状态
- */
+/** 订单状态 */
 public enum OrderStatus {
-    /**
-     * INIT
-     */
+    /** INIT */
     INIT,
-    /**
-     * SUCCESS
-     */
+    /** SUCCESS */
     SUCCESS,
-    /**
-     * FAIL
-     */
+    /** FAIL */
     FAIL
 }

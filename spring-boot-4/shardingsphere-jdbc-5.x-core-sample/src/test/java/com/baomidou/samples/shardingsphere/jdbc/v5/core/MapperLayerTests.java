@@ -15,24 +15,22 @@
  */
 package com.baomidou.samples.shardingsphere.jdbc.v5.core;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.baomidou.samples.shardingsphere.jdbc.v5.core.entity.TOrder;
 import com.baomidou.samples.shardingsphere.jdbc.v5.core.mapper.TOrderMapper;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 @SpringBootTest
 public class MapperLayerTests {
-    @Autowired
-    TOrderMapper tOrderMapper;
+    @Autowired TOrderMapper tOrderMapper;
 
     @BeforeEach
     void before() {
@@ -62,10 +60,11 @@ public class MapperLayerTests {
     void whenRequestToAddByNameAndUserIdWithPrimaryKey() {
         List<TOrder> emptyState = tOrderMapper.findAll();
         assertEquals(0, emptyState.size());
-        assertDoesNotThrow(() -> {
-            tOrderMapper.addAll(114514L, "Bright", 114514L);
-            tOrderMapper.addAll(114515L, "Jordan", 114515L);
-        });
+        assertDoesNotThrow(
+                () -> {
+                    tOrderMapper.addAll(114514L, "Bright", 114514L);
+                    tOrderMapper.addAll(114515L, "Jordan", 114515L);
+                });
     }
 
     @Test

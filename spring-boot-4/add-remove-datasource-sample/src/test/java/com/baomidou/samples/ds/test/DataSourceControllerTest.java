@@ -15,19 +15,18 @@
  */
 package com.baomidou.samples.ds.test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.baomidou.samples.ds.controller.DataSourceController;
 import com.baomidou.samples.ds.dto.DataSourceDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @SpringBootTest
 class DataSourceControllerTest {
 
-    @Autowired
-    private DataSourceController dataSourceController;
+    @Autowired private DataSourceController dataSourceController;
 
     @Test
     void addAndRemoveDatasource() {

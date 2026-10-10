@@ -15,15 +15,13 @@
  */
 package com.baomidou.samples.spel.service.impl;
 
-
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.baomidou.samples.spel.entity.User;
 import com.baomidou.samples.spel.mapper.UserMapper;
 import com.baomidou.samples.spel.service.UserService;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 @DS("slave")
@@ -50,7 +48,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @DS("#tenantName")
     public List<User> selectSpelByKey(String tenantName) {
-        assert !tenantName.equals("tenant1") || DynamicDataSourceContextHolder.peek().equals("tenant1");
+        assert !tenantName.equals("tenant1")
+                || DynamicDataSourceContextHolder.peek().equals("tenant1");
         return userMapper.selectUsers();
     }
 

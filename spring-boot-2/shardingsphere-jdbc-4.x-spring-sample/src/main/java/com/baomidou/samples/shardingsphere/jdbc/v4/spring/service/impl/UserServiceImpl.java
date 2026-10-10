@@ -19,9 +19,8 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.samples.shardingsphere.jdbc.v4.spring.entity.User;
 import com.baomidou.samples.shardingsphere.jdbc.v4.spring.mapper.UserMapper;
 import com.baomidou.samples.shardingsphere.jdbc.v4.spring.service.UserService;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {

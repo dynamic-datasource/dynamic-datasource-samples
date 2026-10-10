@@ -15,14 +15,17 @@
  */
 package com.baomidou.samples.mybatisplus3.controller;
 
-
 import com.baomidou.samples.mybatisplus3.entity.User;
 import com.baomidou.samples.mybatisplus3.service.UserService;
-import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Random;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
@@ -48,7 +51,7 @@ public class UserController {
         return userService.selectLambdaMasterUsers();
     }
 
-    @GetMapping("/lambdaSlave")//fixme 似乎不生效
+    @GetMapping("/lambdaSlave") // fixme 似乎不生效
     public List<User> lambdaSlaveUsers() {
         return userService.selectLambdaSlaveUsers();
     }

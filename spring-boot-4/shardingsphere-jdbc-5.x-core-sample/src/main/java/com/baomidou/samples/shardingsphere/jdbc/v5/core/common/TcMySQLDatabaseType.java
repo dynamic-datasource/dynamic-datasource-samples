@@ -15,12 +15,11 @@
  */
 package com.baomidou.samples.shardingsphere.jdbc.v5.core.common;
 
-import org.apache.shardingsphere.infra.database.core.type.DatabaseType;
-import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
+import org.apache.shardingsphere.infra.database.core.type.DatabaseType;
+import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
 
 public final class TcMySQLDatabaseType implements DatabaseType {
 
