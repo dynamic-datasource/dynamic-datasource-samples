@@ -19,12 +19,17 @@ import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.baomidou.dynamic.datasource.creator.DataSourceProperty;
 import com.baomidou.dynamic.datasource.creator.DefaultDataSourceCreator;
 import com.baomidou.samples.ds.dto.DataSourceDTO;
+import java.util.Set;
+import javax.sql.DataSource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import javax.sql.DataSource;
-import java.util.Set;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/datasources")
@@ -38,18 +43,14 @@ public class DataSourceController {
         this.dataSourceCreator = dataSourceCreator;
     }
 
-    /**
-     * 获取当前所有数据源
-     */
+    /** 获取当前所有数据源 */
     @GetMapping
     public Set<String> now() {
         DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
         return ds.getDataSources().keySet();
     }
 
-    /**
-     * 添加数据源
-     */
+    /** 添加数据源 */
     @PostMapping
     public Set<String> add(@Validated @RequestBody DataSourceDTO dto) {
         DataSourceProperty dataSourceProperty = new DataSourceProperty();
@@ -60,9 +61,7 @@ public class DataSourceController {
         return ds.getDataSources().keySet();
     }
 
-    /**
-     * 删除数据源
-     */
+    /** 删除数据源 */
     @DeleteMapping
     public String remove(@RequestParam String name) {
         DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;

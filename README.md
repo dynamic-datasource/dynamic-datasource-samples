@@ -8,7 +8,7 @@
 - `spring-boot-3`（`springboot3-sample`）与 `spring-boot-4` 下的子模块分别运行在 Spring Boot 3.5.x / 4.1.x，
   需要在 [OpenJDK 17, OpenJDK 27] 的 JDK 范围及其下游发行版下执行单元测试
 
-所有单元测试在 Github Actions 完成验证。你可能希望参考 [位于 Github Actions 的 CI 文件](./.github/workflows/ci.yml)。
+所有单元测试与代码风格检查（Lint & Format）在 Github Actions 完成验证。你可能希望参考 [位于 Github Actions 的 CI 文件](./.github/workflows/ci.yml)。
 
 ## Spring Boot 4（`spring-boot-4/`）
 
@@ -56,6 +56,27 @@
 - `spring-boot-2` 下模块的主代码保持 Java 8 兼容，配套使用 testcontainers 1.x（2.x 要求 Java 17+），
   因此 JDK 8 的 CI 任务直接对 `shardingsphere-jdbc-4.x-spring-sample` 与 `shardingsphere-jdbc-5.x-spring-sample` 执行 `clean test`；
   JDK 17/21/25/27 的全量 `clean test` 同样覆盖这两个模块。
+
+## 代码风格（Lint & Format）
+
+CI 的 `Lint & Format CI` 任务在 JDK 21 下执行格式与静态检查，本地提交前请在**仓库根目录**执行：
+
+```shell
+# 格式化 Java 代码
+./mvnw spotless:apply
+# 校验格式
+./mvnw spotless:check
+# 静态检查
+./mvnw checkstyle:check
+```
+
+- 格式化使用 [Spotless](https://github.com/diffplug/spotless) + `google-java-format` 的 AOSP 风格（4 空格缩进），
+  对 `src/main/java` 与 `src/test/java` 生效；通配符 `*` 导入会被 Checkstyle 拦截，需要手工展开。
+- 静态检查使用 [Checkstyle](https://checkstyle.org/) 的 `google_checks.xml`。
+  与格式化冲突（缩进、导入顺序等）或示例项目不适用的规则在 [`config/checkstyle/suppressions.xml`](./config/checkstyle/suppressions.xml) 中有意抑制，
+  新增抑制项请附带原因注释。
+- 两个工具都要求 JDK 21+ 运行（`google-java-format` 1.30+ 与 Checkstyle 14 的要求），
+  其余构建（如 JDK 8/17 下的 `clean test`）不受影响。
 
 ## Contributing
 

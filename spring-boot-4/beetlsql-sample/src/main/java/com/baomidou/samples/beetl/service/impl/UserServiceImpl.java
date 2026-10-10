@@ -15,22 +15,19 @@
  */
 package com.baomidou.samples.beetl.service.impl;
 
-
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.dynamic.datasource.annotation.Slave;
 import com.baomidou.samples.beetl.dao.UserDao;
 import com.baomidou.samples.beetl.entity.User;
 import com.baomidou.samples.beetl.service.UserService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserDao userDao;
+    @Autowired private UserDao userDao;
 
     @Override
     public List<User> selectMasterUsers() {

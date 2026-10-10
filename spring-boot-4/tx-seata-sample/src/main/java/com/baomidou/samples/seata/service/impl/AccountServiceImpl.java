@@ -29,15 +29,12 @@ import org.springframework.util.Assert;
 @Service
 public class AccountServiceImpl implements AccountService {
 
-    @Autowired
-    private AccountMapper accountMapper;
+    @Autowired private AccountMapper accountMapper;
 
-    /**
-     * 事务传播特性设置为 REQUIRES_NEW 开启新的事务
-     */
+    /** 事务传播特性设置为 REQUIRES_NEW 开启新的事务 */
     @DS("account")
     @Override
-//    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    //    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void reduceBalance(Long userId, Double price) {
         log.info("=============ACCOUNT START=================");
         log.info("当前 XID: {}", RootContext.getXID());

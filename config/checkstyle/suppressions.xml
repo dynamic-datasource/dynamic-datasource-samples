@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+        "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+        "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+<suppressions>
+    <!--以下规则由 Spotless 中的 google-java-format（AOSP 风格）保证，Checkstyle 再检查会与其产出冲突：
+        Indentation：AOSP 为 4 空格缩进，而 google_checks 按 2 空格检查；
+        CustomImportOrder：google-java-format 允许用空行对 import 分组，与单组规则冲突；
+        LineLength：google-java-format 不会对超长的注释/字符串折行；
+        EmptyLineSeparator：google-java-format 不主动插入空行。-->
+    <suppress checks="Indentation|CustomImportOrder|LineLength|EmptyLineSeparator"/>
+    <!--示例项目不强制要求 Javadoc。-->
+    <suppress checks="MissingJavadocMethod|MissingJavadocType|SummaryJavadoc"/>
+    <!--示例代码中的领域命名：TOrder、TcMySQLDatabaseType、DataSourceDTO、SPEL 等缩写，
+        以及与之配套的 tOrderXxx 字段/参数名。-->
+    <suppress checks="AbbreviationAsWordInName|GoogleNonConstantFieldName|ParameterName"/>
+    <!--spel-sample 中的 getGroupNameInSpELSelf/getGroupNameInsideObjectSpEL 是演示 SpEL 用法的命名，保留。-->
+    <suppress checks="GoogleMethodName" files="[\\/]spel-sample[\\/]"/>
+</suppressions>

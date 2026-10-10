@@ -18,6 +18,8 @@ package com.baomidou.samples.quartz.config;
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
+import java.util.List;
+import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.autoconfigure.DataSourceProperties;
 import org.springframework.boot.quartz.autoconfigure.QuartzDataSource;
@@ -25,17 +27,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
-import javax.sql.DataSource;
-import java.util.List;
-
 // 测试的时候请打开这个 `@Configuration`，并关闭其他 Mode 的配置
 @Configuration
 public class MyQuartzAutoConfigurationMode2 {
 
-    @Autowired
-    private DataSourceProperties dataSourceProperties;
-    @Autowired
-    private DynamicDataSourceProperties properties;
+    @Autowired private DataSourceProperties dataSourceProperties;
+    @Autowired private DynamicDataSourceProperties properties;
 
     @Primary
     @Bean
@@ -55,11 +52,11 @@ public class MyQuartzAutoConfigurationMode2 {
         return dataSourceProperties.initializeDataSourceBuilder().build();
     }
 
-    //如果需要使用动态数据源里的某个数据源则打开以下配置，关闭上面配置。
-//    @QuartzDataSource
-//    @Bean
-//    public DataSource quartzDataSource(DataSource dataSource) {
-//        DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
-//        return ds.getDataSource("quartz");
-//    }
+    // 如果需要使用动态数据源里的某个数据源则打开以下配置，关闭上面配置。
+    //    @QuartzDataSource
+    //    @Bean
+    //    public DataSource quartzDataSource(DataSource dataSource) {
+    //        DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;
+    //        return ds.getDataSource("quartz");
+    //    }
 }

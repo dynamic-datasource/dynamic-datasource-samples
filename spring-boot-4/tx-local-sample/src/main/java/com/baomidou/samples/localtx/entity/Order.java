@@ -30,24 +30,18 @@ public class Order {
     @TableId(type = IdType.AUTO)
     private Integer id;
 
-    /**
-     * 用户ID
-     */
+    /** 用户ID */
     private Long userId;
-    /**
-     * 商品ID
-     */
+
+    /** 商品ID */
     private Long productId;
-    /**
-     * 订单状态
-     */
+
+    /** 订单状态 */
     private OrderStatus status;
-    /**
-     * 数量
-     */
+
+    /** 数量 */
     private Integer amount;
-    /**
-     * 总金额
-     */
+
+    /** 总金额 */
     private Double totalPrice;
 }

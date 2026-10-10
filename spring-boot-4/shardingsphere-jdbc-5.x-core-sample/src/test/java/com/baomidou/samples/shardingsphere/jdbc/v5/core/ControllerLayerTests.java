@@ -15,8 +15,16 @@
  */
 package com.baomidou.samples.shardingsphere.jdbc.v5.core;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+
 import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.baomidou.samples.shardingsphere.jdbc.v5.core.mapper.TOrderMapper;
+import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,25 +33,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.nio.charset.StandardCharsets;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
-
 @SpringBootTest
 public class ControllerLayerTests {
     MockMvc mockMvc;
 
-    @Autowired
-    TOrderMapper tOrderMapper;
+    @Autowired TOrderMapper tOrderMapper;
 
     @BeforeEach
     void setup(WebApplicationContext webApplicationContext) {
-        this.mockMvc = webAppContextSetup(webApplicationContext).defaultResponseCharacterEncoding(StandardCharsets.UTF_8).build();
+        this.mockMvc =
+                webAppContextSetup(webApplicationContext)
+                        .defaultResponseCharacterEncoding(StandardCharsets.UTF_8)
+                        .build();
     }
 
     @AfterEach
@@ -55,23 +56,15 @@ public class ControllerLayerTests {
 
     @Test
     void whenGetRequestToFindAll() throws Exception {
-        mockMvc.perform(get("/t_order/findAll")
-                        .characterEncoding(StandardCharsets.UTF_8))
+        mockMvc.perform(get("/t_order/findAll").characterEncoding(StandardCharsets.UTF_8))
                 .andDo(print())
-                .andExpectAll(
-                        status().isOk(),
-                        content().encoding(StandardCharsets.UTF_8)
-                );
+                .andExpectAll(status().isOk(), content().encoding(StandardCharsets.UTF_8));
     }
 
     @Test
     void whenPostRequestToAddAll() throws Exception {
-        mockMvc.perform(post("/t_order/addAll")
-                        .characterEncoding(StandardCharsets.UTF_8))
+        mockMvc.perform(post("/t_order/addAll").characterEncoding(StandardCharsets.UTF_8))
                 .andDo(print())
-                .andExpectAll(
-                        status().isOk(),
-                        content().encoding(StandardCharsets.UTF_8)
-                );
+                .andExpectAll(status().isOk(), content().encoding(StandardCharsets.UTF_8));
     }
 }

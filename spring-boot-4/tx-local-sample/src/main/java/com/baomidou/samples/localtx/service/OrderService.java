@@ -44,12 +44,13 @@ public class OrderService {
 
         log.info("当前 XID: {}", TransactionContext.getXID());
 
-        Order order = Order.builder()
-                .userId(userId)
-                .productId(productId)
-                .status(OrderStatus.INIT)
-                .amount(amount)
-                .build();
+        Order order =
+                Order.builder()
+                        .userId(userId)
+                        .productId(productId)
+                        .status(OrderStatus.INIT)
+                        .amount(amount)
+                        .build();
 
         orderMapper.insert(order);
         log.info("订单一阶段生成，等待扣库存付款中");

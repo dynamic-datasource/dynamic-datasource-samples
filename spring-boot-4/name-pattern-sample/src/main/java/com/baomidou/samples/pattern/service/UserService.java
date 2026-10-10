@@ -15,9 +15,7 @@
  */
 package com.baomidou.samples.pattern.service;
 
-
 import com.baomidou.samples.pattern.entity.User;
-
 import java.util.List;
 
 public interface UserService {

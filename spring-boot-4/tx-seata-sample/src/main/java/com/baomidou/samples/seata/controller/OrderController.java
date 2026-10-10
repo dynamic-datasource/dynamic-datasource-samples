@@ -29,8 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/order")
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
+    @Autowired private OrderService orderService;
 
     @Operation(summary = "自由下单", description = "比如 1号用户购买1号商品1个")
     @PostMapping("/placeOrder")

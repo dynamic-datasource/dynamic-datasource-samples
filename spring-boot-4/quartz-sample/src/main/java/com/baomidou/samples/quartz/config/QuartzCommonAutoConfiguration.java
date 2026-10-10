@@ -16,7 +16,11 @@
 package com.baomidou.samples.quartz.config;
 
 import com.baomidou.samples.quartz.job.HelloworldJob;
-import org.quartz.*;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,7 +31,7 @@ public class QuartzCommonAutoConfiguration {
     public JobDetail job() {
         return JobBuilder.newJob(HelloworldJob.class)
                 .withIdentity("myJob1", "myJobGroup1")
-                //JobDataMap可以给任务execute传递参数
+                // JobDataMap可以给任务execute传递参数
                 .usingJobData("job_param", "job_param1")
                 .storeDurably()
                 .build();

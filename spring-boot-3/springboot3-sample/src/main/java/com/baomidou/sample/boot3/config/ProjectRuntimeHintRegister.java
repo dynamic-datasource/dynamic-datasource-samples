@@ -26,7 +26,6 @@ public class ProjectRuntimeHintRegister implements RuntimeHintsRegistrar {
 
     @Override
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
-        hints.resources()
-                .registerPattern("db/schema.sql");
+        hints.resources().registerPattern("db/schema.sql");
     }
 }

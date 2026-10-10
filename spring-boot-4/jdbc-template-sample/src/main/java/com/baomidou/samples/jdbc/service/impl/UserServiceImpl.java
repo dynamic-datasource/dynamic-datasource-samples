@@ -15,30 +15,28 @@
  */
 package com.baomidou.samples.jdbc.service.impl;
 
-
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.samples.jdbc.entity.User;
 import com.baomidou.samples.jdbc.service.UserService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static final RowMapper<User> ROW_MAPPER = (rs, rowNum) -> {
-        User user = new User();
-        user.setId(rs.getInt("id"));
-        user.setName(rs.getString("name"));
-        user.setAge(rs.getInt("age"));
-        return user;
-    };
+    private static final RowMapper<User> ROW_MAPPER =
+            (rs, rowNum) -> {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setAge(rs.getInt("age"));
+                return user;
+            };
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    @Autowired private JdbcTemplate jdbcTemplate;
 
     @Override
     public List<User> selectMasterUsers() {
@@ -53,8 +51,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(User user) {
-        jdbcTemplate.update("insert into t_user (name,age) VALUES(?, ?)",
-                new Object[]{user.getName(), user.getAge()});
+        jdbcTemplate.update(
+                "insert into t_user (name,age) VALUES(?, ?)",
+                new Object[] {user.getName(), user.getAge()});
     }
 
     @Override

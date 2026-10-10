@@ -16,24 +16,20 @@
 package com.baomidou.samples.consul.controller;
 
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
+import java.util.Set;
+import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.sql.DataSource;
-import java.util.Set;
-
 @RestController
 @RequestMapping("/datasources")
 public class DataSourceController {
 
-    @Autowired
-    private DataSource dataSource;
+    @Autowired private DataSource dataSource;
 
-    /**
-     * 获取当前所有数据源
-     */
+    /** 获取当前所有数据源 */
     @GetMapping
     public Set<String> now() {
         DynamicRoutingDataSource ds = (DynamicRoutingDataSource) dataSource;

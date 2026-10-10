@@ -15,7 +15,10 @@
  */
 package com.baomidou.samples.quartz.test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
+import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,34 +29,33 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import javax.sql.DataSource;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @Testcontainers
 @SpringBootTest
 class QuartzSampleTest {
 
     @Container
-    static MySQLContainer<?> mysql = new MySQLContainer<>(DockerImageName.parse("mysql:8.4.7-oraclelinux9"))
-            .withDatabaseName("quartz");
+    static MySQLContainer<?> mysql =
+            new MySQLContainer<>(DockerImageName.parse("mysql:8.4.7-oraclelinux9"))
+                    .withDatabaseName("quartz");
 
     @org.springframework.test.context.DynamicPropertySource
-    static void datasourceProperties(org.springframework.test.context.DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", () -> mysql.getJdbcUrl() + "?useSSL=false&allowPublicKeyRetrieval=true");
+    static void datasourceProperties(
+            org.springframework.test.context.DynamicPropertyRegistry registry) {
+        registry.add(
+                "spring.datasource.url",
+                () -> mysql.getJdbcUrl() + "?useSSL=false&allowPublicKeyRetrieval=true");
         registry.add("spring.datasource.username", mysql::getUsername);
         registry.add("spring.datasource.password", mysql::getPassword);
-        registry.add("spring.datasource.dynamic.datasource.quartz.url",
+        registry.add(
+                "spring.datasource.dynamic.datasource.quartz.url",
                 () -> mysql.getJdbcUrl() + "?useSSL=false&allowPublicKeyRetrieval=true");
         registry.add("spring.datasource.dynamic.datasource.quartz.username", mysql::getUsername);
         registry.add("spring.datasource.dynamic.datasource.quartz.password", mysql::getPassword);
     }
 
-    @Autowired
-    private Scheduler scheduler;
+    @Autowired private Scheduler scheduler;
 
-    @Autowired
-    private DataSource dataSource;
+    @Autowired private DataSource dataSource;
 
     @Test
     void schedulerUsesJdbcStore() throws Exception {
@@ -61,8 +63,9 @@ class QuartzSampleTest {
         assertThat(scheduler.getJobGroupNames()).contains("myJobGroup1");
         DynamicRoutingDataSource routingDataSource = (DynamicRoutingDataSource) dataSource;
         assertThat(routingDataSource.getDataSources().keySet()).contains("master", "quartz");
-        Integer quartzTables = new JdbcTemplate(routingDataSource.getDataSource("quartz"))
-                .queryForObject("select count(*) from QRTZ_JOB_DETAILS", Integer.class);
+        Integer quartzTables =
+                new JdbcTemplate(routingDataSource.getDataSource("quartz"))
+                        .queryForObject("select count(*) from QRTZ_JOB_DETAILS", Integer.class);
         assertThat(quartzTables).isGreaterThanOrEqualTo(1);
     }
 }
