@@ -60,5 +60,7 @@ jobs:
           cache: 'maven'
       - name: Check format with Spotless
         run: ./mvnw -B -e spotless:check
+      - name: Check license header with License Maven Plugin
+        run: ./mvnw -B -e license:check
       - name: Check lint with Checkstyle
         run: ./mvnw -B -e checkstyle:check
