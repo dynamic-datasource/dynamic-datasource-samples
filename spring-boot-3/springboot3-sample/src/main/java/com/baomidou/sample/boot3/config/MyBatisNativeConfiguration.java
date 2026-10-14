@@ -19,12 +19,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -33,30 +30,11 @@ import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
-import org.apache.ibatis.cache.decorators.FifoCache;
-import org.apache.ibatis.cache.decorators.LruCache;
-import org.apache.ibatis.cache.decorators.SoftCache;
-import org.apache.ibatis.cache.decorators.WeakCache;
-import org.apache.ibatis.cache.impl.PerpetualCache;
-import org.apache.ibatis.javassist.util.proxy.ProxyFactory;
-import org.apache.ibatis.javassist.util.proxy.RuntimeSupport;
-import org.apache.ibatis.logging.Log;
-import org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl;
-import org.apache.ibatis.logging.jdk14.Jdk14LoggingImpl;
-import org.apache.ibatis.logging.log4j2.Log4j2Impl;
-import org.apache.ibatis.logging.nologging.NoLoggingImpl;
-import org.apache.ibatis.logging.slf4j.Slf4jImpl;
-import org.apache.ibatis.logging.stdout.StdOutImpl;
 import org.apache.ibatis.reflection.TypeParameterResolver;
-import org.apache.ibatis.scripting.defaults.RawLanguageDriver;
-import org.apache.ibatis.scripting.xmltags.XMLLanguageDriver;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
-import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -66,18 +44,31 @@ import org.springframework.beans.factory.aot.BeanRegistrationExcludeFilter;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.core.ResolvableType;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
+/**
+ * MyBatis 的 Spring AOT 集成。
+ *
+ * <p>取自 MyBatis 官方的 MyBatisNativeConfiguration 模板；静态的 GraalVM 元数据（日志实现、 缓存装饰器、dtd/xsd 资源等）已按依赖分目录改为
+ * {@code META-INF/native-image/<groupId>/<artifactId>/<version>/reachability-metadata.json}，
+ * 这里只保留无法用静态元数据表达的部分：
+ *
+ * <ul>
+ *   <li>{@code MyBatisMapperFactoryBeanPostProcessor}：为 MapperFactoryBean 的 BeanDefinition
+ *       补齐类型信息，避免 AOT 代码生成退回到自动装配 Class；
+ *   <li>{@code MyBatisBeanFactoryInitializationAotProcessor}：处理 mapper 扫描器生成的 MapperFactoryBean
+ *       定义，并为 mapper 接口及其实体注册反射（由 AOT 扫描结果驱动）。
+ * </ul>
+ */
 @Configuration(proxyBeanMethods = false)
-@ImportRuntimeHints(MyBatisNativeConfiguration.MyBaitsRuntimeHintsRegistrar.class)
 public class MyBatisNativeConfiguration {
 
     @Bean
@@ -88,39 +79,6 @@ public class MyBatisNativeConfiguration {
     @Bean
     MyBatisBeanFactoryInitializationAotProcessor myBatisBeanFactoryInitializationAotProcessor() {
         return new MyBatisBeanFactoryInitializationAotProcessor();
-    }
-
-    static class MyBaitsRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
-
-        @Override
-        public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
-            Stream.of(
-                            RawLanguageDriver.class,
-                            XMLLanguageDriver.class,
-                            RuntimeSupport.class,
-                            ProxyFactory.class,
-                            Slf4jImpl.class,
-                            Log.class,
-                            JakartaCommonsLoggingImpl.class,
-                            Log4j2Impl.class,
-                            Jdk14LoggingImpl.class,
-                            StdOutImpl.class,
-                            NoLoggingImpl.class,
-                            SqlSessionFactory.class,
-                            PerpetualCache.class,
-                            FifoCache.class,
-                            LruCache.class,
-                            SoftCache.class,
-                            WeakCache.class,
-                            SqlSessionFactoryBean.class,
-                            ArrayList.class,
-                            HashMap.class,
-                            TreeSet.class,
-                            HashSet.class)
-                    .forEach(x -> hints.reflection().registerType(x, MemberCategory.values()));
-            Stream.of("org/apache/ibatis/builder/xml/*.dtd", "org/apache/ibatis/builder/xml/*.xsd")
-                    .forEach(hints.resources()::registerPattern);
-        }
     }
 
     static class MyBatisBeanFactoryInitializationAotProcessor
@@ -229,9 +187,8 @@ public class MyBatisNativeConfiguration {
     }
 
     static class MyBatisMapperTypeUtils {
-        private MyBatisMapperTypeUtils() {
-            // NOP
-        }
+        /** 工具类，禁止实例化。 */
+        private MyBatisMapperTypeUtils() {}
 
         static Class<?> resolveReturnClass(Class<?> mapperInterface, Method method) {
             Type resolvedReturnType =
@@ -296,6 +253,12 @@ public class MyBatisNativeConfiguration {
             }
         }
 
+        /**
+         * 为 {@code MapperFactoryBean} 的 BeanDefinition 补齐类型信息。
+         *
+         * <p>向上下文暴露泛型类型信息以避免过早初始化；同时把构造参数重新注册为 {@code Class} 字面量——扫描器只会记录 mapper 类名字符串，这会使 AOT
+         * 代码生成退回到 自动装配 {@code MapperFactoryBean} 构造器，native 测试下会尝试自动装配 {@code Class<?>}。
+         */
         private void resolveMapperFactoryBeanTypeIfNecessary(RootBeanDefinition beanDefinition) {
             if (!beanDefinition.hasBeanClass()
                     || !MapperFactoryBean.class.isAssignableFrom(beanDefinition.getBeanClass())) {
@@ -304,10 +267,13 @@ public class MyBatisNativeConfiguration {
             if (beanDefinition.getResolvableType().hasUnresolvableGenerics()) {
                 Class<?> mapperInterface = getMapperInterface(beanDefinition);
                 if (mapperInterface != null) {
-                    // Exposes a generic type information to context for prevent early initializing
                     beanDefinition.setTargetType(
                             ResolvableType.forClassWithGenerics(
                                     beanDefinition.getBeanClass(), mapperInterface));
+                    ConstructorArgumentValues constructorArgumentValues =
+                            new ConstructorArgumentValues();
+                    constructorArgumentValues.addGenericArgumentValue(mapperInterface);
+                    beanDefinition.setConstructorArgumentValues(constructorArgumentValues);
                 }
             }
         }

@@ -9,11 +9,14 @@ seata:
   enable-auto-data-source-proxy: false
   service:
     vgroup-mapping:
-      #key与上面的tx-service-group的值对应
+      #key与上面的tx-service-group的值对应；default_tx_group 是 Seata 客户端回退的默认分组，
+      #AOT 处理测试上下文时分组解析可能取到该默认值，同样映射到 file 注册中心的 default 集群。
       my_test_tx_group: default
+      default_tx_group: default
     grouplist:
-      #seata-server地址仅file注册中心需要
-      default: 110.40.253.205:8091
+      #seata-server地址仅file注册中心需要；构建期（AOT）与测试运行期分别由本地 server 与测试容器提供，
+      #默认值指向构建本机（CI 用 services 容器占用同样端口），测试运行时会被下方测试容器的真实地址覆盖。
+      default: localhost:8091
   config:
     type: file
   registry:

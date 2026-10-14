@@ -1,0 +1,62 @@
+# GraalVM native image 测试使用的 ShardingSphere 配置（JVM 测试仍使用 config.yaml）。
+# 依据 ShardingSphere 官方 GraalVM Native Image 文档的使用限制：
+# - INLINE 算法依赖 GroovyShell，native 下不可用（oracle/graal#5522），改用等价的 MOD 算法；
+# - actualDataNodes、读写分离的分组与库名需要使用 <LITERAL> 行表达式，以绕开 GroovyShell。
+dataSources:
+  shardingmaster:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: $${sample.shardingsphere.driver::org.testcontainers.jdbc.ContainerDatabaseDriver}
+    jdbcUrl: $${sample.shardingsphere.master-url::jdbc:tc:mysql:26.7.0-oraclelinux9:///master?TC_INITSCRIPT=db/schema.sql}
+    username: $${sample.shardingsphere.username::test}
+    password: $${sample.shardingsphere.password::test}
+  shardingslave0:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: $${sample.shardingsphere.driver::org.testcontainers.jdbc.ContainerDatabaseDriver}
+    jdbcUrl: $${sample.shardingsphere.slave0-url::jdbc:tc:mysql:26.7.0-oraclelinux9:///slave1?TC_INITSCRIPT=db/schema.sql}
+    username: $${sample.shardingsphere.username::test}
+    password: $${sample.shardingsphere.password::test}
+  shardingslave1:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: $${sample.shardingsphere.driver::org.testcontainers.jdbc.ContainerDatabaseDriver}
+    jdbcUrl: $${sample.shardingsphere.slave1-url::jdbc:tc:mysql:26.7.0-oraclelinux9:///slave2?TC_INITSCRIPT=db/schema.sql}
+    username: $${sample.shardingsphere.username::test}
+    password: $${sample.shardingsphere.password::test}
+rules:
+- !SHARDING
+  tables:
+    t_order:
+      actualDataNodes: <LITERAL>shardingmaster.t_order0, shardingmaster.t_order1
+      tableStrategy:
+        standard:
+          shardingColumn: order_id
+          shardingAlgorithmName: baomidou_mod
+      keyGenerateStrategy:
+        column: order_id
+        keyGeneratorName: baomidou_snowflake
+  shardingAlgorithms:
+    baomidou_mod:
+      type: CLASS_BASED
+      props:
+        strategy: STANDARD
+        # native 下不能使用 INLINE（依赖 GroovyShell），用等价的取模标准算法替代。
+        algorithmClassName: org.apache.shardingsphere.sharding.algorithm.sharding.mod.ModShardingAlgorithm
+        sharding-count: 2
+  keyGenerators:
+    baomidou_snowflake:
+      type: SNOWFLAKE
+- !READWRITE_SPLITTING
+  dataSourceGroups:
+    <LITERAL>baomidou_readwrite_data_sources:
+      writeDataSourceName: <LITERAL>shardingmaster
+      readDataSourceNames:
+        - <LITERAL>shardingslave0
+        - <LITERAL>shardingslave1
+      loadBalancerName: baomidou_load_balance_algorithm
+  loadBalancers:
+    baomidou_load_balance_algorithm:
+      type: ROUND_ROBIN
+- !SINGLE
+  tables:
+    - <LITERAL>*.*
+props:
+  sql-show: true

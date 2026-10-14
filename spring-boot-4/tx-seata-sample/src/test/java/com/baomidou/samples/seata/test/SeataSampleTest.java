@@ -74,7 +74,10 @@ class SeataSampleTest {
                 "spring.datasource.dynamic.datasource.product.password", postgres::getPassword);
         registry.add(
                 "seata.service.grouplist.default",
-                () -> seataServer.getHost() + ":" + seataServer.getMappedPort(8091));
+                () ->
+                        seataServer.isRunning()
+                                ? seataServer.getHost() + ":" + seataServer.getMappedPort(8091)
+                                : "localhost:8091");
     }
 
     @Autowired private OrderService orderService;

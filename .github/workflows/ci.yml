@@ -47,6 +47,38 @@ jobs:
       - name: Build spring-boot-2 samples with Maven
         run: |
           ./mvnw -am -pl spring-boot-2/shardingsphere-jdbc-4.x-spring-sample,spring-boot-2/shardingsphere-jdbc-5.x-spring-sample -T1C -B -e clean test
+  test-native-ci:
+    if: github.repository == 'dynamic-datasource/dynamic-datasource-samples'
+    name: Native Test CI - GraalVM shard ${{ matrix.shard }} on ubuntu-latest
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          version: '25.3.4.1'
+          distribution: 'graalvm-community'
+          cache: 'maven'
+      # 各模块的 native / nativeTest 配置由 spring-boot-3 / spring-boot-4 父模块统一管理，
+      # 子模块声明插件即 opt-in。本地可用 `mvn -Pnative package` 构建 native image，
+      # 用 `mvn -PnativeTest test` 在 native image 中运行测试。CI 覆盖的模块清单按分片定义在
+      # 根 pom.xml 的 `native.test.modules.shard1..7` 属性中，矩阵并行执行以缩短总时长；
+      # 测试镜像在建 native image 时启用 quick build（`quickBuild`），依赖 Testcontainers
+      # 的模块使用 runner 自带的 Docker。以下模块未纳入该任务：
+      # beetlsql-sample 与 druid-sample 依赖的第三方库暂未提供 native 支持；
+      # tx-seata-sample 依赖的 Seata 在 AOT 处理阶段就会构造 GlobalTransactionScanner
+      # 并要求 Seata Server 可达，且其应用上下文在 AOT 类型预判定阶段存在 null Advisor
+      # 问题，故暂不纳入。
+      - name: Resolve native test modules
+        run: echo "NATIVE_TEST_MODULES=$(./mvnw -B -q help:evaluate -Dexpression=native.test.modules.shard${{ matrix.shard }} -DforceStdout)" >> "$GITHUB_ENV"
+      - name: Native test with Maven
+        run: |
+          ./mvnw -B -e -PnativeTest clean test -pl "$NATIVE_TEST_MODULES"
   lint-format-ci:
     if: github.repository == 'dynamic-datasource/dynamic-datasource-samples'
     name: Lint & Format CI

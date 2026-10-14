@@ -1,0 +1,227 @@
+{
+  "reflection": [
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.driver.yaml.YamlJDBCConfiguration",
+      "reason": [
+        "ShardingSphere 驱动 YAML 根配置，SnakeYAML 反射构造并设值"
+      ],
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.infra.yaml.config.pojo.mode.YamlModeConfiguration",
+      "reason": [
+        "ShardingSphere 运行模式配置，SnakeYAML 反射构造并设值"
+      ],
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.infra.yaml.config.pojo.mode.YamlPersistRepositoryConfiguration",
+      "reason": [
+        "ShardingSphere 持久化仓库配置，SnakeYAML 反射构造并设值"
+      ],
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.infra.algorithm.core.yaml.YamlAlgorithmConfiguration",
+      "reason": [
+        "ShardingSphere 算法配置，SnakeYAML 反射构造并设值"
+      ],
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.sharding.yaml.config.YamlShardingRuleConfiguration",
+      "reason": [
+        "ShardingSphere 分片规则配置，SnakeYAML 反射构造并设值"
+      ],
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.sharding.yaml.config.rule.YamlTableRuleConfiguration",
+      "reason": [
+        "ShardingSphere 逻辑表配置，SnakeYAML 反射构造并设值"
+      ],
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.sharding.yaml.config.strategy.sharding.YamlShardingStrategyConfiguration",
+      "reason": [
+        "ShardingSphere 分片策略配置基类，SnakeYAML 反射构造并设值"
+      ],
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.sharding.yaml.config.strategy.sharding.YamlStandardShardingStrategyConfiguration",
+      "reason": [
+        "ShardingSphere 标准分片策略配置，SnakeYAML 反射构造并设值"
+      ],
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.sharding.yaml.config.strategy.keygen.YamlKeyGenerateStrategyConfiguration",
+      "reason": [
+        "ShardingSphere 主键生成策略配置，SnakeYAML 反射构造并设值"
+      ],
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.readwritesplitting.yaml.config.YamlReadwriteSplittingRuleConfiguration",
+      "reason": [
+        "ShardingSphere 读写分离规则配置，SnakeYAML 反射构造并设值"
+      ],
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.readwritesplitting.yaml.config.rule.YamlReadwriteSplittingDataSourceGroupRuleConfiguration",
+      "reason": [
+        "ShardingSphere 读写分离数据源组配置，SnakeYAML 反射构造并设值"
+      ],
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.single.yaml.config.YamlSingleRuleConfiguration",
+      "reason": [
+        "ShardingSphere 单表规则配置，SnakeYAML 反射构造并设值"
+      ],
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.sql.parser.engine.mysql.parser.MySQLLexer",
+      "reason": [
+        "ShardingSphere MySQL 词法分析器，经 SPI 按名加载实例化"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.sql.parser.engine.mysql.parser.MySQLParser",
+      "reason": [
+        "ShardingSphere MySQL 语法分析器，经 SPI 按名加载实例化"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.sql.parser.engine.mysql.parser.MySQLParserFacade",
+      "reason": [
+        "ShardingSphere MySQL 解析门面，经 SPI 按名加载实例化"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.sql.parser.engine.mysql.visitor.statement.MySQLStatementVisitorFacade",
+      "reason": [
+        "ShardingSphere MySQL 访问器门面，经 SPI 按名加载实例化"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.sql.parser.engine.mysql.visitor.statement.type.MySQLDALStatementVisitor",
+      "reason": [
+        "ShardingSphere MySQL DAL 访问器，经 SPI 按名加载实例化"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.sql.parser.engine.mysql.visitor.statement.type.MySQLDDLStatementVisitor",
+      "reason": [
+        "ShardingSphere MySQL DDL 访问器，经 SPI 按名加载实例化"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.sql.parser.engine.mysql.visitor.statement.type.MySQLDMLStatementVisitor",
+      "reason": [
+        "ShardingSphere MySQL DML 访问器，经 SPI 按名加载实例化"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "type": "org.apache.shardingsphere.sql.parser.engine.mysql.visitor.statement.type.MySQLTCLStatementVisitor",
+      "reason": [
+        "ShardingSphere MySQL TCL 访问器，经 SPI 按名加载实例化"
+      ],
+      "allDeclaredConstructors": true
+    }
+  ],
+  "resources": [
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "glob": "META-INF/services/**",
+      "reason": [
+        "SPI 描述文件，ServiceLoader 读取"
+      ]
+    }
+  ]
+}

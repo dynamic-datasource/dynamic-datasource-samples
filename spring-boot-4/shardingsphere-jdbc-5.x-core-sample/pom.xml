@@ -13,6 +13,10 @@
         <!-- shardingsphere-bom 5.5.3 的父 POM shardingsphere-distribution 未发布到 Maven Central，无法 import，
              参见 https://github.com/apache/shardingsphere/issues/38291，5.5.4 修复后可改用 BOM。 -->
         <shardingsphere.version>5.5.3</shardingsphere.version>
+        <!-- shardingsphere-transaction-xa-core 的字节码引用 javax.transaction.*（JTA），
+             该 API 不在 Java SE 中、也未由 ShardingSphere 依赖传递，缺失时 GraalVM 解析
+             XAShardingSphereTransactionManager 会因 LinkageError 构建失败。 -->
+        <javax-transaction-api.version>1.3</javax-transaction-api.version>
     </properties>
     <dependencies>
         <dependency>
@@ -104,6 +108,18 @@
             <groupId>com.baomidou</groupId>
             <artifactId>dynamic-datasource-spring-boot4-starter</artifactId>
         </dependency>
+        <!-- ShardingSphere 官方提供的 GraalVM reachability metadata，纯元数据 jar，无代码依赖。 -->
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>shardingsphere-infra-reachability-metadata</artifactId>
+            <version>${shardingsphere.version}</version>
+        </dependency>
+        <!-- shardingsphere-transaction-xa-core 引用 javax.transaction.*（JTA），补充该 API。 -->
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>javax.transaction-api</artifactId>
+            <version>${javax-transaction-api.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers-mysql</artifactId>
@@ -113,4 +129,22 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
     </dependencies>
+
+    <!--插件版本与 native / nativeTest profile 均由父模块统一管理，
+        这里声明即 opt-in，`mvn -Pnative package` 构建 native image，
+        `mvn -PnativeTest test` 在 native image 中运行测试。-->
+    <build>
+        <plugins>
+            <!-- 当前 GraalVM CE 已不需要官方文档提到的 -H:+TreatAllTypeReachableConditionsAsTypeReached
+                 等额外 buildArg（见 apache/shardingsphere#38943）。 -->
+            <plugin>
+                <groupId>org.graalvm.buildtools</groupId>
+                <artifactId>native-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

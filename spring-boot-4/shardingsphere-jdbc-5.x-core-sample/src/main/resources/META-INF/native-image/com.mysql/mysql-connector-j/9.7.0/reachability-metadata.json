@@ -1,0 +1,25 @@
+{
+  "reflection": [
+    {
+      "condition": {
+        "typeReached": "com.mysql.cj.jdbc.Driver"
+      },
+      "type": "com.mysql.cj.jdbc.Driver",
+      "reason": [
+        "DriverManager 按名加载，反射调用无参构造器"
+      ],
+      "allDeclaredConstructors": true
+    }
+  ],
+  "resources": [
+    {
+      "condition": {
+        "typeReached": "com.mysql.cj.jdbc.Driver"
+      },
+      "glob": "com/mysql/cj/util/TimeZoneMapping.properties",
+      "reason": [
+        "MySQL 时区映射表，连接时读取"
+      ]
+    }
+  ]
+}

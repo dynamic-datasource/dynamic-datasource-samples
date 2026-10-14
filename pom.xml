@@ -25,6 +25,18 @@
         <google-java-format.version>1.36.1</google-java-format.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
         <checkstyle.version>14.3.0</checkstyle.version>
+        <!--GraalVM Native Build Tools 全仓库统一使用最新版本，Boot 3 与 Boot 4 两条版本线共享；
+            如某条版本线需要钉住旧版本，可在对应 spring-boot-* 聚合模块中覆盖该属性。-->
+        <native-maven-plugin.version>1.1.14</native-maven-plugin.version>
+        <!--Native Test CI（见 .github/workflows/ci.yml）覆盖的模块清单，按分片拆分以并行执行，
+            逗号分隔；CI 通过 `mvn help:evaluate -Dexpression=native.test.modules.shardN` 读取后传给 `-pl`。-->
+        <native.test.modules.shard1>spring-boot-4/add-remove-datasource-sample,spring-boot-4/config-nacos-sample</native.test.modules.shard1>
+        <native.test.modules.shard2>spring-boot-4/load-datasource-from-jdbc-sample,spring-boot-4/shardingsphere-jdbc-5.x-core-sample</native.test.modules.shard2>
+        <native.test.modules.shard3>spring-boot-4/name-pattern-sample,spring-boot-4/quartz-sample</native.test.modules.shard3>
+        <native.test.modules.shard4>spring-boot-4/config-consul-sample,spring-boot-4/spel-sample</native.test.modules.shard4>
+        <native.test.modules.shard5>spring-boot-4/mybatis-sample,spring-boot-4/tx-local-sample</native.test.modules.shard5>
+        <native.test.modules.shard6>spring-boot-3/springboot3-sample,spring-boot-4/mybatisplus3-sample</native.test.modules.shard6>
+        <native.test.modules.shard7>spring-boot-4/jdbc-template-sample,spring-boot-4/druid-sample</native.test.modules.shard7>
     </properties>
 
     <modules>

@@ -1,0 +1,22 @@
+{
+  "resources": [
+    {
+      "condition": {
+        "typeReached": "com.baomidou.dynamic.datasource.creator.DataSourceProperty"
+      },
+      "glob": "db/schema.sql",
+      "reason": [
+        "dynamic-datasource 初始化脚本，建表用"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.beetl.sql.starter.BeetlSqlStater4"
+      },
+      "glob": "btsql.properties",
+      "reason": [
+        "BeetlSQL 配置文件，启动时读取"
+      ]
+    }
+  ]
+}

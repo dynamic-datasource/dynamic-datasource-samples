@@ -55,4 +55,20 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <!--插件版本与 native / nativeTest profile 均由父模块统一管理，
+        这里声明即 opt-in，`mvn -Pnative package` 构建 native image，
+        `mvn -PnativeTest test` 在 native image 中运行测试。-->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.graalvm.buildtools</groupId>
+                <artifactId>native-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

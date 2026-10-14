@@ -1,0 +1,1140 @@
+{
+  "reflection": [
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "io.seata.integration.tx.api.interceptor.parser.GlobalTransactionalInterceptorParser",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "io.seata.rm.tcc.TCCResourceManager",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "io.seata.rm.tcc.interceptor.parser.TccActionInterceptorParser",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "io.seata.rm.tcc.remoting.parser.LocalTCCRemotingParser",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "io.seata.saga.rm.SagaResourceManager",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.config.file.SimpleFileConfig",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.config.file.YamlFileConfig",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.core.auth.DefaultAuthSigner",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.core.context.FastThreadLocalContextCore",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.core.context.ThreadLocalContextCore",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.core.rpc.hook.StatusRpcHook",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.discovery.registry.FileRegistryProvider",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.discovery.registry.consul.ConsulRegistryProvider",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.discovery.registry.custom.CustomRegistryProvider",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.discovery.registry.etcd3.EtcdRegistryProvider",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.discovery.registry.eureka.EurekaRegistryProvider",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.discovery.registry.nacos.NacosRegistryProvider",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.discovery.registry.namingserver.NamingserverRegistryProvider",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.discovery.registry.raft.RaftRegistryProvider",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.discovery.registry.redis.RedisRegistryProvider",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.discovery.registry.sofa.SofaRegistryProvider",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.discovery.registry.zk.ZookeeperRegistryProvider",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.integration.tx.api.interceptor.parser.CombineTransactionalInterceptorParser",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.integration.tx.api.interceptor.parser.GlobalTransactionalInterceptorParser",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.integration.tx.api.remoting.parser.DubboRemotingParser",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.integration.tx.api.remoting.parser.HSFRemotingParser",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.integration.tx.api.remoting.parser.SofaRpcRemotingParser",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.RMHandlerAT",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.RMHandlerXA",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.DataSourceManager",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.exec.dm.DmInsertExecutor",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.exec.kingbase.KingbaseInsertExecutor",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.exec.mariadb.MariadbInsertExecutor",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.exec.mysql.MySQLInsertExecutor",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.exec.oceanbase.OceanBaseInsertExecutor",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.exec.oracle.OracleInsertExecutor",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.exec.oscar.OscarInsertExecutor",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.exec.polardbx.PolarDBXInsertExecutor",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.exec.postgresql.PostgresqlInsertExecutor",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.exec.sqlserver.SqlServerInsertExecutor",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.handler.dm.DmEscapeHandler",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.handler.kingbase.KingbaseEscapeHandler",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.handler.mariadb.MariadbEscapeHandler",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.handler.mysql.MySQLEscapeHandler",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.handler.oceanbase.OceanBaseEscapeHandler",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.handler.oracle.OracleEscapeHandler",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.handler.oscar.OscarEscapeHandler",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.handler.polardbx.PolarDBXEscapeHandler",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.handler.postgresql.PostgresqlEscapeHandler",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.handler.sqlserver.SqlServerEscapeHandler",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.struct.cache.DmTableMetaCache",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.struct.cache.KingbaseTableMetaCache",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.struct.cache.MariadbTableMetaCache",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.struct.cache.MysqlTableMetaCache",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.struct.cache.OceanBaseTableMetaCache",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.struct.cache.OracleTableMetaCache",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.struct.cache.OscarTableMetaCache",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.struct.cache.PolarDBXTableMetaCache",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.struct.cache.PostgresqlTableMetaCache",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.sql.struct.cache.SqlServerTableMetaCache",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.dm.DmUndoExecutorHolder",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.dm.DmUndoLogManager",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.kingbase.KingbaseUndoExecutorHolder",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.kingbase.KingbaseUndoLogManager",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.mariadb.MariadbUndoExecutorHolder",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.mariadb.MariadbUndoLogManager",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.mysql.MySQLUndoExecutorHolder",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.mysql.MySQLUndoLogManager",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.oceanbase.OceanBaseUndoExecutorHolder",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.oceanbase.OceanBaseUndoLogManager",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.oracle.OracleUndoExecutorHolder",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.oracle.OracleUndoLogManager",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.oscar.OscarUndoExecutorHolder",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.oscar.OscarUndoLogManager",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.parser.Fastjson2UndoLogParser",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.parser.FastjsonUndoLogParser",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.parser.ForyUndoLogParser",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.parser.JacksonUndoLogParser",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.parser.KryoUndoLogParser",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.parser.ProtostuffUndoLogParser",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.polardbx.PolarDBXUndoExecutorHolder",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.polardbx.PolarDBXUndoLogManager",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.postgresql.PostgresqlUndoExecutorHolder",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.postgresql.PostgresqlUndoLogManager",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.sqlserver.SqlServerUndoExecutorHolder",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.undo.sqlserver.SqlServerUndoLogManager",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.datasource.xa.ResourceManagerXA",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.tcc.RMHandlerTCC",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.tcc.TCCResourceManager",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.tcc.interceptor.parser.TccActionInterceptorParser",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.rm.tcc.remoting.parser.LocalTCCRemotingParser",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.saga.rm.RMHandlerSaga",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.saga.rm.RMHandlerSagaAnnotation",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.saga.rm.SagaAnnotationResourceManager",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.saga.rm.SagaResourceManager",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.saga.rm.interceptor.parser.SagaAnnotationActionInterceptorParser",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.saga.rm.remoting.parser.SagaTransactionalRemotingParser",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.serializer.fastjson2.Fastjson2Serializer",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.serializer.fory.ForySerializer",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.serializer.hessian.HessianSerializer",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.serializer.kryo.KryoSerializer",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.serializer.seata.SeataSerializer",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.spring.SpringTargetClassParser",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.spring.annotation.scannercheckers.ConfigBeansScannerChecker",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.spring.annotation.scannercheckers.PackageScannerChecker",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.spring.annotation.scannercheckers.ScopeBeansScannerChecker",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.spring.boot.autoconfigure.provider.SpringBootConfigurationProvider",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.sqlparser.druid.DruidDelegatingDbTypeParser",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.sqlparser.druid.DruidDelegatingSQLRecognizerFactory",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.sqlparser.druid.dm.DmOperateRecognizerHolder",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.sqlparser.druid.kingbase.KingbaseOperateRecognizerHolder",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.sqlparser.druid.mariadb.MariadbOperateRecognizerHolder",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.sqlparser.druid.mysql.MySQLOperateRecognizerHolder",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.sqlparser.druid.oceanbase.OceanBaseOperateRecognizerHolder",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.sqlparser.druid.oracle.OracleOperateRecognizerHolder",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.sqlparser.druid.oscar.OscarOperateRecognizerHolder",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.sqlparser.druid.polardbx.PolarDBXOperateRecognizerHolder",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.sqlparser.druid.postgresql.PostgresqlOperateRecognizerHolder",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.sqlparser.druid.sqlserver.SqlServerOperateRecognizerHolder",
+      "reason": [
+        "Seata SPI 候选实现，EnhancedServiceLoader 只按类名加载、不实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "type": "org.apache.seata.tm.DefaultTransactionManager",
+      "reason": [
+        "Seata SPI 选中的实现，EnhancedServiceLoader 反射实例化（JVM 测试经 agent 实测；native 受 apache/incubator-seata#8303 所限未能全程验证）"
+      ],
+      "allDeclaredConstructors": true
+    }
+  ],
+  "resources": [
+    {
+      "condition": {
+        "typeReached": "org.apache.seata.spring.annotation.GlobalTransactionScanner"
+      },
+      "glob": "META-INF/services/**",
+      "reason": [
+        "SPI 描述文件，ServiceLoader 读取"
+      ]
+    }
+  ]
+}

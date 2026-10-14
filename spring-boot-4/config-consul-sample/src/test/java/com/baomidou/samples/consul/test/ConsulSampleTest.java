@@ -41,6 +41,12 @@ class ConsulSampleTest {
     static ConsulContainer consul =
             new ConsulContainer(DockerImageName.parse("hashicorp/consul:2.0.4"));
 
+    /**
+     * 向 Consul KV 写入数据源配置，并把 Consul 地址写入系统属性。
+     *
+     * <p>使用系统属性而不是 {@code @DynamicPropertySource}，是为了让 config data import
+     * 在环境准备阶段（早于测试上下文注入）也能读到这些值。
+     */
     @BeforeAll
     static void setUp() throws Exception {
         String yaml =
@@ -62,7 +68,6 @@ class ConsulSampleTest {
         HttpResponse<String> response =
                 HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         assertThat(response.statusCode()).isEqualTo(200);
-        // 这里用系统属性而不用 @DynamicPropertySource，这样 Spring Cloud bootstrap 上下文也能读到这些值。
         System.setProperty("spring.cloud.consul.host", consul.getHost());
         System.setProperty("spring.cloud.consul.port", String.valueOf(consul.getMappedPort(8500)));
     }

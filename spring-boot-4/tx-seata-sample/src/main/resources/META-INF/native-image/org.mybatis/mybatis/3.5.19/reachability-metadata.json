@@ -1,0 +1,14 @@
+{
+  "reflection": [
+    {
+      "condition": {
+        "typeReached": "org.apache.ibatis.session.Configuration"
+      },
+      "type": "org.apache.ibatis.type.EnumTypeHandler",
+      "reason": [
+        "含枚举字段的实体，反射调用带参构造器"
+      ],
+      "allDeclaredConstructors": true
+    }
+  ]
+}

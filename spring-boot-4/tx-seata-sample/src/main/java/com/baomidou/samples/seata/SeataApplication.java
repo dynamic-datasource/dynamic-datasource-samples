@@ -20,9 +20,15 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Seata 分布式事务样例的启动类。
+ *
+ * <p>{@code @MapperScan} 显式声明 {@code sqlSessionFactoryRef}，避免 AOT 下 AUTOWIRE_BY_TYPE 装配丢失（JVM
+ * 行为不变）。
+ */
 @Slf4j
 @SpringBootApplication
-@MapperScan("com.baomidou.samples.seata.mapper")
+@MapperScan(value = "com.baomidou.samples.seata.mapper", sqlSessionFactoryRef = "sqlSessionFactory")
 public class SeataApplication {
 
     public static void main(String[] args) {
