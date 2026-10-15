@@ -79,3 +79,30 @@ CI 的 `Lint & Format CI` 任务在 JDK 21 下执行格式与静态检查，本�
   新增抑制项请附带原因注释。
 - 两个工具都要求 JDK 21+ 运行（`google-java-format` 1.30+ 与 Checkstyle 14 的要求），
   其余构建（如 JDK 8/17 下的 `clean test`）不受影响。
+
+## 已发布构件的验收（`Verify released artifact`）
+
+本仓库的 `ds.version`（根 `pom.xml`）指向的是**已发布到 Maven Central 的构件**，因此天然滞后于主仓库
+一个发版周期。为把滞后期压到最短，新增了 [`.github/workflows/verify-release.yml`](./.github/workflows/verify-release.yml)，
+它有三种触发方式，互为兜底：
+
+1. **主仓库发布成功后自动触发**：`baomidou/dynamic-datasource` 的 `release.yml` 在发布完成后通过
+   `repository_dispatch`（事件 `ds-released`）把新版本号推过来。这需要主仓库配置 Secret
+   `SAMPLES_DISPATCH_TOKEN`——一个对 `dynamic-datasource/dynamic-datasource-samples` 有写权限的 PAT
+   （classic PAT 勾 `repo`，或 fine-grained 给 Contents: Read and write）。
+2. **每日定时兜底**：即使 dispatch 丢失或 PAT 过期，定时任务也会从 Central 的 `maven-metadata.xml`
+   取最新 `<release>`，与 `ds.version` 比对，落后时才跑。
+3. **手工触发**：Actions 页面 `Run workflow`，填入要验收的版本号。
+
+流水线行为：
+
+- 先轮询 Central 直到该版本的 `.pom` 可取（最长 30 分钟）——`Central Portal` 发布成功不等于
+  `repo1.maven.org` 立刻可见，不等待会把"还在同步"误报成"构件不可用"。
+- 用 `-Dds.version=<版本>` 覆盖（用户属性优先于 pom 里的同名 property），跑 JDK 17/21/25/27 全量
+  `clean test`，外加 JDK 8 下的两个 `spring-boot-2` 模块。测试涉及 Testcontainers，需要可用的 Docker。
+- **全部通过且版本比 pom 新**：自动开 PR 把 `ds.version` 推进到该版本（分支
+  `chore/bump-ds-<版本>`，重复运行复用同一分支，不会堆出重复 PR）。**合并这个 PR 才是"承认该版本可用"。**
+- **失败**：自动开 issue 报警。此时**不要**合并自动 bump PR，先判断是框架缺陷还是环境抖动
+  （如 Testcontainers 拉镜像失败），后者重跑该 run 确认。
+
+注意：本地想对着某个已发布版本验证，直接 `./mvnw -Dds.version=4.6.0 -T1C -e clean test` 即可，不必改 `pom.xml`。

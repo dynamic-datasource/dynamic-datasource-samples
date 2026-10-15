@@ -1,0 +1,256 @@
+name: Verify released artifact
+
+# 目的：samples 依赖的是"发布到 Maven Central 的构件"（pom.xml 的 ds.version），
+# 而不是主仓库源码，所以它天然滞后一个发版周期。本流水线把滞后期压到最短：
+# 主仓库 release.yml 发布成功后 dispatch 过来，这里立刻对着新版本跑全量集成测试。
+#
+# 三条触发互为兜底：
+#   1) repository_dispatch：主仓库发布成功后秒级触发（最快路径）
+#   2) schedule：dispatch 丢失 / PAT 过期 / 漏配 secret 时，次日仍能发现新版本
+#   3) workflow_dispatch：手工指定版本排查
+on:
+  repository_dispatch:
+    types: [ ds-released ]
+  schedule:
+    # 每天 04:00 UTC（北京时间 12:00）
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '要验收的 dynamic-datasource 版本，例如 4.6.0'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  # 只按 workflow 分组（不掺 ref）：同一时刻只允许一次验收在跑，
+  # 且 cancel-in-progress=false —— 半途取消会留下 Testcontainers 容器。
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+env:
+  # 三套 starter 同版本号，用 boot4 的坐标作"构件是否已同步到 Central"的探针
+  PROBE_ARTIFACT: dynamic-datasource-spring-boot4-starter
+
+jobs:
+  resolve:
+    if: github.repository == 'dynamic-datasource/dynamic-datasource-samples'
+    name: Resolve version to verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      version: ${{ steps.pick.outputs.version }}
+      current: ${{ steps.pick.outputs.current }}
+      outdated: ${{ steps.pick.outputs.outdated }}
+      should_run: ${{ steps.pick.outputs.should_run }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Pick target version
+        id: pick
+        env:
+          EVENT_VERSION: ${{ github.event.client_payload.version }}
+          INPUT_VERSION: ${{ github.event.inputs.version }}
+          RUN_URL: ${{ github.event.client_payload.run_url }}
+        run: |
+          set -euo pipefail
+          current=$(sed -n 's:.*<ds.version>\(.*\)</ds.version>.*:\1:p' pom.xml | head -n1)
+          target="${EVENT_VERSION:-${INPUT_VERSION:-}}"
+          # 定时触发没人给版本号：从 Central 元数据取最新 release
+          if [ -z "$target" ]; then
+            # `|| true`：pipefail + set -e 下，curl 404 会让赋值直接中止 step，
+            # 拿不到下面那条更明确的 ::error:: 提示
+            target=$(curl -fsSL "https://repo1.maven.org/maven2/com/baomidou/${PROBE_ARTIFACT}/maven-metadata.xml" \
+              | sed -n 's:.*<release>\(.*\)</release>.*:\1:p' | head -n1 || true)
+          fi
+          if [ -z "$target" ]; then
+            echo "::error::无法确定要验收的版本（dispatch payload / 手工输入 / Central 元数据均为空）"
+            exit 1
+          fi
+          if [ "$target" = "$current" ]; then outdated=false; else outdated=true; fi
+          # 显式触发（dispatch / 手工）一律跑；定时触发只在落后时才跑，避免每天空转
+          case "${{ github.event_name }}" in
+            schedule) should_run=$outdated ;;
+            *) should_run=true ;;
+          esac
+          {
+            echo "version=${target}"
+            echo "current=${current}"
+            echo "outdated=${outdated}"
+            echo "should_run=${should_run}"
+          } >> "$GITHUB_OUTPUT"
+          {
+            echo "### Verify released artifact"
+            echo "- current (pom.xml): ${current}"
+            echo "- target: ${target}"
+            echo "- outdated: ${outdated}"
+            echo "- should_run: ${should_run} (event: ${{ github.event_name }})"
+            # 不能用 `[ -n ... ] && echo`：它是组内最后一条命令，空值时返回 1，
+            # 在 set -e 下会让整个 step 失败。
+            if [ -n "${RUN_URL:-}" ]; then echo "- 触发来源 run：${RUN_URL}"; fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  verify:
+    needs: resolve
+    if: needs.resolve.outputs.should_run == 'true'
+    name: Verify ${{ needs.resolve.outputs.version }} - JDK ${{ matrix.java-version }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        java-version: [ '17', '21', '25', '27' ]
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup java
+        uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java-version }}
+          cache: 'maven'
+
+      # Central Portal 发布成功 ≠ repo1 镜像立刻可见。不等待会把"构件还在同步"
+      # 误报成"构件不可用"，而后者会直接开出一条假 issue。轮询到 .pom 可取为止，
+      # 最长 30 分钟（Central 到 repo1 的传播通常在数分钟内完成）。
+      - name: Wait for artifact availability on Maven Central
+        env:
+          TARGET: ${{ needs.resolve.outputs.version }}
+        run: |
+          set -euo pipefail
+          url="https://repo1.maven.org/maven2/com/baomidou/${PROBE_ARTIFACT}/${TARGET}/${PROBE_ARTIFACT}-${TARGET}.pom"
+          for i in $(seq 1 60); do
+            if curl -fsS -o /dev/null "$url"; then
+              echo "artifact available after $((i * 30))s"
+              exit 0
+            fi
+            echo "waiting for ${TARGET} on Central ... ($i/60)"
+            sleep 30
+          done
+          echo "::error::${TARGET} 在 30 分钟内未出现在 Maven Central"
+          exit 1
+
+      # -Dds.version 是用户属性，优先于 pom.xml 里的同名 property，
+      # 因此不必先改文件就能验证任意版本；测试通过后再由 bump job 落盘。
+      - name: Run full test against released artifact
+        run: |
+          ./mvnw -Dds.version=${{ needs.resolve.outputs.version }} -T1C -B -e clean test
+
+  verify-jdk8:
+    needs: resolve
+    if: needs.resolve.outputs.should_run == 'true'
+    name: Verify ${{ needs.resolve.outputs.version }} - JDK 8 (spring-boot-2)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup java
+        uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          java-version: '8'
+          cache: 'maven'
+
+      - name: Wait for artifact availability on Maven Central
+        env:
+          TARGET: ${{ needs.resolve.outputs.version }}
+        run: |
+          set -euo pipefail
+          url="https://repo1.maven.org/maven2/com/baomidou/${PROBE_ARTIFACT}/${TARGET}/${PROBE_ARTIFACT}-${TARGET}.pom"
+          for i in $(seq 1 60); do
+            if curl -fsS -o /dev/null "$url"; then
+              echo "artifact available after $((i * 30))s"
+              exit 0
+            fi
+            sleep 30
+          done
+          echo "::error::${TARGET} 在 30 分钟内未出现在 Maven Central"
+          exit 1
+
+      # 与 ci.yml 的 JDK 8 腿保持一致：testcontainers 2.x 要求 Java 17+，
+      # 只有 spring-boot-2 下这两个模块能在 JDK 8 下跑。
+      - name: Run spring-boot-2 samples with Maven
+        run: |
+          ./mvnw -Dds.version=${{ needs.resolve.outputs.version }} \
+            -am -pl spring-boot-2/shardingsphere-jdbc-4.x-spring-sample,spring-boot-2/shardingsphere-jdbc-5.x-spring-sample \
+            -T1C -B -e clean test
+
+  bump:
+    needs: [ resolve, verify, verify-jdk8 ]
+    if: needs.resolve.outputs.outdated == 'true'
+    name: Bump ds.version to ${{ needs.resolve.outputs.version }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: master
+
+      - name: Rewrite ds.version
+        env:
+          CURRENT: ${{ needs.resolve.outputs.current }}
+          TARGET: ${{ needs.resolve.outputs.version }}
+        run: |
+          set -euo pipefail
+          sed -i.bak "s|<ds.version>${CURRENT}</ds.version>|<ds.version>${TARGET}</ds.version>|" pom.xml
+          rm -f pom.xml.bak
+          grep -q "<ds.version>${TARGET}</ds.version>" pom.xml
+          grep -n "<ds.version>" pom.xml
+
+      # 分支名固定带上版本号：同一版本重复跑时复用同一分支，不会堆出重复 PR
+      - name: Open pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: chore/bump-ds-${{ needs.resolve.outputs.version }}
+          title: "build: bump ds.version to ${{ needs.resolve.outputs.version }}"
+          commit-message: "build: bump ds.version to ${{ needs.resolve.outputs.version }}"
+          body: |
+            由 `Verify released artifact` 自动提交。
+
+            `v${{ needs.resolve.outputs.version }}` 的全量集成测试已通过：
+
+            - JDK 17 / 21 / 25 / 27 全量 `clean test`
+            - JDK 8 下 `spring-boot-2/shardingsphere-jdbc-{4.x,5.x}-spring-sample`
+
+            触发来源：`${{ github.event_name }}`
+            上一版本：`${{ needs.resolve.outputs.current }}`
+
+            合并后 `ds.version` 即指向该已验证版本。
+
+  report-failure:
+    needs: [ resolve, verify, verify-jdk8 ]
+    # 验收失败 = 已发布到 Central 的构件有问题。这是 samples 存在的唯一理由，
+    # 必须第一时间暴露，不能静默。
+    if: failure() && needs.resolve.outputs.should_run == 'true'
+    name: Report verification failure
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      issues: write
+    steps:
+      - name: Open issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ needs.resolve.outputs.version }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          title="[release verification] v${VERSION} 集成测试失败"
+          if gh issue list --state open --search "${title} in:title" --json title --jq '.[0].title' | grep -q .; then
+            echo "issue 已存在，跳过创建"
+            exit 0
+          fi
+          # 用 printf 拼接而非块内续行：run: | 里的续行会带上缩进，
+          # 超过 4 个空格会被 GitHub Markdown 渲染成代码块。
+          body=$(printf '%s\n\n%s\n\n%s\n%s' \
+            "已发布到 Maven Central 的 ${VERSION} 未通过 samples 全量集成测试。" \
+            "运行记录：${RUN_URL}" \
+            "- 若确认为框架缺陷：先不要合并自动 bump PR，等修复版本发布后再推进 ds.version。" \
+            "- 若为环境抖动（Testcontainers 拉镜像失败等）：重跑该 run 确认。")
+          gh issue create --title "${title}" --body "${body}"
