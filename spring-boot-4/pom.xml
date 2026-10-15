@@ -42,6 +42,7 @@
         <module>mybatisplus3-sample</module>
         <module>name-pattern-sample</module>
         <module>quartz-sample</module>
+        <module>refresh-datasource-sample</module>
         <module>shardingsphere-jdbc-5.x-core-sample</module>
         <module>spel-sample</module>
         <module>tx-local-sample</module>
