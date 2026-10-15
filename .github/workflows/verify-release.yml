@@ -181,7 +181,9 @@ jobs:
   bump:
     needs: [ resolve, verify, verify-jdk8 ]
     if: needs.resolve.outputs.outdated == 'true'
-    name: Bump ds.version to ${{ needs.resolve.outputs.version }}
+    # name 保持静态：job 被 if 跳过时 GitHub 不渲染 name 里的表达式，
+    # 会原样显示 ${{ needs.resolve.outputs.version }}。版本号体现在 PR 标题与分支名上。
+    name: Bump ds.version via PR
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
