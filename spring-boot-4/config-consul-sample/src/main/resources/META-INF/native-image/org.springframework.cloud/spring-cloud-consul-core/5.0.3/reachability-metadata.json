@@ -1,0 +1,15 @@
+{
+  "reflection": [
+    {
+      "condition": {
+        "typeReached": "org.springframework.cloud.consul.config.ConsulPropertySources"
+      },
+      "type": "org.springframework.cloud.consul.model.http.kv.GetValue",
+      "reason": [
+        "Consul KV 反序列化，Jackson 构造并设值"
+      ],
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true
+    }
+  ]
+}

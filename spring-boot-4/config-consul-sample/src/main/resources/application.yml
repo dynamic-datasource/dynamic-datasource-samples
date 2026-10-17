@@ -1,7 +1,16 @@
-#spring:
-#  cloud:
-#    consul:
-#      host: 110.40.253.205
-#      config:
-#        format: yaml
-#        name: dynamic-datasource
+spring:
+  config:
+    # 用 Spring Cloud 官方的 config data import 读取 Consul KV（bootstrap 上下文与 AOT/native 不兼容）。
+    # `optional:` 前缀的含义见官方文档
+    # https://docs.spring.io/spring-cloud-consul/docs/current/reference/html/#config-data-import ：
+    # 去掉它则连不上 Consul 时启动（含 AOT 处理）直接失败；构建期无 server，必须保留。
+    # 默认 context 为 spring.application.name（即 application），与 KV 路径
+    # /{spring.cloud.consul.config.prefix}/{spring.application.name}/data 对应。
+    import: "optional:consul:"
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      config:
+        prefix: dynamic-datasource
+        format: YAML

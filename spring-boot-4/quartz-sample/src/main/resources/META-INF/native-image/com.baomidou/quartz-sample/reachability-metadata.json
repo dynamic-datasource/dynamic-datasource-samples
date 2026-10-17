@@ -1,0 +1,14 @@
+{
+  "reflection": [
+    {
+      "condition": {
+        "typeReached": "org.quartz.impl.StdSchedulerFactory"
+      },
+      "type": "com.baomidou.samples.quartz.job.HelloworldJob",
+      "reason": [
+        "Quartz 按类名实例化 Job，无参构造器"
+      ],
+      "allDeclaredConstructors": true
+    }
+  ]
+}

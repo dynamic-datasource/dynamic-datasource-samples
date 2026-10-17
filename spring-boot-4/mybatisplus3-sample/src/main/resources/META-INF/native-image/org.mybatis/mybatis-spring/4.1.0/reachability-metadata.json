@@ -1,0 +1,14 @@
+{
+  "reflection": [
+    {
+      "condition": {
+        "typeReached": "com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration"
+      },
+      "type": "org.mybatis.spring.SqlSessionTemplate",
+      "reason": [
+        "MP 仓库方法经 OGNL 反射调用 getSqlSessionFactory"
+      ],
+      "allPublicMethods": true
+    }
+  ]
+}

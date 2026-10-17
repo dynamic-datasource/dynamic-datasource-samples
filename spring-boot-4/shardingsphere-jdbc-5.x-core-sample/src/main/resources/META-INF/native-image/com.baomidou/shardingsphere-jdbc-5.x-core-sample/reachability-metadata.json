@@ -1,0 +1,22 @@
+{
+  "resources": [
+    {
+      "condition": {
+        "typeReached": "org.testcontainers.DockerClientFactory"
+      },
+      "glob": "db/**",
+      "reason": [
+        "dynamic-datasource 初始化脚本目录，建表用"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.shardingsphere.driver.ShardingSphereDriver"
+      },
+      "glob": "config*.yaml",
+      "reason": [
+        "ShardingSphere native 专用配置，驱动启动时读取"
+      ]
+    }
+  ]
+}

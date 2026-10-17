@@ -1,0 +1,14 @@
+{
+  "reflection": [
+    {
+      "condition": {
+        "typeReached": "com.github.benmanes.caffeine.cache.Caffeine"
+      },
+      "type": "com.github.benmanes.caffeine.cache.SIMS",
+      "reason": [
+        "maximumSize + softValues 对应的缓存实现类（ShardingSphere 行表达式缓存所用），LocalCacheFactory 按类名经 FACTORY 字段取工厂，官方元数据未覆盖"
+      ],
+      "allDeclaredFields": true
+    }
+  ]
+}

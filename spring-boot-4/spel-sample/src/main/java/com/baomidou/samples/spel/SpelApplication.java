@@ -19,8 +19,14 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * SpEL 表达式数据源样例的启动类。
+ *
+ * <p>{@code @MapperScan} 显式声明 {@code sqlSessionFactoryRef}，避免 AOT 下 AUTOWIRE_BY_TYPE 装配丢失（JVM
+ * 行为不变）。
+ */
 @SpringBootApplication
-@MapperScan("com.baomidou.samples.spel.mapper")
+@MapperScan(value = "com.baomidou.samples.spel.mapper", sqlSessionFactoryRef = "sqlSessionFactory")
 public class SpelApplication {
 
     public static void main(String[] args) {

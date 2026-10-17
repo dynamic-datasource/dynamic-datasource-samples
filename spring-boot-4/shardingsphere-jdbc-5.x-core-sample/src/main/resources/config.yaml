@@ -1,17 +1,27 @@
 dataSources:
-  # TODO The use of `test_hostname` is related to https://github.com/testcontainers/testcontainers-java/issues/4121
+  # 数据源配置使用 ShardingSphere YAML 的动态占位符（配合 jdbc:shardingsphere 的
+  # `?placeholder-type=system_props`）：默认值保持 testcontainers-java 的 `jdbc:tc:` 数据源，
+  # 无 host 的 URL 在 testcontainers 2.0.0+ 可正确解析库名（testcontainers#4121 已修复），
+  # GraalVM native image 测试下（见 testcontainers/testcontainers-java#7954）通过系统属性覆盖为
+  # 普通 MySQL 驱动与地址。
   shardingmaster:
     dataSourceClassName: com.zaxxer.hikari.HikariDataSource
-    driverClassName: org.testcontainers.jdbc.ContainerDatabaseDriver
-    jdbcUrl: jdbc:tc:mysql:26.7.0-oraclelinux9://test_hostname/master?TC_INITSCRIPT=db/schema.sql
+    driverClassName: $${sample.shardingsphere.driver::org.testcontainers.jdbc.ContainerDatabaseDriver}
+    jdbcUrl: $${sample.shardingsphere.master-url::jdbc:tc:mysql:26.7.0-oraclelinux9:///master?TC_INITSCRIPT=db/schema.sql}
+    username: $${sample.shardingsphere.username::test}
+    password: $${sample.shardingsphere.password::test}
   shardingslave0:
     dataSourceClassName: com.zaxxer.hikari.HikariDataSource
-    driverClassName: org.testcontainers.jdbc.ContainerDatabaseDriver
-    jdbcUrl: jdbc:tc:mysql:26.7.0-oraclelinux9://test_hostname/slave1?TC_INITSCRIPT=db/schema.sql
+    driverClassName: $${sample.shardingsphere.driver::org.testcontainers.jdbc.ContainerDatabaseDriver}
+    jdbcUrl: $${sample.shardingsphere.slave0-url::jdbc:tc:mysql:26.7.0-oraclelinux9:///slave1?TC_INITSCRIPT=db/schema.sql}
+    username: $${sample.shardingsphere.username::test}
+    password: $${sample.shardingsphere.password::test}
   shardingslave1:
     dataSourceClassName: com.zaxxer.hikari.HikariDataSource
-    driverClassName: org.testcontainers.jdbc.ContainerDatabaseDriver
-    jdbcUrl: jdbc:tc:mysql:26.7.0-oraclelinux9://test_hostname/slave2?TC_INITSCRIPT=db/schema.sql
+    driverClassName: $${sample.shardingsphere.driver::org.testcontainers.jdbc.ContainerDatabaseDriver}
+    jdbcUrl: $${sample.shardingsphere.slave1-url::jdbc:tc:mysql:26.7.0-oraclelinux9:///slave2?TC_INITSCRIPT=db/schema.sql}
+    username: $${sample.shardingsphere.username::test}
+    password: $${sample.shardingsphere.password::test}
 rules:
 - !SHARDING
   tables:

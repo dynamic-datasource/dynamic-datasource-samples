@@ -20,9 +20,17 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * 数据源名称匹配（name-pattern）样例的启动类。
+ *
+ * <p>{@code @MapperScan} 显式声明 {@code sqlSessionFactoryRef}，避免 AOT 下 AUTOWIRE_BY_TYPE 装配丢失（JVM
+ * 行为不变）。
+ */
 @Slf4j
 @SpringBootApplication
-@MapperScan("com.baomidou.samples.pattern.mapper")
+@MapperScan(
+        value = "com.baomidou.samples.pattern.mapper",
+        sqlSessionFactoryRef = "sqlSessionFactory")
 public class PatternApplication {
 
     public static void main(String[] args) {

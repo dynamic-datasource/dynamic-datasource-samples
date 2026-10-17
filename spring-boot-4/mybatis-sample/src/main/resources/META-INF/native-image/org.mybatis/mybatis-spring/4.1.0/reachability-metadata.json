@@ -1,0 +1,14 @@
+{
+  "reflection": [
+    {
+      "condition": {
+        "typeReached": "org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration"
+      },
+      "type": "org.mybatis.spring.SqlSessionFactoryBean",
+      "reason": [
+        "mybatis-spring 工厂 Bean，反射调用无参构造器"
+      ],
+      "allDeclaredConstructors": true
+    }
+  ]
+}

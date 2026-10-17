@@ -15,7 +15,9 @@ spring:
           password: ""
         shardingSphere:
           driver-class-name: org.apache.shardingsphere.driver.ShardingSphereDriver
-          url: jdbc:shardingsphere:classpath:config.yaml
+          # 使用 system_props 占位符解析 config.yaml，默认值即 testcontainers-java 的 `jdbc:tc:` 数据源；
+          # native 测试通过系统属性切换到符合 native 限制的 config-native.yaml。
+          url: jdbc:shardingsphere:classpath:${sample.shardingsphere.config:config.yaml}?placeholder-type=system_props
 logging:
   level:
     com.baomidou: debug

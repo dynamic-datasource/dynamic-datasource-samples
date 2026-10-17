@@ -1,0 +1,15 @@
+{
+  "reflection": [
+    {
+      "condition": {
+        "typeReached": "com.baomidou.dynamic.datasource.creator.DataSourceProperty"
+      },
+      "type": "com.baomidou.dynamic.datasource.creator.DatasourceInitProperties",
+      "reason": [
+        "dynamic-datasource 嵌套绑定类型，无它则 init.schema 等配置绑定失效，见 baomidou/dynamic-datasource#809"
+      ],
+      "allDeclaredConstructors": true,
+      "allDeclaredMethods": true
+    }
+  ]
+}

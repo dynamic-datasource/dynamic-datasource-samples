@@ -1,0 +1,64 @@
+{
+  "reflection": [
+    {
+      "condition": {
+        "typeReached": "com.p6spy.engine.spy.P6ModuleManager"
+      },
+      "type": "com.p6spy.engine.spy.appender.SingleLineFormat",
+      "reason": [
+        "P6Spy 默认消息格式类，按类名加载，见 p6spy/p6spy#568"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "com.p6spy.engine.spy.P6ModuleManager"
+      },
+      "type": "com.p6spy.engine.spy.appender.FileLogger",
+      "reason": [
+        "P6Spy 默认 appender，按类名加载"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "com.p6spy.engine.spy.P6ModuleManager"
+      },
+      "type": "com.p6spy.engine.spy.appender.Slf4JLogger",
+      "reason": [
+        "本模块 spy.properties 配置的 appender，按类名加载"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "com.p6spy.engine.spy.P6ModuleManager"
+      },
+      "type": "com.p6spy.engine.spy.P6SpyFactory",
+      "reason": [
+        "P6Spy 模块工厂，按类名加载"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "com.p6spy.engine.spy.P6ModuleManager"
+      },
+      "type": "com.p6spy.engine.logging.P6LogFactory",
+      "reason": [
+        "P6Spy 默认 modulelist 成员，按类名加载"
+      ],
+      "allDeclaredConstructors": true
+    },
+    {
+      "condition": {
+        "typeReached": "com.p6spy.engine.spy.P6ModuleManager"
+      },
+      "type": "com.p6spy.engine.logging.format.HexEncodedBinaryFormat",
+      "reason": [
+        "P6Spy 默认二进制格式类，按类名加载"
+      ],
+      "allDeclaredConstructors": true
+    }
+  ]
+}

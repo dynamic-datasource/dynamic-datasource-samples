@@ -59,6 +59,11 @@ cd ./dynamic-datasource-samples/
   因此 JDK 8 的 CI 任务直接对 `shardingsphere-jdbc-4.x-spring-sample` 与 `shardingsphere-jdbc-5.x-spring-sample` 执行 `clean test`；
   JDK 17/21/25/27 的全量 `clean test` 同样覆盖这两个模块。
 
+## GraalVM Native Image
+
+native image 的构建与测试、Native Test CI 分片、Reachability Metadata 写法与上游 issue 跟进见
+[docs/graalvm-native-image.md](./docs/graalvm-native-image.md)。
+
 ## 代码风格（Lint & Format）
 
 CI 的 `Lint & Format CI` 任务在 JDK 21 下执行格式与静态检查，本地提交前请在**仓库根目录**执行：

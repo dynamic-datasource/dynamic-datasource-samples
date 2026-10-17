@@ -1,0 +1,24 @@
+{
+  "reflection": [
+    {
+      "condition": {
+        "typeReached": "org.apache.ibatis.session.Configuration"
+      },
+      "type": "org.apache.ibatis.reflection.SystemMetaObject",
+      "reason": [
+        "MP 批量方法经 OGNL 静态调用 forObject，类与方法缺一不可"
+      ],
+      "allDeclaredMethods": true
+    },
+    {
+      "condition": {
+        "typeReached": "org.apache.ibatis.session.Configuration"
+      },
+      "type": "org.apache.ibatis.reflection.MetaObject",
+      "reason": [
+        "MP 批量方法经 OGNL 反射调用 findProperty 等方法"
+      ],
+      "allDeclaredMethods": true
+    }
+  ]
+}

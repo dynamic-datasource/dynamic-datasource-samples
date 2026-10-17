@@ -1,0 +1,22 @@
+{
+  "resources": [
+    {
+      "condition": {
+        "typeReached": "com.baomidou.dynamic.datasource.creator.DataSourceProperty"
+      },
+      "glob": "db/schema.sql",
+      "reason": [
+        "dynamic-datasource 初始化脚本，建表用"
+      ]
+    },
+    {
+      "condition": {
+        "typeReached": "com.p6spy.engine.spy.P6ModuleManager"
+      },
+      "glob": "spy.properties",
+      "reason": [
+        "P6Spy 配置文件，无它则回退默认 FileLogger 输出 spy.log"
+      ]
+    }
+  ]
+}

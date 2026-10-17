@@ -34,7 +34,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest
-public class ControllerLayerTests {
+public class ControllerLayerTests extends AbstractNativeImageSupportTest {
     MockMvc mockMvc;
 
     @Autowired TOrderMapper tOrderMapper;

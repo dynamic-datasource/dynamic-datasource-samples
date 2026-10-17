@@ -1,0 +1,13 @@
+{
+  "resources": [
+    {
+      "condition": {
+        "typeReached": "com.baomidou.dynamic.datasource.creator.DataSourceProperty"
+      },
+      "glob": "org/quartz/impl/jdbcjobstore/tables_*.sql",
+      "reason": [
+        "Quartz 建表脚本，Boot 初始化器读取"
+      ]
+    }
+  ]
+}
