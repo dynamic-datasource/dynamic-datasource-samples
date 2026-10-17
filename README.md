@@ -26,7 +26,8 @@
 - shardingsphere-jdbc-5.x-core-sample：集成 ShardingSphere JDBC Driver 5.5.3 使用示例
 - spel-sample：动态从外部参数spel来切换数据源的使用示例
 - tx-local-sample：本地事务示例项目★★★★★★必看★★★★★★
-- tx-seata-sample：基于seata的分布式事务集成使用示例
+- tx-seata-sample：基于seata的分布式事务集成使用示例，Seata Server 与数据库的准备、关键配置和本地运行步骤见
+  [模块 README](./spring-boot-4/tx-seata-sample/README.md)
 
 ## Spring Boot 3（`spring-boot-3/`）
 

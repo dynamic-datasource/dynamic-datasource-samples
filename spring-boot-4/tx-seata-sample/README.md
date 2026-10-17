@@ -4,12 +4,16 @@
 示例把订单（order）、账户（account）、商品库存（product）拆分到多个数据源中，下单流程在一个全局事务里跨库写入，
 任意一步失败时由 Seata 通过各库的 `undo_log` 整体回滚。
 
+本模块暂不支持 GraalVM native image：Seata 2.6.0 在 Spring AOT 处理阶段就会失败
+（[apache/incubator-seata#8303](https://github.com/apache/incubator-seata/issues/8303)），因此未纳入 Native Test CI，
+详见 [GraalVM Native Image](../../docs/graalvm-native-image.md)。
+
 ## 技术栈
 
 | 组件 | 版本 |
 | --- | --- |
 | Spring Boot | 4.1.1 |
-| dynamic-datasource-spring-boot4-starter | 4.5.0 |
+| dynamic-datasource-spring-boot4-starter | 4.6.0（取自根 `pom.xml` 的 `ds.version`） |
 | Seata（`seata-spring-boot-starter` / `seata-server`） | 2.6.0，客户端与服务端版本对齐 |
 | PostgreSQL（默认 profile） | `postgres:18.6-trixie` |
 | MySQL（可选 profile） | `mysql:26.7.0-oraclelinux9` |
@@ -46,9 +50,11 @@ seata:
     vgroup-mapping:
       # key 与上面的 tx-service-group 对应
       my_test_tx_group: default
+      # Seata 客户端回退的默认分组，AOT 处理时可能取到它，同样映射到 default
+      default_tx_group: default
     grouplist:
-      # 示例使用 file 注册中心，seata-server 地址只能写在 grouplist 里
-      default: 110.40.253.205:8091
+      # 示例使用 file 注册中心，seata-server 地址只能写在 grouplist 里；单元测试会改指向测试容器
+      default: localhost:8091
   config:
     type: file
   registry:
