@@ -61,7 +61,7 @@ cd ./dynamic-datasource-samples/
 
 ## GraalVM Native Image
 
-native image 的构建与测试、Native Test CI 分片、Reachability Metadata 写法与上游 issue 跟进见
+native image 的构建与测试、Native Test CI 的模块矩阵、Reachability Metadata 写法与上游 issue 跟进见
 [docs/graalvm-native-image.md](./docs/graalvm-native-image.md)。
 
 ## 代码风格（Lint & Format）

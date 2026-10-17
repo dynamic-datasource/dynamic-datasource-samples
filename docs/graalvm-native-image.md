@@ -15,8 +15,8 @@
 ./mvnw -B -e -PnativeTest test -pl spring-boot-4/jdbc-template-sample
 ```
 
-CI 的 `Native Test CI` 用 7 分片矩阵并行跑 `-PnativeTest test`（清单在根 `pom.xml` 的
-`native.test.modules.shard1..7`，分片内串行；单模块本地跑
+CI 的 `Native Test CI` 为每个模块单独起一个 job 并行跑 `-PnativeTest test`（清单即
+`.github/workflows/ci.yml` 中该 job 的 `matrix.module`；单模块本地跑
 `mvn -PnativeTest clean test -pl <module>`）。测试镜像开 quick build（`-Ob`，勿与
 `-H:+EnableFallbackCompilation` 同用）。未纳入的只有 `beetlsql-sample`（BeetlSQL 的
 AOT 值序列化不支持）与 `tx-seata-sample`（Seata AOT 期要求 Server 可达、且有关闭后
