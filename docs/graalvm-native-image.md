@@ -67,7 +67,10 @@ src/main/resources/META-INF/native-image/
 - `@MapperScan` 显式声明 `sqlSessionFactoryRef`，否则 AOT 丢 `AUTOWIRE_BY_TYPE` 装配；
 - `spring-cloud-starter-bootstrap` 与 AOT 不兼容，改用 `spring.config.import`；
 - MyBatis mapper 代理与实体由官方 `MyBatisNativeConfiguration` 模板的 AOT 处理器注册，
-  bean 名勿与 MP 自带的 `MyBatisPlusNativeImageConfiguration` 重复；
+  bean 名勿与 MP 自带的 `MyBatisPlusNativeImageConfiguration` 重复；Boot 4 模块用的
+  mybatis-spring 4.1.0 已内置构造参数修正与 AOT 运行时跳过重复扫描（mybatis/spring#1238、
+  #1239），模板因此只剩该处理器；`springboot3-sample` 解析到的 mybatis-spring 3.0.5
+  尚无这两处修复，保留完整模板；
 - `MySQLContainer` 的挂载问题见 testcontainers-java#7954（子类跳过挂载或用 `GenericContainer`）；
 - ShardingSphere 用 `config-native.yaml`（算法与行表达式限制见官方文档），另需显式依赖
   `javax.transaction-api`；其自带元数据在 JDBC 用法下多不生效，以本仓库条目为准；
