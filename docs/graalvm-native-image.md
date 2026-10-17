@@ -72,8 +72,10 @@ src/main/resources/META-INF/native-image/
   #1239），模板因此只剩该处理器；`springboot3-sample` 解析到的 mybatis-spring 3.0.5
   尚无这两处修复，保留完整模板；
 - `MySQLContainer` 的挂载问题见 testcontainers-java#7954（子类跳过挂载或用 `GenericContainer`）；
-- ShardingSphere 用 `config-native.yaml`（算法与行表达式限制见官方文档），另需显式依赖
-  `javax.transaction-api`；其自带元数据在 JDBC 用法下多不生效，以本仓库条目为准；
+- ShardingSphere 用 `config-native.yaml`（算法与行表达式限制见官方文档），其自带元数据在
+  JDBC 用法下多不生效，以本仓库条目为准；另需显式依赖 `javax.transaction-api`，否则
+  `XAShardingSphereTransactionManager`（`jakarta.transaction-api` 被 Spring Boot 升到 2.0.1
+  后缺 `javax.transaction.*`）会让 GraalVM 构建器崩溃，见 oracle/graal#14717，JVM 下无需该依赖；
 - JSON 只保留实测必需（agent 输出是超集，可删；与官方元数据重复的也删，如 caffeine 只留
   官方缺的 `SIMS`；MP 3.5.14 的驱动条目不可删）；flags 按实际访问收紧：实例化留
   `allDeclaredConstructors`，绑定/反序列化再加 `allDeclaredMethods`，MyBatis 的 `MetaObject`

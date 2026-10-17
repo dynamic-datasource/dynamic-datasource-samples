@@ -13,9 +13,9 @@
         <!-- shardingsphere-bom 5.5.3 的父 POM shardingsphere-distribution 未发布到 Maven Central，无法 import，
              参见 https://github.com/apache/shardingsphere/issues/38291，5.5.4 修复后可改用 BOM。 -->
         <shardingsphere.version>5.5.3</shardingsphere.version>
-        <!-- shardingsphere-transaction-xa-core 的字节码引用 javax.transaction.*（JTA），
-             该 API 不在 Java SE 中、也未由 ShardingSphere 依赖传递，缺失时 GraalVM 解析
-             XAShardingSphereTransactionManager 会因 LinkageError 构建失败。 -->
+        <!-- Spring Boot 依赖管理把 ShardingSphere 传递的 jakarta.transaction-api 1.3.3 升到 2.0.1（只剩 jakarta.transaction），
+             shardingsphere-transaction-xa-core 的 XAShardingSphereTransactionManager 因此无法链接。样例不用 XA，JVM 下无影响，
+             但 GraalVM 处理该 SPI 实现时会在编译阶段崩溃，参见 https://github.com/oracle/graal/issues/14717，修复后删除。 -->
         <javax-transaction-api.version>1.3</javax-transaction-api.version>
     </properties>
     <dependencies>
@@ -114,7 +114,7 @@
             <artifactId>shardingsphere-infra-reachability-metadata</artifactId>
             <version>${shardingsphere.version}</version>
         </dependency>
-        <!-- shardingsphere-transaction-xa-core 引用 javax.transaction.*（JTA），补充该 API。 -->
+        <!-- 仅为绕过 oracle/graal#14717 补回 javax.transaction.*，原因见上方 javax-transaction-api.version。 -->
         <dependency>
             <groupId>javax.transaction</groupId>
             <artifactId>javax.transaction-api</artifactId>
