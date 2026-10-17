@@ -49,13 +49,28 @@ jobs:
           ./mvnw -am -pl spring-boot-2/shardingsphere-jdbc-4.x-spring-sample,spring-boot-2/shardingsphere-jdbc-5.x-spring-sample -T1C -B -e clean test
   test-native-ci:
     if: github.repository == 'dynamic-datasource/dynamic-datasource-samples'
-    name: Native Test CI - GraalVM shard ${{ matrix.shard }} on ubuntu-latest
+    name: Native Test CI - GraalVM ${{ matrix.module }} on ubuntu-latest
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3, 4, 5, 6, 7]
+        # 每个模块单独一个 job，按历史耗时从长到短排列，并发受限排队时先起慢的。
+        module:
+          - spring-boot-4/shardingsphere-jdbc-5.x-core-sample
+          - spring-boot-4/config-nacos-sample
+          - spring-boot-4/tx-local-sample
+          - spring-boot-4/config-consul-sample
+          - spring-boot-4/add-remove-datasource-sample
+          - spring-boot-4/mybatis-sample
+          - spring-boot-4/load-datasource-from-jdbc-sample
+          - spring-boot-4/quartz-sample
+          - spring-boot-4/spel-sample
+          - spring-boot-4/druid-sample
+          - spring-boot-4/jdbc-template-sample
+          - spring-boot-4/name-pattern-sample
+          - spring-boot-3/springboot3-sample
+          - spring-boot-4/mybatisplus3-sample
     steps:
       - uses: actions/checkout@v7
       - name: Setup GraalVM
@@ -66,19 +81,16 @@ jobs:
           cache: 'maven'
       # 各模块的 native / nativeTest 配置由 spring-boot-3 / spring-boot-4 父模块统一管理，
       # 子模块声明插件即 opt-in。本地可用 `mvn -Pnative package` 构建 native image，
-      # 用 `mvn -PnativeTest test` 在 native image 中运行测试。CI 覆盖的模块清单按分片定义在
-      # 根 pom.xml 的 `native.test.modules.shard1..7` 属性中，矩阵并行执行以缩短总时长；
-      # 测试镜像在建 native image 时启用 quick build（`quickBuild`），依赖 Testcontainers
-      # 的模块使用 runner 自带的 Docker。以下模块未纳入该任务：
-      # beetlsql-sample 与 druid-sample 依赖的第三方库暂未提供 native 支持；
+      # 用 `mvn -PnativeTest test` 在 native image 中运行测试。CI 覆盖的模块清单即上方的
+      # `matrix.module`；测试镜像在建 native image 时启用 quick build（`quickBuild`），
+      # 依赖 Testcontainers 的模块使用 runner 自带的 Docker。以下模块未纳入该任务：
+      # beetlsql-sample 依赖的 BeetlSQL 不支持 AOT 值序列化；
       # tx-seata-sample 依赖的 Seata 在 AOT 处理阶段就会构造 GlobalTransactionScanner
       # 并要求 Seata Server 可达，且其应用上下文在 AOT 类型预判定阶段存在 null Advisor
       # 问题，故暂不纳入。
-      - name: Resolve native test modules
-        run: echo "NATIVE_TEST_MODULES=$(./mvnw -B -q help:evaluate -Dexpression=native.test.modules.shard${{ matrix.shard }} -DforceStdout)" >> "$GITHUB_ENV"
       - name: Native test with Maven
         run: |
-          ./mvnw -B -e -PnativeTest clean test -pl "$NATIVE_TEST_MODULES"
+          ./mvnw -B -e -PnativeTest clean test -pl "${{ matrix.module }}"
   lint-format-ci:
     if: github.repository == 'dynamic-datasource/dynamic-datasource-samples'
     name: Lint & Format CI

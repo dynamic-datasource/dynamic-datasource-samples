@@ -15,8 +15,8 @@
 ./mvnw -B -e -PnativeTest test -pl spring-boot-4/jdbc-template-sample
 ```
 
-CI 的 `Native Test CI` 用 7 分片矩阵并行跑 `-PnativeTest test`（清单在根 `pom.xml` 的
-`native.test.modules.shard1..7`，分片内串行；单模块本地跑
+CI 的 `Native Test CI` 为每个模块单独起一个 job 并行跑 `-PnativeTest test`（清单即
+`.github/workflows/ci.yml` 中该 job 的 `matrix.module`；单模块本地跑
 `mvn -PnativeTest clean test -pl <module>`）。测试镜像开 quick build（`-Ob`，勿与
 `-H:+EnableFallbackCompilation` 同用）。未纳入的只有 `beetlsql-sample`（BeetlSQL 的
 AOT 值序列化不支持）与 `tx-seata-sample`（Seata AOT 期要求 Server 可达、且有关闭后
@@ -72,8 +72,10 @@ src/main/resources/META-INF/native-image/
   #1239），模板因此只剩该处理器；`springboot3-sample` 解析到的 mybatis-spring 3.0.5
   尚无这两处修复，保留完整模板；
 - `MySQLContainer` 的挂载问题见 testcontainers-java#7954（子类跳过挂载或用 `GenericContainer`）；
-- ShardingSphere 用 `config-native.yaml`（算法与行表达式限制见官方文档），另需显式依赖
-  `javax.transaction-api`；其自带元数据在 JDBC 用法下多不生效，以本仓库条目为准；
+- ShardingSphere 用 `config-native.yaml`（算法与行表达式限制见官方文档），其自带元数据在
+  JDBC 用法下多不生效，以本仓库条目为准；另需显式依赖 `javax.transaction-api`，否则
+  `XAShardingSphereTransactionManager`（`jakarta.transaction-api` 被 Spring Boot 升到 2.0.1
+  后缺 `javax.transaction.*`）会让 GraalVM 构建器崩溃，见 oracle/graal#14717，JVM 下无需该依赖；
 - JSON 只保留实测必需（agent 输出是超集，可删；与官方元数据重复的也删，如 caffeine 只留
   官方缺的 `SIMS`；MP 3.5.14 的驱动条目不可删）；flags 按实际访问收紧：实例化留
   `allDeclaredConstructors`，绑定/反序列化再加 `allDeclaredMethods`，MyBatis 的 `MetaObject`

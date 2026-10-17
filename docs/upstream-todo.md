@@ -22,6 +22,11 @@
   自带 4.0.0）的作用，届时再决定去留，改动后跑 JVM 与 nativeTest 验证。
 - TODO https://github.com/oracle/graal/issues/14708 ：GraalVM parser 接受 `reason`
   字段、不再报 Unknown attribute 后，确认各模块构建日志无新增警告。
+- TODO https://github.com/oracle/graal/issues/14717 ：GraalVM 修复无法链接的 ServiceLoader
+  provider 让构建器崩溃的问题后，把 CI 的 `setup-graalvm` 版本升到含修复的版本，删除
+  `shardingsphere-jdbc-5.x-core-sample` 的 `javax.transaction-api` 依赖与
+  `javax-transaction-api.version` 属性，同步删掉 `graalvm-native-image.md` 中的对应说明，
+  并跑 nativeTest 验证。
 - TODO https://github.com/oracle/graalvm-reachability-metadata/issues/542 ：官方收录
   `seata-all` 后，对照精简 `tx-seata-sample` 的 `org.apache.seata/seata-all` 条目
   （验证需等 apache/incubator-seata#8303 修复、该模块能跑 nativeTest）。
