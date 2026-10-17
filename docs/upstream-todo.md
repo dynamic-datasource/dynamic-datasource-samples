@@ -9,6 +9,11 @@
 - TODO https://github.com/spring-projects/spring-framework/issues/37500 ：Spring AOT
   保留 `autowireMode` 后，去掉各模块 `@MapperScan` 的 `sqlSessionFactoryRef`
   （逐模块去属性并跑 nativeTest 验证）。
+- TODO https://github.com/mybatis/spring/issues/1309 ：mybatis-spring 内置 mapper 的 AOT
+  处理器（为 mapper 接口注册反射、JDK 代理与同名 XML 等 hints）后，升级父 POM 的
+  `mybatis-spring.version`，删除 Boot 4 各模块的 `MyBatisNativeConfiguration` 并逐模块跑
+  nativeTest 验证；`springboot3-sample` 不必等此项：MP 3.5.17 起自带
+  `mybatis-plus-spring-boot-native-image`，升级 MP 后即可删除其副本。
 - TODO https://github.com/baomidou/dynamic-datasource/issues/809 ：DD 补上
   `@NestedConfigurationProperty` 或自带元数据后，删除各模块
   `dynamic-datasource-creator` 目录下的 `DatasourceInitProperties` 条目。
