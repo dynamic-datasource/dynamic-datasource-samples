@@ -19,62 +19,44 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.reflection.TypeParameterResolver;
 import org.mybatis.spring.mapper.MapperFactoryBean;
-import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.beans.PropertyValue;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.aot.BeanFactoryInitializationAotContribution;
 import org.springframework.beans.factory.aot.BeanFactoryInitializationAotProcessor;
-import org.springframework.beans.factory.aot.BeanRegistrationExcludeFilter;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.config.ConstructorArgumentValues;
-import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor;
-import org.springframework.beans.factory.support.RegisteredBean;
-import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.ResolvableType;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
 /**
  * MyBatis 的 Spring AOT 集成。
  *
- * <p>取自 MyBatis 官方的 MyBatisNativeConfiguration 模板；静态的 GraalVM 元数据（日志实现、 缓存装饰器、dtd/xsd 资源等）已按依赖分目录改为
- * {@code META-INF/native-image/<groupId>/<artifactId>/<version>/reachability-metadata.json}，
- * 这里只保留无法用静态元数据表达的部分：
+ * <p>取自 MyBatis 官方的 MyBatisNativeConfiguration 模板；静态的 GraalVM 元数据（日志实现、缓存装饰器、dtd/xsd 资源等）已按依赖分目录改为
+ * {@code META-INF/native-image/<groupId>/<artifactId>/<version>/reachability-metadata.json}。
  *
- * <ul>
- *   <li>{@code MyBatisMapperFactoryBeanPostProcessor}：为 MapperFactoryBean 的 BeanDefinition
- *       补齐类型信息，避免 AOT 代码生成退回到自动装配 Class；
- *   <li>{@code MyBatisBeanFactoryInitializationAotProcessor}：处理 mapper 扫描器生成的 MapperFactoryBean
- *       定义，并为 mapper 接口及其实体注册反射（由 AOT 扫描结果驱动）。
- * </ul>
+ * <p>模板中的 {@code MyBatisMapperFactoryBeanPostProcessor} 与对 {@code MapperScannerConfigurer} 的 AOT
+ * 排除已删除：mybatis-spring 4.1.0 起扫描器直接以 {@code Class} 登记 mapper 构造参数（mybatis/spring#1238），并在使用 AOT
+ * 产物运行时跳过重复扫描（mybatis/spring#1239）。该后处理器补齐的泛型 targetType 随之不再生成，native 运行时按类型匹配时会先实例化 {@code
+ * MapperFactoryBean}（只调用构造器）以取得 mapper 类型，nativeTest 实测无影响。
+ *
+ * <p>这里只保留 mybatis-spring 尚未内置、又无法用静态元数据表达的部分：{@code MyBatisBeanFactoryInitializationAotProcessor}
+ * 按 AOT 扫描结果为 mapper 接口注册反射、JDK 代理与同名 XML 资源，并为其方法的参数、返回值及 SQL Provider 类型注册反射。
  */
 @Configuration(proxyBeanMethods = false)
 public class MyBatisNativeConfiguration {
-
-    @Bean
-    static MyBatisMapperFactoryBeanPostProcessor myBatisMapperFactoryBeanPostProcessor() {
-        return new MyBatisMapperFactoryBeanPostProcessor();
-    }
 
     @Bean
     MyBatisBeanFactoryInitializationAotProcessor myBatisBeanFactoryInitializationAotProcessor() {
@@ -82,18 +64,7 @@ public class MyBatisNativeConfiguration {
     }
 
     static class MyBatisBeanFactoryInitializationAotProcessor
-            implements BeanFactoryInitializationAotProcessor, BeanRegistrationExcludeFilter {
-
-        private final Set<Class<?>> excludeClasses = new HashSet<>();
-
-        MyBatisBeanFactoryInitializationAotProcessor() {
-            excludeClasses.add(MapperScannerConfigurer.class);
-        }
-
-        @Override
-        public boolean isExcludedFromAotProcessing(RegisteredBean registeredBean) {
-            return excludeClasses.contains(registeredBean.getBeanClass());
-        }
+            implements BeanFactoryInitializationAotProcessor {
 
         @Override
         public BeanFactoryInitializationAotContribution processAheadOfTime(
@@ -226,65 +197,6 @@ public class MyBatisNativeConfiguration {
                 result = fallback;
             }
             return result;
-        }
-    }
-
-    static class MyBatisMapperFactoryBeanPostProcessor
-            implements MergedBeanDefinitionPostProcessor, BeanFactoryAware {
-
-        private static final org.apache.commons.logging.Log LOG =
-                LogFactory.getLog(MyBatisMapperFactoryBeanPostProcessor.class);
-
-        private static final String MAPPER_FACTORY_BEAN =
-                "org.mybatis.spring.mapper.MapperFactoryBean";
-
-        private ConfigurableBeanFactory beanFactory;
-
-        @Override
-        public void setBeanFactory(BeanFactory beanFactory) {
-            this.beanFactory = (ConfigurableBeanFactory) beanFactory;
-        }
-
-        @Override
-        public void postProcessMergedBeanDefinition(
-                RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
-            if (ClassUtils.isPresent(MAPPER_FACTORY_BEAN, this.beanFactory.getBeanClassLoader())) {
-                resolveMapperFactoryBeanTypeIfNecessary(beanDefinition);
-            }
-        }
-
-        /**
-         * 为 {@code MapperFactoryBean} 的 BeanDefinition 补齐类型信息。
-         *
-         * <p>向上下文暴露泛型类型信息以避免过早初始化；同时把构造参数重新注册为 {@code Class} 字面量——扫描器只会记录 mapper 类名字符串，这会使 AOT
-         * 代码生成退回到 自动装配 {@code MapperFactoryBean} 构造器，native 测试下会尝试自动装配 {@code Class<?>}。
-         */
-        private void resolveMapperFactoryBeanTypeIfNecessary(RootBeanDefinition beanDefinition) {
-            if (!beanDefinition.hasBeanClass()
-                    || !MapperFactoryBean.class.isAssignableFrom(beanDefinition.getBeanClass())) {
-                return;
-            }
-            if (beanDefinition.getResolvableType().hasUnresolvableGenerics()) {
-                Class<?> mapperInterface = getMapperInterface(beanDefinition);
-                if (mapperInterface != null) {
-                    beanDefinition.setTargetType(
-                            ResolvableType.forClassWithGenerics(
-                                    beanDefinition.getBeanClass(), mapperInterface));
-                    ConstructorArgumentValues constructorArgumentValues =
-                            new ConstructorArgumentValues();
-                    constructorArgumentValues.addGenericArgumentValue(mapperInterface);
-                    beanDefinition.setConstructorArgumentValues(constructorArgumentValues);
-                }
-            }
-        }
-
-        private Class<?> getMapperInterface(RootBeanDefinition beanDefinition) {
-            try {
-                return (Class<?>) beanDefinition.getPropertyValues().get("mapperInterface");
-            } catch (Exception e) {
-                LOG.debug("Fail getting mapper interface type.", e);
-                return null;
-            }
         }
     }
 }
