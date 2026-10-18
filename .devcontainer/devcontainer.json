@@ -1,0 +1,36 @@
+{
+  "name": "dynamic-datasource-samples",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "25",
+      "jdkDistro": "graalce"
+    },
+    "ghcr.io/devcontainers/features/rust:1": {
+      "version": "1.99"
+    },
+    "ghcr.io/devcontainers/features/node:2": {
+      "version": "26"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:4": {}
+  },
+  "remoteUser": "${localEnv:DEVCONTAINER_USER:vscode}",
+  "containerEnv": {
+    "UV_PROJECT_ENVIRONMENT": "/opt/venvs/python-fastapi-sample"
+  },
+  "forwardPorts": [8081, 8082, 8083],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/opt/venvs/python-fastapi-sample/bin/python"
+      },
+      "extensions": [
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  }
+}

@@ -68,6 +68,13 @@
   目前暂未提 issue（提到 GRM 会让机器人为 65 个未收录的传递依赖各开一个 issue，故暂缓）。
   修复后精简 `shardingsphere-jdbc-5.x-core-sample` 的 `org.apache.shardingsphere` 目录并跑
   nativeTest 验证；其中条件为 `YamlEngine` 等的 4 条可能已与自带元数据重复，届时一并验证。
+- TODO https://github.com/baomidou/dynamic-datasource/issues/821 ：dynamic-datasource 的 Hikari、BeeCp、Dbcp2、
+  C3p0、OracleUcp 五个 creator 用无参构造（`@NoArgsConstructor`）创建时全局配置为 null，`ConfigMergeCreator#create`
+  合并配置时随即 NPE；JVM 下同样出现，与 native image 无关。修复后 `polyglot/dynamic-datasource-ffi` 的
+  `DynamicDataSourceFacade` 可以改用无参构造，并同步删掉 `polyglot/README.md` 中的对应说明。
+- TODO Node.js 的 `node:ffi` 进入稳定（文档中的 Stability 2）后，去掉 `polyglot/typescript-hono-sample` 在
+  `package.json` 与 `polyglot/Dockerfile` 里的 `--disable-warning=ExperimentalWarning`，并更新 `polyglot/README.md`
+  中的说明。
 - TODO BeetlSQL 的 native 问题（`sqlManager` 的 `MySqlStyle` 不支持 AOT 值序列化），
   跟进地址 https://gitee.com/xiandafu/beetlsql/issues ，目前暂无已知 issue；
   问题修复后把 `beetlsql-sample` 纳入 native CI，并用 nativeTest 复核其元数据。

@@ -29,14 +29,19 @@ AOT 值序列化不支持）与 `tx-seata-sample`（Seata AOT 期要求 Server �
 `RuntimeHintsRegistrar`；只有 AOT 扫描结果驱动的逻辑才留在 Java 中
 （如 MyBatis 模板的 `MyBatisBeanFactoryInitializationAotProcessor`）：
 
-```text
-src/main/resources/META-INF/native-image/
-├── com.baomidou/<sample-artifact>/                  # 样例自身的资源与类（不带版本号）
-├── com.baomidou/dynamic-datasource-creator/4.6.0/   # dynamic-datasource
-├── com.baomidou/mybatis-plus/3.5.17/                # MyBatis-Plus
-├── org.mybatis/mybatis/3.5.19/                      # MyBatis
-├── org.mybatis/mybatis-spring/4.1.0/                # MyBatis-Spring
-└── com.mysql/mysql-connector-j/9.7.0/               # 其它依赖
+```mermaid
+%%{init: {"flowchart": {"wrappingWidth": 400}}}%%
+flowchart LR
+    root["src/main/resources/META-INF/native-image/"]
+    root --> baomidou["com.baomidou/"]
+    root --> mybatis["org.mybatis/"]
+    root --> mysql["com.mysql/"]
+    baomidou --> sample["#lt;sample-artifact#gt;/<br/>样例自身的资源与类，不带版本号"]
+    baomidou --> creator["dynamic-datasource-creator/4.6.0/"]
+    baomidou --> plus["mybatis-plus/3.5.17/"]
+    mybatis --> core["mybatis/3.5.19/"]
+    mybatis --> spring["mybatis-spring/4.1.0/"]
+    mysql --> connector["mysql-connector-j/9.7.0/<br/>其它依赖同理"]
 ```
 
 两条硬规则：每个条目都带 `condition.typeReached`，键序为 `condition` → `type`/`glob` →
@@ -87,6 +92,23 @@ src/main/resources/META-INF/native-image/
   nativeTest 复核；
 - 每个条目用 `reason`（字符串数组）记录用途，符合 reachability-metadata-schema-v1.2.0，
   当前 GraalVM 构建报 Unknown attribute 警告但忽略之、实测无影响，见 quarkusio/quarkus#49660。
+
+## 共享库（`polyglot/dynamic-datasource-ffi`）
+
+`polyglot/dynamic-datasource-ffi` 不是 Spring Boot 应用，`native` profile 由 `polyglot/pom.xml` 单独定义：
+`sharedLibrary` 构建 `libdynamicds.so`（native-image 的 shared 模式），另加 `-march=compatibility` 与 quick build；
+没有 Spring AOT，也没有 `nativeTest`。Rust / Python / TypeScript 三个示例的构建经由 `polyglot/build-libdynamicds.sh`
+按需构建共享库，再由它们的集成测试验证（CI 的 `Polyglot CI`）。
+
+- C 入口集中在 `NativeEntryPoints`：isolate 与线程管理用 `@CEntryPoint(builtin = ...)` 重命名为 `dd_*`，
+  业务函数统一为 `char* dd_xxx(graal_isolatethread_t*, const char*)`，参数加 `@CConst` 以生成 `const char*`。
+- 元数据只依赖 `dynamic-datasource-native-metadata`（boot4 starter 也以 runtime 范围传递依赖它）与 GRM 中
+  HikariCP、H2、pgjdbc、Jackson 3 的条目，模块里没有手写的 `reachability-metadata.json`；JSON 只用 Jackson 的树模型，
+  不需要为 POJO 登记反射。
+- 输出目录会多出 `libawt*.so`、`libfontmanager.so` 等 JDK 库：H2 jar 自带的 `reflect-config.json` 里以
+  `org.h2.tools.Server` 为条件的 `java.awt.Desktop` 条目在加入 pgjdbc 后生效，把 AWT 拉进了可达性分析。
+  它们在运行时用不上，只需分发 `libdynamicds.so` 与头文件；用 `--exclude-config` 排除 H2 自带的配置可以去掉这些文件，
+  但共享库只会小 2 MiB 左右，示例没有这样做。
 
 ## 上游 issue 跟进（TODO）
 

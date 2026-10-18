@@ -8,6 +8,9 @@
 - `spring-boot-3`（`springboot3-sample`）与 `spring-boot-4` 下的子模块分别运行在 Spring Boot 3.5.x / 4.1.x，
   需要在 [OpenJDK 17, OpenJDK 27] 的 JDK 范围及其下游发行版下执行单元测试
 
+另有 `polyglot` 文件夹，存放在 Rust / TypeScript / Python 的 web 项目中使用 dynamic-datasource 的示例。
+其中的 Java 模块为 GraalVM 25 的 native image 而写，按 Java 25 编译，只在 [OpenJDK 25, OpenJDK 27] 的 JDK 范围下参与构建。
+
 所有单元测试与代码风格检查（Lint & Format）在 Github Actions 完成验证。你可能希望参考 [位于 Github Actions 的 CI 文件](./.github/workflows/ci.yml)。
 
 ## Spring Boot 4（`spring-boot-4/`）
@@ -39,6 +42,17 @@
   参考 https://github.com/apache/shardingsphere/releases/tag/5.0.0-alpha
 - shardingsphere-jdbc-5.x-spring-sample：集成 ShardingSphere JDBC Spring Boot Starter 5.2.1 使用示例，不再维护，
   参考 https://github.com/apache/shardingsphere/issues/22469
+
+## Rust / TypeScript / Python（`polyglot/`）
+
+dynamic-datasource 被构建成 GraalVM native 共享库，三个 web 示例通过各自语言的 FFI 在进程内调用它，运行时不需要 JVM。
+数据源路由与分组负载均衡、按请求头切换、动态增删数据源、多数据源本地事务分别对应上面的 jdbc-template-sample、
+spel-sample、add-remove-datasource-sample 与 tx-local-sample，H2 与 PostgreSQL 都可以运行。构建、运行、C ABI 与
+线程模型见 [模块 README](./polyglot/README.md)：
+
+- rust-axum-sample：在 Rust + axum 中使用的示例
+- python-fastapi-sample：在 Python + FastAPI 中使用的示例
+- typescript-hono-sample：在 TypeScript + Hono 中使用的示例（Node.js 26.9+ 内置的 `node:ffi`）
 
 # Contributing
 

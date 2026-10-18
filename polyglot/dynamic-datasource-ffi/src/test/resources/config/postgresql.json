@@ -1,0 +1,65 @@
+{
+  "primary": "master",
+  "strict": true,
+  "datasource": {
+    "master": {
+      "url": "jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/ds_master",
+      "username": "${POSTGRES_USER:postgres}",
+      "password": "${POSTGRES_PASSWORD:postgres}",
+      "driverClassName": "org.postgresql.Driver",
+      "init": {
+        "schema": "file:${DB_DIR}/user/schema.sql",
+        "data": "file:${DB_DIR}/user/data-master.sql"
+      }
+    },
+    "slave_1": {
+      "url": "jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/ds_slave_1",
+      "username": "${POSTGRES_USER:postgres}",
+      "password": "${POSTGRES_PASSWORD:postgres}",
+      "driverClassName": "org.postgresql.Driver",
+      "init": {
+        "schema": "file:${DB_DIR}/user/schema.sql",
+        "data": "file:${DB_DIR}/user/data-slave_1.sql"
+      }
+    },
+    "slave_2": {
+      "url": "jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/ds_slave_2",
+      "username": "${POSTGRES_USER:postgres}",
+      "password": "${POSTGRES_PASSWORD:postgres}",
+      "driverClassName": "org.postgresql.Driver",
+      "init": {
+        "schema": "file:${DB_DIR}/user/schema.sql",
+        "data": "file:${DB_DIR}/user/data-slave_2.sql"
+      }
+    },
+    "order": {
+      "url": "jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/ds_order",
+      "username": "${POSTGRES_USER:postgres}",
+      "password": "${POSTGRES_PASSWORD:postgres}",
+      "driverClassName": "org.postgresql.Driver",
+      "init": {
+        "schema": "file:${DB_DIR}/order/schema-order.sql"
+      }
+    },
+    "product": {
+      "url": "jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/ds_product",
+      "username": "${POSTGRES_USER:postgres}",
+      "password": "${POSTGRES_PASSWORD:postgres}",
+      "driverClassName": "org.postgresql.Driver",
+      "init": {
+        "schema": "file:${DB_DIR}/order/schema-product.sql",
+        "data": "file:${DB_DIR}/order/data-product.sql"
+      }
+    },
+    "account": {
+      "url": "jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/ds_account",
+      "username": "${POSTGRES_USER:postgres}",
+      "password": "${POSTGRES_PASSWORD:postgres}",
+      "driverClassName": "org.postgresql.Driver",
+      "init": {
+        "schema": "file:${DB_DIR}/order/schema-account.sql",
+        "data": "file:${DB_DIR}/order/data-account.sql"
+      }
+    }
+  }
+}

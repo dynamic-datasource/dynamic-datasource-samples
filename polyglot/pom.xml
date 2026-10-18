@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright © ${project.inceptionYear} organization baomidou
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.baomidou</groupId>
+        <artifactId>dynamic-datasource-samples</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>polyglot-samples</artifactId>
+    <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!--与构建共享库的 GraalVM 25 一致；根 pom 只在 JDK 25+ 上纳入本目录。-->
+        <java.version>25</java.version>
+        <!--本目录不使用 Spring Boot，只借它的 BOM 对齐 Spring Framework 7、HikariCP、H2、pgjdbc、
+            Jackson 3 与 Testcontainers 的版本，与 spring-boot-4 版本线保持一致。
+            不导入时 dynamic-datasource-spring 会按自身 pom 里的 Boot 2.7 BOM 把 Spring 解析成 5.3。-->
+        <spring-boot-dependencies.version>4.1.1</spring-boot-dependencies.version>
+        <!--只在编译期提供 @CEntryPoint 等 API（Java 11 字节码），与 CI 的 GraalVM 版本对齐。-->
+        <graalvm-sdk.version>25.3.4.1</graalvm-sdk.version>
+    </properties>
+
+    <modules>
+        <module>dynamic-datasource-ffi</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring</artifactId>
+                <version>${ds.version}</version>
+            </dependency>
+            <!--dynamic-datasource 自带的 GraalVM 元数据，boot4 starter 也以 runtime 范围传递依赖它；
+                与 GRM 中 HikariCP / H2 / pgjdbc / Jackson 的元数据合起来，共享库无需再手写元数据。-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-native-metadata</artifactId>
+                <version>${ds.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.graalvm.sdk</groupId>
+                <artifactId>nativeimage</artifactId>
+                <version>${graalvm-sdk.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.graalvm.buildtools</groupId>
+                    <artifactId>native-maven-plugin</artifactId>
+                    <version>${native-maven-plugin.version}</version>
+                    <extensions>true</extensions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <!--用 release 代替根 pom 的 source / target：在 JDK 27 等更新的 JDK 上编译时，同样按 Java 25 的 API 检查。-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <release>${java.version}</release>
+                </configuration>
+            </plugin>
+            <!--本目录（含 dynamic-datasource-ffi）的每个文件都要带 license 头，不只是 Java 源码。
+                插件默认排除的 JSON、Markdown 不能写注释，lock 文件由工具生成，其余目录是构建产物与缓存。
+                没有登记注释风格的文件类型直接失败，免得新加的文件被悄悄跳过。-->
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <configuration>
+                    <includes combine.children="append">
+                        <include>**</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/*.lock</exclude>
+                        <exclude>**/.venv/**</exclude>
+                        <exclude>**/__pycache__/**</exclude>
+                        <exclude>**/.pytest_cache/**</exclude>
+                        <exclude>**/.ruff_cache/**</exclude>
+                    </excludes>
+                    <!--failIfUnknown 与 Dockerfile 的注释风格继承自根 pom。-->
+                    <mapping>
+                        <rs>SLASHSTAR_STYLE</rs>
+                        <ts>SLASHSTAR_STYLE</ts>
+                        <toml>SCRIPT_STYLE</toml>
+                        <dockerignore>SCRIPT_STYLE</dockerignore>
+                        <prettierignore>SCRIPT_STYLE</prettierignore>
+                        <python-version>SCRIPT_STYLE</python-version>
+                    </mapping>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!--`mvn -Pnative package` 构建 GraalVM native 共享库（sharedLibrary 即 native-image 的 shared 模式），
+            子模块声明插件即 opt-in。
+            与 spring-boot-* 的 native profile 不同：这里没有 Spring AOT，也不需要 nativeTest，
+            共享库由 rust / python / typescript 三个示例的集成测试验证。-->
+        <profile>
+            <id>native</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.graalvm.buildtools</groupId>
+                            <artifactId>native-maven-plugin</artifactId>
+                            <configuration>
+                                <sharedLibrary>true</sharedLibrary>
+                                <!--quick build 显著缩短构建时间，示例不追求极致性能。-->
+                                <quickBuild>true</quickBuild>
+                                <buildArgs>
+                                    <!--默认的 x86-64-v3 在较老的 CPU 上无法加载，示例需要能分发到任意机器。-->
+                                    <buildArg>-march=compatibility</buildArg>
+                                    <buildArg>-H:+ReportExceptionStackTraces</buildArg>
+                                </buildArgs>
+                            </configuration>
+                            <executions>
+                                <execution>
+                                    <id>add-reachability-metadata</id>
+                                    <goals>
+                                        <goal>add-reachability-metadata</goal>
+                                    </goals>
+                                </execution>
+                                <execution>
+                                    <id>native-compile</id>
+                                    <phase>package</phase>
+                                    <goals>
+                                        <goal>compile-no-fork</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
+</project>

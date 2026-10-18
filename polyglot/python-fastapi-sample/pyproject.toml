@@ -1,0 +1,68 @@
+#
+# Copyright © ${project.inceptionYear} organization baomidou
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+[project]
+name = "python-fastapi-sample"
+version = "1.0.0"
+description = "在 FastAPI 里通过 libdynamicds 使用 dynamic-datasource"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.143.3",
+    "uvicorn>=0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx2>=2.13.1",
+    "pytest>=9.1.1",
+    "ruff>=0.17.1",
+    "testcontainers>=4.15.0",
+]
+
+[build-system]
+requires = ["hatchling>=1.32.4"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+# hatch_build.py：安装本项目时（包括 uv sync、uv run 自动完成的可编辑安装）按需构建 libdynamicds
+[tool.hatch.build.targets.wheel.hooks.custom]
+
+[tool.uv]
+# 这些文件变化时 uv 重新安装本项目，Java 源码或 pom 改动后共享库随之重新构建
+cache-keys = [
+    { file = "pyproject.toml" },
+    { file = "hatch_build.py" },
+    { file = "../build-libdynamicds.sh" },
+    { file = "../dynamic-datasource-ffi/src/main/**" },
+    { file = "../dynamic-datasource-ffi/pom.xml" },
+    { file = "../dynamic-datasource-ffi/target/libdynamicds.so" },
+    { file = "../pom.xml" },
+    { file = "../../pom.xml" },
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

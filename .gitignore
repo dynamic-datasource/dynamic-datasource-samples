@@ -24,5 +24,12 @@ target
 /nbdist/
 /.nb-gradle/
 
+### polyglot/ 的 Python 与 Node.js 示例（Rust 的产物在 target 下，已在上面忽略） ###
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+node_modules/
+
 ### We don't want to check in any binaries in Git ###
 **/.mvn/wrapper/maven-wrapper.jar

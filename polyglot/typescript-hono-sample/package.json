@@ -1,0 +1,35 @@
+{
+  "name": "typescript-hono-sample",
+  "version": "1.0.0",
+  "private": true,
+  "description": "在 Hono 里通过 libdynamicds 使用 dynamic-datasource",
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": {
+    "node": ">=26.9"
+  },
+  "scripts": {
+    "prestart": "node scripts/build-libdynamicds.ts",
+    "start": "node --disable-warning=ExperimentalWarning src/server.ts",
+    "pretest": "node scripts/build-libdynamicds.ts",
+    "test": "node --disable-warning=ExperimentalWarning --test \"test/**/*.test.ts\"",
+    "typecheck": "tsc",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.1.5",
+    "hono": "^4.13.13"
+  },
+  "devDependencies": {
+    "@testcontainers/postgresql": "^12.2.1",
+    "@types/node": "^26.6.5",
+    "prettier": "^3.9.10",
+    "testcontainers": "^12.2.1",
+    "typescript": "^7.0.2"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": true
+  }
+}
