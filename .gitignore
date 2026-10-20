@@ -1,6 +1,10 @@
 */target/
 target
 
+### Atomikos transaction logs (tx-atomikos-sample) ###
+tmlog*.log
+transaction-logs/
+
 ### STS ###
 .apt_generated
 .classpath

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>spring-boot-4-samples</artifactId>
+        <groupId>com.baomidou</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>tx-atomikos-sample</artifactId>
+    <properties>
+        <!--Atomikos 6（jakarta）下 dynamic-datasource 4.6.0 会抛
+            NoSuchMethodError: setReapTimeout(int)（baomidou/dynamic-datasource#822），
+            修复随 4.7.0 发布；4.7.0 上线后本覆盖可删除，随根 pom 的 ds.version 统一升级。-->
+        <ds.version>4.7.0</ds.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>dynamic-datasource-spring-boot4-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+        </dependency>
+        <!--Atomikos 6.0.x 起（jakarta 版本线）才有 jakarta 构件，Spring Boot 3/4 必须使用
+            jakarta classifier；Boot 的 BOM 不管理 Atomikos 版本，统一在父模块
+            spring-boot-4-samples 的 dependencyManagement 中声明。-->
+        <dependency>
+            <groupId>com.atomikos</groupId>
+            <artifactId>transactions-jdbc</artifactId>
+            <classifier>jakarta</classifier>
+        </dependency>
+        <dependency>
+            <groupId>com.atomikos</groupId>
+            <artifactId>transactions-jta</artifactId>
+            <classifier>jakarta</classifier>
+        </dependency>
+        <!--Atomikos 的 transactions-jta 把 jakarta.transaction-api 声明为 provided，
+            不会随依赖传递；不显式引入时 Spring Boot 的 JtaAutoConfiguration 会因缺少
+            jakarta.transaction.Transaction 而退让，事务管理器回退成 JdbcTransactionManager，
+            @Transactional 退化为单库本地事务。-->
+        <dependency>
+            <groupId>jakarta.transaction</groupId>
+            <artifactId>jakarta.transaction-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!--未声明 native-maven-plugin：Atomikos 的 JTA/XA 在 GraalVM native image 下还需要额外的
+        reachability metadata，本示例暂不纳入 Native Test CI，与 tx-seata-sample 同属先例，
+        详见 docs/graalvm-native-image.md。-->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
