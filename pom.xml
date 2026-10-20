@@ -78,7 +78,18 @@
                     <includes>
                         <include>src/main/java/**</include>
                         <include>src/test/java/**</include>
+                        <!--Dev Container 与 license 头样式定义；其中的 JSON 文件按插件的默认规则排除。-->
+                        <include>.devcontainer/**</include>
+                        <include>config/license/**</include>
                     </includes>
+                    <!--插件不认识的文件类型直接报错，而不是悄悄跳过；新增类型时在 mapping 中登记它的注释风格。-->
+                    <failIfUnknown>true</failIfUnknown>
+                    <headerDefinitions>
+                        <headerDefinition>${maven.multiModuleProjectDirectory}/config/license/header-styles.xml</headerDefinition>
+                    </headerDefinitions>
+                    <mapping>
+                        <Dockerfile>DOCKERFILE_STYLE</Dockerfile>
+                    </mapping>
                 </configuration>
                 <executions>
                     <execution>
@@ -131,4 +142,18 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <!--polyglot/ 的 dynamic-datasource-ffi 只为 GraalVM 25 的 native image 而写，按 Java 25 编译，
+            所以 JDK 17、21 上不参与构建。-->
+        <profile>
+            <id>polyglot</id>
+            <activation>
+                <jdk>[25,)</jdk>
+            </activation>
+            <modules>
+                <module>polyglot</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>

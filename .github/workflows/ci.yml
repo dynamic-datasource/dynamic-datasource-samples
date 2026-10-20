@@ -25,8 +25,7 @@ jobs:
           java-version: ${{ matrix.java-version }}
           cache: 'maven'
       - name: Build all test with Maven
-        run: |
-          ./mvnw -T1C -e clean test
+        run: ./mvnw -T1C -e clean test
   test-minimum-hotspot-jdk-ci:
     if: github.repository == 'dynamic-datasource/dynamic-datasource-samples'
     name: Test CI - JDK ${{ matrix.java-version }} on ${{ matrix.os }}
@@ -45,8 +44,7 @@ jobs:
           java-version: ${{ matrix.java-version }}
           cache: 'maven'
       - name: Build spring-boot-2 samples with Maven
-        run: |
-          ./mvnw -am -pl spring-boot-2/shardingsphere-jdbc-4.x-spring-sample,spring-boot-2/shardingsphere-jdbc-5.x-spring-sample -T1C -B -e clean test
+        run: ./mvnw -am -pl spring-boot-2/shardingsphere-jdbc-4.x-spring-sample,spring-boot-2/shardingsphere-jdbc-5.x-spring-sample -T1C -B -e clean test
   test-native-ci:
     if: github.repository == 'dynamic-datasource/dynamic-datasource-samples'
     name: Native Test CI - GraalVM ${{ matrix.module }} on ubuntu-latest
@@ -89,8 +87,121 @@ jobs:
       # 并要求 Seata Server 可达，且其应用上下文在 AOT 类型预判定阶段存在 null Advisor
       # 问题，故暂不纳入。
       - name: Native test with Maven
+        run: ./mvnw -B -e -PnativeTest clean test -pl "${{ matrix.module }}"
+  # polyglot/：三个 web 示例通过各自语言的 FFI 调用 dynamic-datasource 的 GraalVM native 共享库 libdynamicds.so。
+  # 与本地开发一样，各示例的构建（build.rs、hatch_build.py、npm 的 pretest）会先用 GraalVM 构建共享库；
+  # 测试先用 H2，再用各自语言的 Testcontainers 启动 PostgreSQL。dynamic-datasource-ffi 的 JVM 单测已由 Test CI 覆盖，
+  # 格式检查与 lint 在 Lint & Format CI 中完成。
+  polyglot-rust-ci:
+    if: github.repository == 'dynamic-datasource/dynamic-datasource-samples'
+    name: Polyglot CI - rust-axum-sample
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      DD_LOG_LEVEL: warn
+    defaults:
+      run:
+        working-directory: polyglot/rust-axum-sample
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          version: '25.3.4.1'
+          distribution: 'graalvm-community'
+          cache: 'maven'
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: polyglot/rust-axum-sample
+      - name: Test with H2 and PostgreSQL
+        run: cargo test --locked
+  polyglot-python-ci:
+    if: github.repository == 'dynamic-datasource/dynamic-datasource-samples'
+    name: Polyglot CI - python-fastapi-sample
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      DD_LOG_LEVEL: warn
+    defaults:
+      run:
+        working-directory: polyglot/python-fastapi-sample
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          version: '25.3.4.1'
+          distribution: 'graalvm-community'
+          cache: 'maven'
+      # setup-uv 从 v8 起不再发布 v8、v9 这样的浮动大版本 tag，只能写完整版本号
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v10.3.0
+        with:
+          enable-cache: true
+          cache-dependency-glob: polyglot/python-fastapi-sample/uv.lock
+      - name: Test with H2 and PostgreSQL
+        run: uv run --locked pytest -q
+  polyglot-typescript-ci:
+    if: github.repository == 'dynamic-datasource/dynamic-datasource-samples'
+    name: Polyglot CI - typescript-hono-sample
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      DD_LOG_LEVEL: warn
+    defaults:
+      run:
+        working-directory: polyglot/typescript-hono-sample
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          version: '25.3.4.1'
+          distribution: 'graalvm-community'
+          cache: 'maven'
+      # node:ffi 从 Node.js 26.9 起默认开启
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '26'
+          cache: 'npm'
+          cache-dependency-path: polyglot/typescript-hono-sample/package-lock.json
+      - name: Test with H2 and PostgreSQL
         run: |
-          ./mvnw -B -e -PnativeTest clean test -pl "${{ matrix.module }}"
+          npm ci --no-audit --no-fund
+          npm test
+  # .devcontainer/：给本机没有 GraalVM、Rust、uv、Node.js 的贡献者用的开发容器。
+  # 在容器里执行 CONTRIBUTING.md 为 polyglot/ 写的验证命令，确保容器能构建，文档里的验证方式在容器里确实可用。
+  # 容器自带 Docker 引擎（docker-in-docker），Testcontainers 用的是它，而不是 runner 的 Docker。
+  # 用默认的 vscode 用户：action 会把它的 uid 改成与 runner 用户一致，rootless Docker 才需要 DEVCONTAINER_USER=root。
+  devcontainer-ci:
+    if: github.repository == 'dynamic-datasource/dynamic-datasource-samples'
+    name: Dev Container CI
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - name: Verify in Dev Container
+        uses: devcontainers/ci@v0.3
+        with:
+          # push 的默认值是 filter，没有 imageName 时 push 事件上会报 imageName is required；不推送镜像就写 never
+          push: never
+          # runCmd 用 `bash -c` 执行，不带 -e，需要自己 set -e
+          runCmd: |
+            set -ex
+            export DD_LOG_LEVEL=warn
+            java -version
+            native-image --version
+            rustc --version
+            uv --version
+            node --version
+            docker version
+            ./mvnw -B -e -pl polyglot/dynamic-datasource-ffi test
+            (cd polyglot/rust-axum-sample && cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test)
+            (cd polyglot/python-fastapi-sample && uv run ruff format --check . && uv run ruff check . && uv run pytest)
+            (cd polyglot/typescript-hono-sample && npm ci && npm run format:check && npm run typecheck && npm test)
   lint-format-ci:
     if: github.repository == 'dynamic-datasource/dynamic-datasource-samples'
     name: Lint & Format CI
@@ -102,12 +213,50 @@ jobs:
         uses: actions/setup-java@v6
         with:
           distribution: 'temurin'
-          # Checkstyle 14 与 google-java-format 1.30+ 都要求 JDK 21+。
-          java-version: '21'
+          # Checkstyle 14 与 google-java-format 1.30+ 都要求 JDK 21+；polyglot/ 只在 JDK 25+ 上参与构建，
+          # 用 25 才能把它也检查到。
+          java-version: '25'
           cache: 'maven'
       - name: Check format with Spotless
         run: ./mvnw -B -e spotless:check
+      # 同时检查 polyglot/ 下除 JSON、Markdown、lock 文件外所有文件的 license 头（见 polyglot/pom.xml）
       - name: Check license header with License Maven Plugin
         run: ./mvnw -B -e license:check
       - name: Check lint with Checkstyle
         run: ./mvnw -B -e checkstyle:check
+      # polyglot/ 的三个语言示例：格式检查与 lint 都用不到 libdynamicds（cargo clippy 只做检查，不链接），
+      # 这里也没有 GraalVM，各示例的构建只打印警告，不会构建共享库
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: polyglot/rust-axum-sample
+      - name: Check format and lint of rust-axum-sample
+        working-directory: polyglot/rust-axum-sample
+        run: |
+          cargo fmt --check
+          cargo clippy --all-targets --locked -- -D warnings
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v10.3.0
+        with:
+          enable-cache: true
+          cache-dependency-glob: polyglot/python-fastapi-sample/uv.lock
+      - name: Check format and lint of python-fastapi-sample
+        working-directory: polyglot/python-fastapi-sample
+        run: |
+          uv run --locked ruff format --check .
+          uv run --locked ruff check .
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '26'
+          cache: 'npm'
+          cache-dependency-path: polyglot/typescript-hono-sample/package-lock.json
+      - name: Check format and types of typescript-hono-sample
+        working-directory: polyglot/typescript-hono-sample
+        run: |
+          npm ci --no-audit --no-fund
+          npm run format:check
+          npm run typecheck

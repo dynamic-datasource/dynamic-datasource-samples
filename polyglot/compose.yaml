@@ -1,0 +1,132 @@
+#
+# Copyright © ${project.inceptionYear} organization baomidou
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# 三个示例各自连一个 PostgreSQL（用示例自己的 db/postgresql/init-databases.sql 为每个数据源建库），
+# 本机不需要 GraalVM、Rust、Python 或 Node：
+#
+#   docker compose -f polyglot/compose.yaml up --build                # 8081 rust / 8082 python / 8083 typescript
+#   DD_PROFILE=h2 docker compose -f polyglot/compose.yaml up --build  # 改用 H2 内存库
+#
+# 每个示例启动时都会按建表脚本重建表，所以每个示例独占一个 PostgreSQL，互不干扰。
+#
+# test profile 在容器里跑三个示例的测试（H2，以及 Testcontainers 经由宿主 Docker 启动的 PostgreSQL）。
+# rootless Docker 需要用 DOCKER_SOCKET 指出宿主上的 socket：
+#
+#   docker compose -f polyglot/compose.yaml run --build --rm rust-test
+#   DOCKER_SOCKET=$XDG_RUNTIME_DIR/docker.sock docker compose -f polyglot/compose.yaml run --build --rm rust-test
+name: dynamic-datasource-polyglot
+
+x-postgres: &postgres
+  image: postgres:18.6-trixie
+  environment:
+    POSTGRES_PASSWORD: postgres
+  healthcheck:
+    # 走 TCP：initdb 阶段的临时服务器只监听 unix socket，此时还不能算就绪
+    test: ["CMD", "pg_isready", "-h", "127.0.0.1", "-U", "postgres"]
+    interval: 2s
+    retries: 30
+
+x-build: &build
+  context: ..
+  dockerfile: polyglot/Dockerfile
+
+x-environment: &environment
+  DD_PROFILE: ${DD_PROFILE:-postgresql}
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+
+x-test: &test
+  profiles: [test]
+  # 测试经由映射端口访问 Testcontainers 启动的 PostgreSQL；rootless Docker 下只有 host 网络里的
+  # 127.0.0.1 能连到映射端口，rootful Docker 也同样适用
+  network_mode: host
+  volumes:
+    - ${DOCKER_SOCKET:-/var/run/docker.sock}:/var/run/docker.sock
+  environment:
+    DD_LOG_LEVEL: warn
+    TESTCONTAINERS_HOST_OVERRIDE: 127.0.0.1
+    # Python 的 Testcontainers 在容器里默认改用容器 IP 或网关，这里让它与另外两种语言一样走映射端口
+    TESTCONTAINERS_CONNECTION_MODE: docker_host
+    # Ryuk 等由 Testcontainers 启动的容器挂载的是宿主上的 socket 路径
+    TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE: ${DOCKER_SOCKET:-/var/run/docker.sock}
+
+services:
+  rust-postgres:
+    <<: *postgres
+    volumes:
+      - ./rust-axum-sample/db/postgresql/init-databases.sql:/docker-entrypoint-initdb.d/init-databases.sql:ro
+  python-postgres:
+    <<: *postgres
+    volumes:
+      - ./python-fastapi-sample/db/postgresql/init-databases.sql:/docker-entrypoint-initdb.d/init-databases.sql:ro
+  typescript-postgres:
+    <<: *postgres
+    volumes:
+      - ./typescript-hono-sample/db/postgresql/init-databases.sql:/docker-entrypoint-initdb.d/init-databases.sql:ro
+
+  rust:
+    build:
+      <<: *build
+      target: rust
+    environment:
+      <<: *environment
+      POSTGRES_HOST: rust-postgres
+    ports: ["8081:8081"]
+    depends_on:
+      rust-postgres:
+        condition: service_healthy
+
+  python:
+    build:
+      <<: *build
+      target: python
+    environment:
+      <<: *environment
+      POSTGRES_HOST: python-postgres
+    ports: ["8082:8082"]
+    depends_on:
+      python-postgres:
+        condition: service_healthy
+
+  typescript:
+    build:
+      <<: *build
+      target: typescript
+    environment:
+      <<: *environment
+      POSTGRES_HOST: typescript-postgres
+    ports: ["8083:8083"]
+    depends_on:
+      typescript-postgres:
+        condition: service_healthy
+
+  rust-test:
+    <<: *test
+    build:
+      <<: *build
+      target: rust-test
+
+  python-test:
+    <<: *test
+    build:
+      <<: *build
+      target: python-test
+
+  typescript-test:
+    <<: *test
+    build:
+      <<: *build
+      target: typescript-test

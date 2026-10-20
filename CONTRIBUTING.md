@@ -5,7 +5,8 @@
 我们鼓励通过 `version-fox/vfox` 切换到 `25.3.4.1-graalce` 来验证。
 
 针对 `JetBrains/intellij-community` 等 IDE，`spring-boot-2` 下模块的语言级别应设置为 JDK 8，
-`spring-boot-3` 与 `spring-boot-4` 下模块的语言级别应设置为 JDK 17。 下文讨论不同情况下可能的测试流程，
+`spring-boot-3` 与 `spring-boot-4` 下模块的语言级别应设置为 JDK 17，`polyglot/dynamic-datasource-ffi` 应设置为 JDK 25。
+下文讨论不同情况下可能的测试流程，
 
 ## Ubuntu 26.04
 
@@ -34,6 +35,32 @@ git clone git@github.com:dynamic-datasource/dynamic-datasource-samples.git
 cd ./dynamic-datasource-samples/
 ./mvnw -T1C -e clean test
 ```
+
+## Dev Container
+
+本机没有 GraalVM、Rust、uv 或 Node.js 时，可以使用 [`.devcontainer/`](./.devcontainer/devcontainer.json) 描述的开发容器。
+它基于 Ubuntu 24.04，装有 GraalVM CE 25（含 `native-image`）、Rust（含 rustfmt 与 clippy）、uv 与 Node.js 26，
+另有一个容器内独立的 Docker 引擎，Testcontainers 直接使用它，不需要设置 `DOCKER_HOST`。本机只需要 Docker，再任选一种方式打开，
+
+- VS Code：安装 Dev Containers 扩展后执行 `Dev Containers: Reopen in Container`
+- IntelliJ IDEA：打开 `.devcontainer/devcontainer.json`，点击左侧 gutter 中的图标，选择 `Create Dev Container and Mount Sources…`
+- GitHub Codespaces：在仓库页面的 `Code` → `Codespaces` 中创建
+- 命令行：使用 `@devcontainers/cli`，
+
+  ```shell
+  npx @devcontainers/cli up --workspace-folder .
+  npx @devcontainers/cli exec --workspace-folder . ./mvnw -T1C -e clean test
+  ```
+
+第一次创建容器要下载各个工具链，需要几分钟。进入容器后，上面的 `./mvnw -T1C -e clean test` 与下文 `polyglot/` 示例的命令
+都可以直接执行。容器里 uv 的虚拟环境在 `/opt/venvs/` 下，与本机在工作区里创建的 `.venv` 互不影响。
+CI 的 `Dev Container CI` 任务会在这个容器里执行 `polyglot/` 的验证命令，修改 `.devcontainer/` 后可以靠它确认容器仍然可用。
+
+宿主机使用 rootless Docker 时，容器里默认的 `vscode` 用户没有工作区的写权限，需要先在启动 IDE 或 devcontainer CLI 的环境里
+`export DEVCONTAINER_USER=root`。rootless Docker 下容器里的 root 对应宿主机的当前用户，新建的文件仍然归当前用户所有。
+
+`devcontainer.json` 里不写注释，需要说明的配置记在这里：`extensions` 只列了 Python、Ruff 与 Prettier，
+Java、Rust、Node.js 与 Docker 的 VS Code 扩展由对应的 Feature 一并安装。
 
 ## 单元测试说明
 
@@ -64,9 +91,40 @@ cd ./dynamic-datasource-samples/
 native image 的构建与测试、Native Test CI 的模块矩阵、Reachability Metadata 写法与上游 issue 跟进见
 [docs/graalvm-native-image.md](./docs/graalvm-native-image.md)。
 
+## Rust / TypeScript / Python 示例（`polyglot/`）
+
+`polyglot/dynamic-datasource-ffi` 是普通的 Maven 模块，按 Java 25 编译。根 pom 的 `polyglot` profile 按 JDK 版本自动激活：
+在 JDK 25+ 上执行上面的 `./mvnw -T1C -e clean test` 会包含它的 JVM 单测（H2 与 Testcontainers 的 PostgreSQL），
+JDK 17、21 上则跳过整个 `polyglot/`；Lint & Format 也因此在 JDK 25 上执行。三个语言示例另有各自的工具链：CI 的
+`Lint & Format CI` 检查它们的 license 头、格式与 lint；`Polyglot CI` 的三个 job 与本地一样，由各示例的构建先用
+GraalVM 构建共享库（见 `polyglot/build-libdynamicds.sh`），再跑集成测试（先用 H2，再用各自语言的 Testcontainers
+启动的 PostgreSQL）。本地验证二选一：
+
+- 本机装有 GraalVM 25、Docker 与对应语言的工具链（Rust 1.88+、uv、Node.js 26.9+），或者在上文的 Dev Container 里时，
+  在仓库根目录执行；共享库会在第一次构建时自动构建，之后只在 Java 源码或 pom 变化时重新构建（rootless Docker 下，
+  Rust 与 Python 的测试还需要 `export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock`）：
+
+  ```shell
+  (cd polyglot/rust-axum-sample && cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test)
+  (cd polyglot/python-fastapi-sample && uv run ruff format --check . && uv run ruff check . && uv run pytest)
+  (cd polyglot/typescript-hono-sample && npm ci && npm run format:check && npm run typecheck && npm test)
+  ```
+
+- 只有 Docker 时，下面的命令在镜像构建时做格式检查与 lint，再在容器里跑同样的测试
+  （rootless Docker 要加上 `DOCKER_SOCKET=$XDG_RUNTIME_DIR/docker.sock`）：
+
+  ```shell
+  docker compose -f polyglot/compose.yaml run --build --rm rust-test
+  docker compose -f polyglot/compose.yaml run --build --rm python-test
+  docker compose -f polyglot/compose.yaml run --build --rm typescript-test
+  ```
+
+修改 HTTP 接口时三个示例要同步修改，并保持 [polyglot/README.md](./polyglot/README.md) 中的约定一致。
+数据源配置与 SQL 脚本在三个示例与 `dynamic-datasource-ffi/src/test/resources` 下各有一份，想让改动对所有示例生效时要逐份修改。
+
 ## 代码风格（Lint & Format）
 
-CI 的 `Lint & Format CI` 任务在 JDK 21 下执行格式与静态检查，本地提交前请在**仓库根目录**执行：
+CI 的 `Lint & Format CI` 任务在 JDK 25 下执行格式与静态检查，本地提交前请在**仓库根目录**执行：
 
 ```shell
 # 格式化 Java 代码
@@ -75,6 +133,9 @@ CI 的 `Lint & Format CI` 任务在 JDK 21 下执行格式与静态检查，本�
 ./mvnw spotless:check
 # 静态检查
 ./mvnw checkstyle:check
+# 补齐 / 校验 license 头（Java 源码，以及 .devcontainer/、config/license/、polyglot/ 下除 JSON、Markdown、lock 文件外的所有文件）
+./mvnw license:format
+./mvnw license:check
 ```
 
 - 格式化使用 [Spotless](https://github.com/diffplug/spotless) + `google-java-format` 的 AOSP 风格（4 空格缩进），
@@ -82,8 +143,8 @@ CI 的 `Lint & Format CI` 任务在 JDK 21 下执行格式与静态检查，本�
 - 静态检查使用 [Checkstyle](https://checkstyle.org/) 的 `google_checks.xml`。
   与格式化冲突（缩进、导入顺序等）或示例项目不适用的规则在 [`config/checkstyle/suppressions.xml`](./config/checkstyle/suppressions.xml) 中有意抑制，
   新增抑制项请附带原因注释。
-- 两个工具都要求 JDK 21+ 运行（`google-java-format` 1.30+ 与 Checkstyle 14 的要求），
-  其余构建（如 JDK 8/17 下的 `clean test`）不受影响。
+- 两个工具都要求 JDK 21+ 运行（`google-java-format` 1.30+ 与 Checkstyle 14 的要求），在 JDK 25+ 上运行才会检查到
+  `polyglot/`；其余构建（如 JDK 8/17 下的 `clean test`）不受影响。
 
 ## 已发布构件的验收（`Verify released artifact`）
 
