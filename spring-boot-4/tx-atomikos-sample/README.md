@@ -61,6 +61,32 @@ spring:
 换成生产数据库时只需替换 `driver-class-name` 与连接信息：MySQL 用
 `com.mysql.cj.jdbc.MysqlXADataSource`，PostgreSQL 用 `org.postgresql.xa.PGXADataSource`。
 
+内置支持的 XA 数据源类（`XADataSourceEnum`）：
+
+| 数据库 | XA 数据源类 |
+| --- | --- |
+| MySQL 8+ | `com.mysql.cj.jdbc.MysqlXADataSource` |
+| MySQL 5.1 | `com.mysql.jdbc.jdbc2.optional.MysqlXADataSource` |
+| Oracle | `oracle.jdbc.xa.client.OracleXADataSource` |
+| PostgreSQL | `org.postgresql.xa.PGXADataSource` |
+| H2 | `org.h2.jdbcx.JdbcDataSource` |
+
+其他数据库的 XA 数据源类不在枚举内，不会被 Atomikos 创建器认领，需要自定义 `DataSourceCreator`。
+
+Atomikos 连接池参数（`spring.datasource.dynamic.atomikos.*`，单数据源下可用同名 key 覆盖）：
+
+| 参数 | 默认值 | 说明 |
+| --- | --- | --- |
+| `min-pool-size` | 1 | 最小连接数 |
+| `max-pool-size` | 10 | 最大连接数 |
+| `borrow-connection-timeout` | 30 | 池空时等待连接的秒数 |
+| `reap-timeout` | 0 | 连接最大借用秒数；**Atomikos 6 已移除该配置**，4/5 生效 |
+| `max-idle-time` | 60 | 超出 min-pool-size 的空闲连接保留秒数 |
+| `test-query` | `SELECT 1` | 归还连接前的验证语句 |
+| `maintenance-interval` | 60 | 池维护线程间隔秒数 |
+| `default-isolation-level` | -1 | 默认隔离级别，负值忽略 |
+| `max-lifetime` | 60 | 连接最大存活秒数，0 为不限制 |
+
 ## 四个必须手工处理的点
 
 1. **Boot 4 不再自动装配 Atomikos 的 JTA 事务管理器**（Boot 3 及以前会自动装配），
@@ -70,8 +96,28 @@ spring:
    `JdbcTransactionManager`，XA 根本不会发生。
 2. **多数据源 + MyBatis 不要用 Spring 的 `@Transactional`**：MyBatis-Spring 在 Spring 事务
    同步激活时会把整个事务复用同一个 SqlSession（连同同一个连接），连接按事务内第一条语句的
-   `@DS` 确定数据源，后续 `@DS` 切换全部失效。本示例用编程式 JTA，详见
-   `service/OrderService` 的类注释。
+   `@DS` 确定数据源，后续 `@DS` 切换全部失效（表现为第二个库 "Table not found"）。
+   本示例用编程式 JTA：
+
+   ```java
+   @DS("order")
+   public void placeOrder(PlaceOrderRequest request) {
+       try {
+           userTransactionManager.begin();
+           orderMapper.insert(order);                           // -> order 数据源
+           accountService.deduct(request.getUserId(), amount);   // @DS("account") -> account 数据源
+           userTransactionManager.commit();                     // 两个 XA 资源 2PC
+       } catch (RuntimeException e) {
+           userTransactionManager.rollback();                   // 两个库一起回滚
+           throw e;
+       } catch (Exception e) {
+           userTransactionManager.rollback();
+           throw new IllegalStateException("JTA 事务提交失败", e);
+       }
+   }
+   ```
+
+   完整说明见 `service/OrderService` 的类注释。
 3. **MyBatis 侧使用 `AtomikosTransactionFactory`**（`config/MyBatisConfig`）：它在每次 MyBatis
    事务开始时先按当前 `@DS` 确定真实数据源，再交给 `SpringManagedTransaction`。
 4. **XA 数据源不要用 `datasource.*.init.schema` 建表**：脚本在 XA 连接池取出的连接上执行，
