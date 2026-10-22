@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    dynamic:
+      primary: order
+      # Atomikos XA 全局连接池参数，可在单个数据源下用同样的 key 覆盖
+      atomikos:
+        min-pool-size: 1
+        max-pool-size: 10
+        borrow-connection-timeout: 30
+        max-idle-time: 60
+        maintenance-interval: 60
+      datasource:
+        # driver-class-name 指向 XA 数据源类（不是普通 JDBC Driver），
+        # url / username / password 会原样交给 XA 数据源。
+        # type 必须显式声明为 AtomikosDataSourceBean：Hikari 创建器优先级更高，
+        # type 缺省时会接管并把 XA 数据源类误当作 java.sql.Driver 加载而启动失败。
+        # 换成 MySQL 时用 com.mysql.cj.jdbc.MysqlXADataSource，
+        # PostgreSQL 用 org.postgresql.xa.PGXADataSource。
+        order:
+          type: com.atomikos.jdbc.AtomikosDataSourceBean
+          driver-class-name: org.h2.jdbcx.JdbcDataSource
+          url: jdbc:h2:mem:order;DB_CLOSE_DELAY=-1
+          username: sa
+          password: ""
+          # 没有配 init.schema：XA 连接池内执行脚本不会被 Atomikos 提交，
+          # 建表改由 config/H2SchemaInitializer 用普通连接完成，详见其类注释。
+        account:
+          type: com.atomikos.jdbc.AtomikosDataSourceBean
+          driver-class-name: org.h2.jdbcx.JdbcDataSource
+          url: jdbc:h2:mem:account;DB_CLOSE_DELAY=-1
+          username: sa
+          password: ""
+logging:
+  level:
+    com.baomidou: debug

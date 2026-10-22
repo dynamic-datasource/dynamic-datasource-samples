@@ -29,6 +29,9 @@
         <commons-dbcp2.version>2.8.0</commons-dbcp2.version>
         <sql-springboot4-starter.version>3.40.0-RELEASE</sql-springboot4-starter.version>
         <seata-spring-boot-starter.version>2.6.0</seata-spring-boot-starter.version>
+        <!--Spring Boot 的 BOM 不管理 Atomikos，版本在此集中声明；
+            Atomikos 6.0.x 起才有 jakarta 构件（Boot 3/4 必须用 jakarta classifier）。-->
+        <atomikos.version>6.0.1</atomikos.version>
     </properties>
 
     <modules>
@@ -45,6 +48,7 @@
         <module>quartz-sample</module>
         <module>shardingsphere-jdbc-5.x-core-sample</module>
         <module>spel-sample</module>
+        <module>tx-atomikos-sample</module>
         <module>tx-local-sample</module>
         <module>tx-seata-sample</module>
     </modules>
@@ -132,6 +136,19 @@
                 <groupId>org.apache.seata</groupId>
                 <artifactId>seata-spring-boot-starter</artifactId>
                 <version>${seata-spring-boot-starter.version}</version>
+            </dependency>
+            <!--jakarta classifier 随依赖声明传递，Boot 3/4 无需再写 classifier。-->
+            <dependency>
+                <groupId>com.atomikos</groupId>
+                <artifactId>transactions-jdbc</artifactId>
+                <version>${atomikos.version}</version>
+                <classifier>jakarta</classifier>
+            </dependency>
+            <dependency>
+                <groupId>com.atomikos</groupId>
+                <artifactId>transactions-jta</artifactId>
+                <version>${atomikos.version}</version>
+                <classifier>jakarta</classifier>
             </dependency>
         </dependencies>
     </dependencyManagement>

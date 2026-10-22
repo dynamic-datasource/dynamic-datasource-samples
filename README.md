@@ -31,6 +31,9 @@
 - tx-local-sample：本地事务示例项目★★★★★★必看★★★★★★
 - tx-seata-sample：基于seata的分布式事务集成使用示例，Seata Server 与数据库的准备、关键配置和本地运行步骤见
   [模块 README](./spring-boot-4/tx-seata-sample/README.md)
+- tx-atomikos-sample：基于 Atomikos XA 的分布式事务集成使用示例，Boot 4 下 JTA 事务管理器的手工装配、
+  `@Transactional` 与多数据源 MyBatis 的冲突、XA 建表注意点见
+  [模块 README](./spring-boot-4/tx-atomikos-sample/README.md)
 
 ## Spring Boot 3（`spring-boot-3/`）
 

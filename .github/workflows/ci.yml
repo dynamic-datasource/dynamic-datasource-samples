@@ -86,6 +86,8 @@ jobs:
       # tx-seata-sample 依赖的 Seata 在 AOT 处理阶段就会构造 GlobalTransactionScanner
       # 并要求 Seata Server 可达，且其应用上下文在 AOT 类型预判定阶段存在 null Advisor
       # 问题，故暂不纳入。
+      # tx-atomikos-sample 依赖的 Atomikos JTA/XA 在 native image 下还需要额外的
+      # reachability metadata，待专项处理后纳入。
       - name: Native test with Maven
         run: ./mvnw -B -e -PnativeTest clean test -pl "${{ matrix.module }}"
   # polyglot/：三个 web 示例通过各自语言的 FFI 调用 dynamic-datasource 的 GraalVM native 共享库 libdynamicds.so。
