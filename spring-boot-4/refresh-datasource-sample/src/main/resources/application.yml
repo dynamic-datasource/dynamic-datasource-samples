@@ -1,0 +1,23 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    dynamic:
+      primary: master
+      strict: true
+      # 替换连接池时等待活跃连接归还，避免刷新把在途请求直接打断
+      grace-destroy: true
+      # classpath 存在 Spring Cloud 的 RefreshEvent 时，配置变更会自动刷新数据源
+      refresh-enabled: true
+      datasource:
+        master:
+          url: jdbc:h2:mem:master;DB_CLOSE_DELAY=-1
+          username: sa
+          password: ''
+          driver-class-name: org.h2.Driver
+        slave_1:
+          url: jdbc:h2:mem:slave1;DB_CLOSE_DELAY=-1
+          username: sa
+          password: ''
+          driver-class-name: org.h2.Driver
